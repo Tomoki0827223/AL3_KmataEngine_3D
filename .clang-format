@@ -1,0 +1,29 @@
+BasedOnStyle: LLVM
+AccessModifierOffset: -4
+AlignAfterOpenBracket: AlwaysBreak
+AlignArrayOfStructures: Left
+AlignConsecutiveMacros: AcrossComments
+AlignTrailingComments: true
+AllowShortFunctionsOnASingleLine: All
+BreakBeforeBraces: Attach
+ColumnLimit: 200
+ConstructorInitializerIndentWidth: 4
+ContinuationIndentWidth: 4
+EmptyLineAfterAccessModifier: Never
+IndentAccessModifiers: false
+IndentCaseLabels: false
+IndentExternBlock: NoIndent
+IndentWidth: 4
+IndentWrappedFunctionNames: true
+KeepEmptyLinesAtTheStartOfBlocks: true
+Language: Cpp
+NamespaceIndentation: None
+PointerAlignment: Left
+ReferenceAlignment: Pointer
+SpaceAfterTemplateKeyword: false
+Standard: Latest
+TabWidth: 4
+UseCRLF: false
+UseTab: ForIndentation
+BraceWrapping:
+	IndentBraces: false
