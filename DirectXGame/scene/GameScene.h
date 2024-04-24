@@ -13,6 +13,16 @@
 /// </summary>
 class GameScene {
 
+	Sprite* sprite_ = nullptr;
+	//3Dモデル
+	Model* model_ = nullptr;
+
+
+	//ワールドトランスフォーム
+	WorldTransform worldTransform_;
+	//ビュープロジェクション
+	ViewProjection viewProjection_;
+
 public: // メンバ関数
 	/// <summary>
 	/// コンストクラタ
@@ -43,6 +53,12 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+
+	
+	// テクスチャハンドル
+	uint32_t textureHandle_ = 0;
+	//オーディオハンドル
+	uint32_t soundHandle_ = 0;
 
 	/// <summary>
 	/// ゲームシーン用
