@@ -31,6 +31,8 @@ public: // メンバ関数
 	/// </summary>
 	GameScene();
 
+	float inputFloat3[3] = {0, 0, 0};
+
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
