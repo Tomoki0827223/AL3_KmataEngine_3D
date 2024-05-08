@@ -5,6 +5,8 @@
 GameScene::GameScene() {
 
 	delete sprite_;
+
+	delete player_;
 }
 
 GameScene::~GameScene() {}
@@ -20,9 +22,18 @@ void GameScene::Initialize() {
 	sprite_ = Sprite::Create(textureHandle_, {100, 50});
 
 	viewProjection_.Initialize();
+
+	player_ = new Player();
+
+	//player_->Initialize();
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+
+	player_->Update();
+
+
+}
 
 void GameScene::Draw() {
 
@@ -46,6 +57,8 @@ void GameScene::Draw() {
 #pragma region 3Dオブジェクト描画
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
+
+	player_->Draw();
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる

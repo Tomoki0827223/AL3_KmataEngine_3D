@@ -1,6 +1,13 @@
 #include "Player.h"
+#include "cassert"
 
-void Player::Initialize() {}
+void Player::Initialize(Model* model, uint32_t textureHandle) {
+
+	assert(model);
+	assert(textureHandle);
+
+	worldTransform_.Initialize();
+}
 
 void Player::Update() {}
 
