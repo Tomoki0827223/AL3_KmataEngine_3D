@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "Audio.h"
 #include "DirectXCommon.h"
 #include "Input.h"
@@ -18,6 +19,14 @@ public: // メンバ関数
 	/// コンストクラタ
 	/// </summary>
 	GameScene();
+
+	Model* model_ = nullptr;
+
+	WorldTransform worldTransform_;
+
+	ViewProjection viewProjection_;
+
+	std::vector<WorldTransform*> worldTransformBlocks_;
 
 	/// <summary>
 	/// デストラクタ
