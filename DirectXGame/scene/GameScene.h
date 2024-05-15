@@ -26,6 +26,8 @@ public: // メンバ関数
 
 	Player* player_ = nullptr;
 
+	Model* model_ = nullptr;
+
 	/// <summary>
 	/// デストラクタ
 	/// </summary>

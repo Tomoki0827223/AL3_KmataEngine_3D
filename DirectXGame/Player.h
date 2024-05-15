@@ -7,7 +7,7 @@ class Player {
 
 public:
 
-	void Initialize(Model* model, uint32_t textureHandle);
+	void Initialize(Model* model, uint32_t textureHandle, ViewProjection* viewProjection);
 
 	void Update();
 
@@ -16,6 +16,8 @@ public:
 private:
 
 	WorldTransform worldTransform_;
+
+	ViewProjection* viewProjection_ = nullptr;
 
 	Model* model_ = nullptr;
 
