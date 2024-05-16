@@ -8,6 +8,7 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "affine.h"
 
 /// <summary>
 /// ゲームシーン

@@ -43,7 +43,21 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+
+	for (WorldTransform* worldTransformBlock : worldTransformBlocks_) {
+
+		worldTransformBlock->scale_;
+		worldTransformBlock->rotation_;
+		worldTransformBlock->translation_;
+
+		worldTransformBlock->matWorld_ = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
+
+		worldTransformBlock->TransferMatrix();
+	}
+
+
+}
 
 void GameScene::Draw() {
 
@@ -67,6 +81,12 @@ void GameScene::Draw() {
 #pragma region 3Dオブジェクト描画
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
+
+	for (WorldTransform* worldTransformBlock : worldTransformBlocks_) {
+
+		model_->Draw(*worldTransformBlock, viewProjection_);
+	
+	}
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
