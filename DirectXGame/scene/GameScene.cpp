@@ -8,9 +8,11 @@ GameScene::~GameScene() {
 
 	delete model_;
 
-	for (WorldTransform* worldTransformBlock : worldTransformBlocks_) {
+	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 
-		delete worldTransformBlock;
+			delete worldTransformBlock;
+		}
 	}
 	worldTransformBlocks_.clear();
 
@@ -18,19 +20,39 @@ GameScene::~GameScene() {
 
 void GameScene::Initialize() {
 
+	const uint32_t kNumBlockVirtical = 10;
 	const uint32_t kNumBlockHorizontal = 20;
 
+	const float kBlockHeight = 2.0f;
 	const float kBlockWidth = 2.0f;
 
-	worldTransformBlocks_.resize(kNumBlockHorizontal);
+	worldTransformBlocks_.resize(kNumBlockVirtical);
 
-	for (uint32_t i = 0; i < kNumBlockHorizontal; i++) {
+	for (uint32_t i = 0; i < kNumBlockVirtical; i++) {
 
-		worldTransformBlocks_[i] = new WorldTransform();
-		worldTransformBlocks_[i]->Initialize();
-		worldTransformBlocks_[i]->translation_.x = kBlockWidth * i;
-		worldTransformBlocks_[i]->translation_.y = 0.0f;
+		//worldTransformBlocks_[i] = new WorldTransform();
+		//worldTransformBlocks_[i]->Initialize();
+		//worldTransformBlocks_[i]->translation_.x = kBlockWidth * i;
+		//worldTransformBlocks_[i]->translation_.y = 0.0f;
 
+		worldTransformBlocks_[i].resize(kNumBlockHorizontal);
+
+	}
+
+	for (uint32_t i = 0; i < kNumBlockVirtical; i++) {
+		for (uint32_t j = 0; j < kNumBlockHorizontal; j++) {
+
+			if ((i + j) % 2 == 0) {
+
+				worldTransformBlocks_[i][j] = nullptr;
+			} else {
+
+				worldTransformBlocks_[i][j] = new WorldTransform();
+				worldTransformBlocks_[i][j]->Initialize();
+				worldTransformBlocks_[i][j]->translation_.x = kBlockWidth * j;
+				worldTransformBlocks_[i][j]->translation_.y = kBlockHeight * i;
+			}
+		}
 	}
 
 	dxCommon_ = DirectXCommon::GetInstance();
@@ -45,15 +67,22 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 
-	for (WorldTransform* worldTransformBlock : worldTransformBlocks_) {
 
-		worldTransformBlock->scale_;
-		worldTransformBlock->rotation_;
-		worldTransformBlock->translation_;
+	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+			if (!worldTransformBlock) {
 
-		worldTransformBlock->matWorld_ = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
+				continue;
+			}
 
-		worldTransformBlock->TransferMatrix();
+			worldTransformBlock->scale_;
+			worldTransformBlock->rotation_;
+			worldTransformBlock->translation_;
+
+			worldTransformBlock->matWorld_ = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
+
+			worldTransformBlock->TransferMatrix();
+		}
 	}
 
 
@@ -82,10 +111,15 @@ void GameScene::Draw() {
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
 
-	for (WorldTransform* worldTransformBlock : worldTransformBlocks_) {
+	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+			if (!worldTransformBlock) {
 
-		model_->Draw(*worldTransformBlock, viewProjection_);
-	
+				continue;
+			}
+
+			model_->Draw(*worldTransformBlock, viewProjection_);
+		}
 	}
 
 	/// <summary>
