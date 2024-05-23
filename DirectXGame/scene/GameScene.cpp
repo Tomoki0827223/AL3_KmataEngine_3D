@@ -2,11 +2,14 @@
 #include "TextureManager.h"
 #include <cassert>
 
-GameScene::GameScene() {}
-
-GameScene::~GameScene() {
+GameScene::GameScene() {
 
 	delete model_;
+	delete debugCamera_;
+
+}
+
+GameScene::~GameScene() {
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -63,9 +66,12 @@ void GameScene::Initialize() {
 
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
+
+	debugCamera_ = new DebugCamera(1280, 720);
 }
 
 void GameScene::Update() {
+
 
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -85,7 +91,32 @@ void GameScene::Update() {
 		}
 	}
 
+#ifdef _DEBUG
 
+	if (input_->TriggerKey(DIK_SPACE)) {
+
+		if (isDebugCameraActive_ == 1) {
+			isDebugCameraActive_ = 0;
+		} else {
+			isDebugCameraActive_ = 1;
+		}
+	}
+
+#endif // _DEBUG
+
+	if (isDebugCameraActive_) {
+
+		debugCamera_->Update();
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+
+		viewProjection_.TransferMatrix();
+	} else {
+
+		viewProjection_.UpdateMatrix();
+	}
+
+	//debugCamera_->Update();
 }
 
 void GameScene::Draw() {
@@ -118,7 +149,7 @@ void GameScene::Draw() {
 				continue;
 			}
 
-			model_->Draw(*worldTransformBlock, viewProjection_);
+			model_->Draw(*worldTransformBlock, debugCamera_->GetViewProjection());
 		}
 	}
 

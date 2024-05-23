@@ -9,6 +9,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "affine.h"
+#include "DebugCamera.h"
 
 /// <summary>
 /// ゲームシーン
@@ -28,6 +29,9 @@ public: // メンバ関数
 	ViewProjection viewProjection_;
 
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
+
+	int isDebugCameraActive_ = 0;
+	DebugCamera* debugCamera_ = nullptr;
 
 	/// <summary>
 	/// デストラクタ
