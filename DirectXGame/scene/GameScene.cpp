@@ -2,7 +2,7 @@
 #include "TextureManager.h"
 #include <cassert>
 
-GameScene::GameScene() {}
+GameScene::GameScene() { delete mapChipField_; }
 
 GameScene::~GameScene() {}
 
@@ -11,6 +11,19 @@ void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+
+	mapChipField_ = new MapChipField;
+	mapChipField_->LordMapChipCsv("Resourse/blocks.csv");
+
+}
+
+void GameScene::GenerateBlocks() {
+
+	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
+	uint32_t numBlockHorizontal = mapChipField_->GetNumblockHorizontal();
+
+
+
 }
 
 void GameScene::Update() {}

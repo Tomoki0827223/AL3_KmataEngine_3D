@@ -7,6 +7,7 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "MapChipField.h"
 
 /// <summary>
 /// ゲームシーン
@@ -18,6 +19,9 @@ public: // メンバ関数
 	/// コンストクラタ
 	/// </summary>
 	GameScene();
+
+	MapChipField* mapChipField_;
+	void GenerateBlocks();
 
 	/// <summary>
 	/// デストラクタ
