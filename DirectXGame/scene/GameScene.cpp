@@ -160,15 +160,15 @@ void GameScene::Draw() {
 	// 天球の描画
 	skydome_->Draw();
 
-	// 縦横ブロック描画
-	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
-		for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-			if (!worldTransformBlockYoko)
-				continue;
+	//// 縦横ブロック描画
+	//for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
+	//	for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
+	//		if (!worldTransformBlockYoko)
+	//			continue;
 
-			modelBlock_->Draw(*worldTransformBlockYoko, viewProjection_);
-		}
-	}
+	//		modelBlock_->Draw(*worldTransformBlockYoko, viewProjection_);
+	//	}
+	//}
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
