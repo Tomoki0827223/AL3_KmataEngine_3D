@@ -113,6 +113,7 @@
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="WorldTransformEX.cpp" />
     <ClCompile Include="affine.cpp" />
+    <ClCompile Include="Skydome.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\ImGuiManager.h" />
@@ -146,6 +147,7 @@
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="affine.h" />
     <ClInclude Include="Matrix3x3.h" />
+    <ClInclude Include="Skydome.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">
