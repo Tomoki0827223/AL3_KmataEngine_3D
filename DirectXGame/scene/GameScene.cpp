@@ -5,7 +5,18 @@
 
 GameScene::GameScene() { delete mapChipField_; }
 
-GameScene::~GameScene() {}
+GameScene::~GameScene() {
+
+
+	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+			delete worldTransformBlock;
+		}
+	}
+
+	worldTransformBlocks_.clear();
+
+}
 
 void GameScene::Initialize() {
 
