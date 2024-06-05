@@ -13,14 +13,14 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	mapChipField_ = new MapChipField;
-	mapChipField_->LordMapChipCsv("Resourse/blocks.csv");
+	mapChipField_->LoadMapChipCsv("Resourse/blocks.csv");
 
 }
 
 void GameScene::GenerateBlocks() {
 
 	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
-	uint32_t numBlockHorizontal = mapChipField_->GetNumblockHorizontal();
+	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
 
 
 
