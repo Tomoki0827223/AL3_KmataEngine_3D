@@ -1,6 +1,7 @@
 #include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
+#include "affine.h"
 
 GameScene::GameScene() { delete mapChipField_; }
 
@@ -27,10 +28,10 @@ void GameScene::GenerateBlocks() {
 	//const float kBlockHeight = 2.0f;
 	
 	// 要素数を変更する
-	worldTransformBlocks_.resize(30);
+	worldTransformBlocks_.resize(16);
 
 	// キューブの生成
-	for (uint32_t i = 0; i < 30; ++i) {
+	for (uint32_t i = 0; i < 16; ++i) {
 		worldTransformBlocks_[i].resize(20);
 	}
 
