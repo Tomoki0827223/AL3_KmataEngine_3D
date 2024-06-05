@@ -25,7 +25,7 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	mapChipField_ = new MapChipField;
-	mapChipField_->LoadMapChipCsv("Resourse/blocks.csv");
+	mapChipField_->LoadMapChipCsv("Resourse/map.csv");
 
 }
 
@@ -39,11 +39,11 @@ void GameScene::GenerateBlocks() {
 	//const float kBlockHeight = 2.0f;
 	
 	// 要素数を変更する
-	worldTransformBlocks_.resize(16);
+	worldTransformBlocks_.resize(20);
 
 	// キューブの生成
-	for (uint32_t i = 0; i < 16; ++i) {
-		worldTransformBlocks_[i].resize(20);
+	for (uint32_t i = 0; i < 20; ++i) {
+		worldTransformBlocks_[i].resize(100);
 	}
 
 	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
