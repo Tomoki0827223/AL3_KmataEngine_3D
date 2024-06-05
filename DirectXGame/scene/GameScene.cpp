@@ -23,8 +23,8 @@ void GameScene::GenerateBlocks() {
 	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
 
 	// ブロック1個分の横幅
-	const float kBlockWidth = 2.0f;
-	const float kBlockHeight = 2.0f;
+	//const float kBlockWidth = 2.0f;
+	//const float kBlockHeight = 2.0f;
 	
 	// 要素数を変更する
 	worldTransformBlocks_.resize(30);
@@ -47,7 +47,51 @@ void GameScene::GenerateBlocks() {
 
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+
+//#ifdef _DEBUG
+//	if (input_->TriggerKey(DIK_SPACE)) {
+//		if (isDebugCameraActive_ == true)
+//			isDebugCameraActive_ = false;
+//		else
+//			isDebugCameraActive_ = true;
+//	}
+//#endif
+//
+//	// カメラ処理
+//	if (isDebugCameraActive_) {
+//		// デバッグカメラの更新
+//		debugCamera_->Update();
+//		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+//		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+//		// ビュープロジェクション行列の転送
+//		viewProjection_.TransferMatrix();
+//	} else {
+//		// ビュープロジェクション行列の更新と転送
+//		viewProjection_.UpdateMatrix();
+//	}
+//
+//	// 自キャラの更新
+//	player_->Update();
+//
+//	// 天球の更新
+//	skydome_->Update();
+
+	// 縦横ブロック更新
+	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
+		for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
+			if (!worldTransformBlockYoko)
+				continue;
+
+			// アフィン変換行列の作成
+			//(MakeAffineMatrix：自分で作った数学系関数)
+			worldTransformBlockYoko->matWorld_ = MakeAffineMatrix(worldTransformBlockYoko->scale_, worldTransformBlockYoko->rotation_, worldTransformBlockYoko->translation_);
+
+			// 定数バッファに転送
+			worldTransformBlockYoko->TransferMatrix();
+		}
+	}
+}
 
 void GameScene::Draw() {
 
