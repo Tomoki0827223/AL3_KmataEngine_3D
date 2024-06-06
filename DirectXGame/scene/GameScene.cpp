@@ -8,6 +8,7 @@ GameScene::GameScene() {
 	delete model_;
 	delete debugCamera_;
 	delete mapChipField_;
+	delete player_;
 }
 
 GameScene::~GameScene() {
@@ -41,6 +42,9 @@ void GameScene::Initialize() {
 	mapChipField_->LoadMapChipCsv("Resources/map.csv");
 
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(2, 2);
+
+	player_ = new Player();
+	player_->Initialize(model_, &viewProjection_, playerPosition);
 
 	GenerateBlocks();
 }

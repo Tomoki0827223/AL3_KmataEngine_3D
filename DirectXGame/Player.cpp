@@ -1,6 +1,8 @@
 #include "Player.h"
 #include "cassert"
 #include <numbers>
+#include "Input.h"
+#include "stdint.h"
 
 void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) {
 
@@ -8,12 +10,32 @@ void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vect
 	worldTransform_.translation_ = position;
 
 	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
+
+		// 引数をメンバ変数に保存
+	model_ = model;
+	viewProjection_ = viewProjection;
 }
 
 void Player::Update() {
 
-	worldTransform_.TransferMatrix();
+	if (Input::GetInstance()->PushKey(DIK_RIGHT) || Input::GetInstance()->PushKey(DIK_LEFT)) {
+	
+		Vector3 acceleration = {2,2,2};
+		if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
 
+			acceleration.x += kAcceleration;
+		} else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
+
+			acceleration.x -= kAcceleration;
+		}
+		velocity_ += acceleration;
+	} else {
+
+		velocity_.x *= (1.0f - kAcceleration);
+	}
+
+	worldTransform_.translation_ += velocity_;
+	worldTransform_.UpdateMatrix();
 }
 
 void Player::Draw() {

@@ -9,6 +9,7 @@
 #include "WorldTransform.h"
 #include "MapChipField.h"
 #include "DebugCamera.h"
+#include "Player.h"
 
 /// <summary>
 /// ゲームシーン
@@ -28,6 +29,8 @@ public: // メンバ関数
 	ViewProjection viewProjection_;
 
 	MapChipField* mapChipField_;
+
+	Player* player_ = nullptr;
 
 	void GenerateBlocks();
 
