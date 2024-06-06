@@ -34,7 +34,7 @@ public: // メンバ関数
 	// 縦横ブロック配列
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 
-	int isDebugCameraActive_ = 0;
+	int isDebugCameraActive_ = 0u;
 	DebugCamera* debugCamera_ = nullptr;
 
 	/// <summary>

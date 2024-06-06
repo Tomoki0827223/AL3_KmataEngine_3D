@@ -28,7 +28,7 @@ void GameScene::Initialize() {
 	debugCamera_ = new DebugCamera(1280, 720);
 
 	mapChipField_ = new MapChipField;
-	mapChipField_->LoadMapChipCsv("Resources/map.csv");
+	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 	model_ = Model::Create();
 
 }
@@ -71,9 +71,9 @@ void GameScene::Update() {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			if (!worldTransformBlock) {
 				continue;
-				worldTransformBlocks_->UpdateMatrix();
 
 			}
+			worldTransformBlock->UpdateMatrix();
 		}
 	}
 
@@ -109,7 +109,7 @@ void GameScene::Draw() {
 				continue;
 			}
 
-			model_->Draw(*worldTransformBlock, debugCamera_->GetViewProjection());
+			 model_->Draw(*worldTransformBlock, viewProjection_);
 		}
 	}
 
