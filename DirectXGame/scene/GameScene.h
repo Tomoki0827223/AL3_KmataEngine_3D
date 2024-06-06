@@ -20,6 +20,12 @@ public: // メンバ関数
 	/// </summary>
 	GameScene();
 
+	Model* model_ = nullptr;
+
+	WorldTransform worldTransform_;
+
+	ViewProjection viewProjection_;
+
 	MapChipField* mapChipField_;
 	void GenerateBlocks();
 
