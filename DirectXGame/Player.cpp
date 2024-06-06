@@ -11,7 +11,7 @@ void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vect
 
 	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
 
-		// 引数をメンバ変数に保存
+	// 引数をメンバ変数に保存
 	model_ = model;
 	viewProjection_ = viewProjection;
 }
@@ -28,13 +28,13 @@ void Player::Update() {
 
 			acceleration.x -= kAcceleration;
 		}
-		velocity_ += acceleration;
+		velocity_.x += acceleration.x;
 	} else {
 
 		velocity_.x *= (1.0f - kAcceleration);
 	}
 
-	worldTransform_.translation_ += velocity_;
+	worldTransform_.translation_.x += velocity_.x;
 	worldTransform_.UpdateMatrix();
 }
 
