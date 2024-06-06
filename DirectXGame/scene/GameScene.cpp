@@ -54,7 +54,7 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	mapChipField_ = new MapChipField;
-	mapChipField_->LoadMapChipCsv("Resourse/map.csv");
+	mapChipField_->LoadMapChipCsv("Resources/map.csv");
 
 }
 
@@ -83,7 +83,7 @@ void GameScene::GenerateBlocks() {
 				worldTransformBlocks_[i][j] = worldTransform;
 				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
 			} else {
-				worldTransformBlocks_[i][j] = nullptr;
+				/*worldTransformBlocks_[i][j] = nullptr;*/
 			}
 		}
 	}
@@ -91,34 +91,6 @@ void GameScene::GenerateBlocks() {
 }
 
 void GameScene::Update() {
-
-//#ifdef _DEBUG
-//	if (input_->TriggerKey(DIK_SPACE)) {
-//		if (isDebugCameraActive_ == true)
-//			isDebugCameraActive_ = false;
-//		else
-//			isDebugCameraActive_ = true;
-//	}
-//#endif
-//
-//	// カメラ処理
-//	if (isDebugCameraActive_) {
-//		// デバッグカメラの更新
-//		debugCamera_->Update();
-//		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-//		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-//		// ビュープロジェクション行列の転送
-//		viewProjection_.TransferMatrix();
-//	} else {
-//		// ビュープロジェクション行列の更新と転送
-//		viewProjection_.UpdateMatrix();
-//	}
-//
-//	// 自キャラの更新
-//	player_->Update();
-//
-//	// 天球の更新
-//	skydome_->Update();
 
 	// 縦横ブロック更新
 	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
