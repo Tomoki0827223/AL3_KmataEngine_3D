@@ -16,6 +16,7 @@ GameScene::~GameScene() {
 
 	worldTransformBlocks_.clear();
 
+	model_->Draw(*worldTransformBlock, debugCamera_->GetViewProjection());
 }
 
 void GameScene::Initialize() {
@@ -55,6 +56,8 @@ void GameScene::Initialize() {
 
 	mapChipField_ = new MapChipField;
 	mapChipField_->LoadMapChipCsv("Resources/map.csv");
+	model_ = Model::Create();
+
 
 }
 
@@ -91,6 +94,18 @@ void GameScene::GenerateBlocks() {
 }
 
 void GameScene::Update() {
+
+		if (isDebugCameraActive_) {
+
+		debugCamera_->Update();
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+
+		viewProjection_.TransferMatrix();
+	} else {
+
+		viewProjection_.UpdateMatrix();
+	}
 
 	// 縦横ブロック更新
 	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
@@ -131,6 +146,17 @@ void GameScene::Draw() {
 #pragma region 3Dオブジェクト描画
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
+
+		for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+			if (!worldTransformBlock) {
+
+				continue;
+			}
+
+			model_->Draw(*worldTransformBlock, debugCamera_->GetViewProjection());
+		}
+	}
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
