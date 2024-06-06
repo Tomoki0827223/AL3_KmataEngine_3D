@@ -28,6 +28,7 @@ public: // メンバ関数
 	ViewProjection viewProjection_;
 
 	MapChipField* mapChipField_;
+
 	void GenerateBlocks();
 
 	// 縦横ブロック配列
