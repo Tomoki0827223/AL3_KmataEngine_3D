@@ -88,6 +88,7 @@ void GameScene::Update() {
 			worldTransformBlock->matWorld_ = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
 
 			worldTransformBlock->TransferMatrix();
+
 		}
 	}
 
