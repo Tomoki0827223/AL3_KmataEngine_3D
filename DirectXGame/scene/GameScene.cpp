@@ -20,7 +20,6 @@ GameScene::~GameScene() {
 
 	worldTransformBlocks_.clear();
 
-	model_->Draw(*worldTransformBlock, debugCamera_->GetViewProjection());
 }
 
 void GameScene::Initialize() {
@@ -71,7 +70,7 @@ void GameScene::GenerateBlocks() {
 				worldTransformBlocks_[i][j] = worldTransform;
 				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
 			} else {
-				/*worldTransformBlocks_[i][j] = nullptr;*/
+				worldTransformBlocks_[i][j] = nullptr;
 			}
 		}
 	}
@@ -132,7 +131,7 @@ void GameScene::Draw() {
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
 
-		for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			if (!worldTransformBlock) {
 
