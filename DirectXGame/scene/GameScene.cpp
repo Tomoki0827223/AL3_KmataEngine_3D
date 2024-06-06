@@ -104,6 +104,7 @@ void GameScene::Update() {
 
 			// 定数バッファに転送
 			worldTransformBlockYoko->TransferMatrix();
+
 		}
 	}
 }
