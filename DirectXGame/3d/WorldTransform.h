@@ -30,6 +30,8 @@ public:
 	WorldTransform() = default;
 	~WorldTransform() = default;
 
+	void UpdateMatrix();
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -60,6 +62,8 @@ private:
 	// コピー禁止
 	WorldTransform(const WorldTransform&) = delete;
 	WorldTransform& operator=(const WorldTransform&) = delete;
+
+
 };
 
 static_assert(!std::is_copy_assignable_v<WorldTransform>);

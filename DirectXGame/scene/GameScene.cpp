@@ -4,21 +4,14 @@
 #include "affine.h"
 
 GameScene::GameScene() {
-
-	delete model_;
-	delete debugCamera_;
-	delete mapChipField_;
 }
 
 GameScene::~GameScene() {
 
-	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
-		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+	delete model_;
+	delete debugCamera_;
+	delete mapChipField_;
 
-			delete worldTransformBlock;
-		}
-	}
-	worldTransformBlocks_.clear();
 }
 
 void GameScene::Initialize() {
@@ -73,41 +66,17 @@ void GameScene::GenerateBlocks() {
 
 void GameScene::Update() {
 
-	//for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
-	//	for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
-	//		if (!worldTransformBlock) {
-	//			continue;
-	//			worldTransformBlocks_
-	//		}
-	//	}
-	//}
+	
+	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+			if (!worldTransformBlock) {
+				continue;
+				worldTransformBlocks_->UpdateMatrix();
 
-//#ifdef _DEBUG
-//
-//	if (input_->TriggerKey(DIK_SPACE)) {
-//
-//		if (isDebugCameraActive_ == 1) {
-//			isDebugCameraActive_ = 0;
-//		} else {
-//			isDebugCameraActive_ = 1;
-//		}
-//	}
-//
-//#endif // _DEBUG
-//
-//	if (isDebugCameraActive_) {
-//
-//		debugCamera_->Update();
-//		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-//		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-//
-//		viewProjection_.TransferMatrix();
-//	} else {
-//
-//		viewProjection_.UpdateMatrix();
-//	}
-//
-//	// debugCamera_->Update();
+			}
+		}
+	}
+
 }
 
 void GameScene::Draw() {
