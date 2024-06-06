@@ -3,7 +3,11 @@
 #include <cassert>
 #include "affine.h"
 
-GameScene::GameScene() { delete mapChipField_; }
+GameScene::GameScene() { 
+	delete mapChipField_; 
+	delete model_;
+	delete debugCamera_;
+}
 
 GameScene::~GameScene() {
 
