@@ -24,6 +24,8 @@ public: // メンバ関数
 
 	Model* model_ = nullptr;
 
+	Model* playerResorces_ = nullptr;
+
 	WorldTransform worldTransform_;
 
 	ViewProjection viewProjection_;

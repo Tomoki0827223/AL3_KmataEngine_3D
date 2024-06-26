@@ -2,10 +2,12 @@
 #include "TextureManager.h"
 #include <cassert>
 #include "affine.h"
+#include "AxisIndicator.h"
 
 GameScene::GameScene() {
 
 	delete model_;
+	delete playerResorces_;
 	delete debugCamera_;
 	delete mapChipField_;
 	delete player_;
@@ -24,12 +26,15 @@ GameScene::~GameScene() {
 
 void GameScene::Initialize() {
 
+	//AxisIndicator::GetInstance()->SetVisible(true);
+	//AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
 	model_ = Model::Create();
+	playerResorces_ = Model::CreateFromOBJ("player", true);
 
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
@@ -41,10 +46,11 @@ void GameScene::Initialize() {
 	//mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 	mapChipField_->LoadMapChipCsv("Resources/map.csv");
 
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(2, 2);
+
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(18, 17);
 
 	player_ = new Player();
-	player_->Initialize(model_, &viewProjection_, playerPosition);
+	player_->Initialize(playerResorces_, &viewProjection_, playerPosition);
 
 	GenerateBlocks();
 }
@@ -75,6 +81,8 @@ void GameScene::GenerateBlocks() {
 }
 
 void GameScene::Update() {
+
+	player_->Update();
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -144,6 +152,8 @@ void GameScene::Draw() {
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
 
+	player_->Draw();
+
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			if (!worldTransformBlock) {
@@ -154,7 +164,6 @@ void GameScene::Draw() {
 			model_->Draw(*worldTransformBlock, debugCamera_->GetViewProjection());
 		}
 	}
-
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
