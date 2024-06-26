@@ -1,10 +1,10 @@
+#define NOMINMAX
 #include "Player.h"
 #include "Input.h"
 #include "MathUtilityForText.h"
 #include <algorithm>
 #include <cassert>
 #include <numbers>
-#define NOMINMAX
 
 void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) {
 	worldTransform_.Initialize();
@@ -18,61 +18,89 @@ void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vect
 }
 
 void Player::Update() {
+	if (onGround_) {
+		// 左右の移動処理
+		if (Input::GetInstance()->PushKey(DIK_RIGHT) || Input::GetInstance()->PushKey(DIK_LEFT)) {
 
-	if (Input::GetInstance()->PushKey(DIK_RIGHT) || Input::GetInstance()->PushKey(DIK_LEFT)) {
-
-		Vector3 acceleraiton = {};
-		if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
-
-			if (velocity_.x < 0.0f) {
-				velocity_.x *= (1.0f - kAttenuation);
+			Vector3 acceleration = {};
+			if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
+				
+				if (velocity_.x < 0.0f) {
+					velocity_.x *= (1.0f - kAttenuation);
+				}
+				
+				if (lrDirection_ != LRDirection::kRight) {
+					lrDirection_ = LRDirection::kRight;
+					turnFirstRotesionY_ = worldTransform_.rotation_.y;
+					turnTimer_ = kTimeTurn;
+				}
+				
+				acceleration.x += kAcceleration;
+			} else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
+				
+				if (velocity_.x > 0.0f) {
+					velocity_.x *= (1.0f - kAttenuation);
+				}
+				
+				if (lrDirection_ != LRDirection::kLeft) {
+					lrDirection_ = LRDirection::kLeft;
+					turnFirstRotesionY_ = worldTransform_.rotation_.y;
+					turnTimer_ = kTimeTurn;
+				}
+				acceleration.x -= kAcceleration;
 			}
-			if (lrDirection_ != LRDirecition::kRight) {
-				lrDirection_ = LRDirecition::kRight;
+			velocity_.x += acceleration.x;
+			velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
+		} else {
 
-				turnFirstRotesionY_ = worldTransform_.rotation_.y;
-				turnTimer_ = kTimeTurn;
-			}
-
-			acceleraiton.x += kAcceleration;
-
-		} else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
-
-			if (velocity_.x > 0.0f) {
-				velocity_.x *= (1.0f - kAttenuation);
-			}
-			if (lrDirection_ != LRDirecition::kLeft) {
-				lrDirection_ = LRDirecition::kLeft;
-
-				turnFirstRotesionY_ = worldTransform_.rotation_.y;
-				turnTimer_ = kTimeTurn;
-			}
-
-			acceleraiton.x -= kAcceleration;
+			velocity_.x *= (1.0f - kAttenuation);
 		}
 
-		velocity_.x += acceleraiton.x;
-		velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
+		// ジャンプの処理
+		if (Input::GetInstance()->PushKey(DIK_UP)) {
+			velocity_.y = kJumpAcceleration;
+			onGround_ = false;
+		}
 	} else {
-
-		velocity_.x *= (1.0f - kAttenuation);
+		// 空中での処理
+		velocity_ += Vector3(0, -kGravityAcceleration, 0);
+		velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
 	}
 
+	// 着地の判定
+	bool landing = false;
+	if (velocity_.y < 0) {
+		if (worldTransform_.translation_.y <= 1.0f) {
+			landing = true;
+		}
+	}
+
+	if (onGround_) {
+		if (velocity_.y > 0.0f) {
+			onGround_ = false;
+		}
+	} else {
+		if (landing) {
+			worldTransform_.translation_.y = 2.0f;
+			velocity_.x *= (1.0f - kAttenuation);
+			velocity_.y = 0.0f;
+			onGround_ = true;
+		}
+	}
+
+	// 回転処理
 	if (turnTimer_ > 0.0f) {
-
 		turnTimer_ -= 1.0f / 60.0f;
-
-		float destinationRoteationYTable[] = {
-
-		    std::numbers::pi_v<float> / 2.0f, std::numbers::pi_v<float> * 3.0f / 2.0f};
-
-		float destiaonRoteationY = destinationRoteationYTable[static_cast<uint32_t>(lrDirection_)];
-
-		worldTransform_.rotation_.y = easeInOutSine(destiaonRoteationY, turnFirstRotesionY_, turnTimer_ / kTimeTurn);
+		float destinationRotationYTable[] = {std::numbers::pi_v<float> / 2.0f, -std::numbers::pi_v<float> / 2.0f};
+		float destinationRotationY = destinationRotationYTable[static_cast<uint32_t>(lrDirection_)];
+		worldTransform_.rotation_.y = easeInOutSine(turnFirstRotesionY_, destinationRotationY, (kTimeTurn - turnTimer_) / kTimeTurn);
 	}
 
+	// 位置の更新
 	worldTransform_.translation_.x += velocity_.x;
+	worldTransform_.translation_.y += velocity_.y;
 	worldTransform_.UpdateMatrix();
 }
+
 
 void Player::Draw() { model_->Draw(worldTransform_, *viewProjection_, textureHandle_); }
