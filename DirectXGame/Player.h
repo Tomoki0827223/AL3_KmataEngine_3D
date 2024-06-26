@@ -12,7 +12,6 @@ enum class LRDirection {
 class Player {
 
 public:
-
 	bool onGround_ = true;
 	LRDirection lrDirection_ = LRDirection::kRight;
 	static inline const float kAcceleration = 0.05f;
@@ -37,7 +36,6 @@ public:
 	void Update();
 
 	void Draw();
-
 
 private:
 	WorldTransform worldTransform_;

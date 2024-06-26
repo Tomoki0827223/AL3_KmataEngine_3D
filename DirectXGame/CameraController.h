@@ -4,17 +4,7 @@
 #include "ViewProjection.h"
 #include "Player.h"
 
-class Player {
-public:
-	Player();
-	~Player();
-
-private:
-};
-
-Player::Player() {}
-
-Player::~Player() {}
+class Player;
 
 class CameraController {
 public:
@@ -23,6 +13,11 @@ public:
 
 	void Initialize(ViewProjection* viewProjection, Vector3* target);
 	void Update();
+
+	void setTaget(Player* taget) { target_ = target_; }
+	void Reset();
+
+	Vector3 targetOffset_ = {0, 0, -15.0f};
 
 private:
 
