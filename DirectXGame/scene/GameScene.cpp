@@ -3,6 +3,7 @@
 #include <cassert>
 #include "affine.h"
 #include "AxisIndicator.h"
+#include "CameraController.h"
 
 GameScene::GameScene() {
 
