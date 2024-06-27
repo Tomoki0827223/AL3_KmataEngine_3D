@@ -25,7 +25,7 @@ public:
 	// ジャンプ初速(上方向)
 	static inline const float kJumpAcceleration = 1.5f;
 
-	float turnFirstRotesionY_ = 0.0f;
+	float turnFirstRotationY_ = 0.0f;
 	float turnTimer_ = 0.0f;
 
 	Vector3 velocity_ = {};
