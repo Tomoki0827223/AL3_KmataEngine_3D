@@ -11,6 +11,7 @@ GameScene::GameScene() {
 	delete debugCamera_;
 	delete mapChipField_;
 	delete player_;
+	delete cameraController_;
 }
 
 GameScene::~GameScene() {
@@ -53,6 +54,10 @@ void GameScene::Initialize() {
 	player_->Initialize(playerResorces_, &viewProjection_, playerPosition);
 
 	GenerateBlocks();
+
+	cameraController_ = new CameraController();
+	cameraController_->Initialize();
+
 }
 
 void GameScene::GenerateBlocks() {

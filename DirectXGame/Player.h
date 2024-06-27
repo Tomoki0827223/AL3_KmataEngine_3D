@@ -34,6 +34,8 @@ public:
 
 	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);
 
+	const WorldTransform& GetWorldTransform() const { return worldTransform_; }
+
 	void Update();
 
 	void Draw();

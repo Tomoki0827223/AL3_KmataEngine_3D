@@ -1,7 +1,7 @@
 #include "MathUtilityForText.h"
-#include "Player.h"
 #include "Vector3.h"
 #include "ViewProjection.h"
+#include "MathUtilityForText.h"
 
 class Player;
 

@@ -1,15 +1,16 @@
 #pragma once
 
 #include "Audio.h"
+#include "DebugCamera.h"
 #include "DirectXCommon.h"
 #include "Input.h"
+#include "MapChipField.h"
 #include "Model.h"
+#include "Player.h"
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "MapChipField.h"
-#include "DebugCamera.h"
-#include "Player.h"
+#include "CameraController.h"
 
 /// <summary>
 /// ゲームシーン
@@ -31,6 +32,8 @@ public: // メンバ関数
 	ViewProjection viewProjection_;
 
 	MapChipField* mapChipField_;
+
+	CameraController* cameraController_;
 
 	Player* player_ = nullptr;
 
