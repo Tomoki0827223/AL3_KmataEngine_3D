@@ -1,7 +1,7 @@
 #include "CameraController.h"
 #include "Player.h"
 
-void CameraController::Initialize(ViewProjection* viewProjection, Player* target) {
+void CameraController::Initialize() {
 
 	viewProjection_.Initialize();
 
