@@ -53,6 +53,9 @@ void GameScene::Initialize() {
 	player_->Initialize(playerResorces_, &viewProjection_, playerPosition);
 
 	GenerateBlocks();
+
+	cameraController_ = new CameraController();
+	cameraController_->Initialize()
 }
 
 void GameScene::GenerateBlocks() {

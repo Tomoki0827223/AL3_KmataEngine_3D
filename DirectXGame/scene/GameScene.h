@@ -10,6 +10,7 @@
 #include "MapChipField.h"
 #include "DebugCamera.h"
 #include "Player.h"
+#include "CameraController.h"
 
 /// <summary>
 /// ゲームシーン
@@ -31,6 +32,8 @@ public: // メンバ関数
 	ViewProjection viewProjection_;
 
 	MapChipField* mapChipField_;
+
+	CameraController* cameraController_;
 
 	Player* player_ = nullptr;
 

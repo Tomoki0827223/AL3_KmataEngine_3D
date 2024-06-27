@@ -30,6 +30,8 @@ public:
 	float turnFirstRotesionY_ = 0.0f;
 	float turnTimer_ = 0.0f;
 
+	const WorldTransform& GetWorldTransform() const { return worldTransform_; }
+
 	Vector3 velocity_ = {};
 
 	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);
