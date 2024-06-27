@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Vector3.h"
 #include "ViewProjection.h"
+#include "MathUtilityForText.h"
 
 class Player;
 
@@ -12,6 +13,8 @@ public:
 	void Reset();
 
 	void setTarget(Player* target) { target_ = target; }
+
+	const ViewProjection& GetViewProjection() const { return viewProjection_; }
 
 private:
 	ViewProjection viewProjection_;

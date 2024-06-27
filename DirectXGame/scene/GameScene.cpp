@@ -55,7 +55,7 @@ void GameScene::Initialize() {
 	GenerateBlocks();
 
 	cameraController_ = new CameraController();
-	cameraController_->Initialize()
+	cameraController_->Initialize(&viewProjection_, player_);
 }
 
 void GameScene::GenerateBlocks() {
@@ -86,6 +86,7 @@ void GameScene::GenerateBlocks() {
 void GameScene::Update() {
 
 	player_->Update();
+	cameraController_->Update();
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -126,6 +127,8 @@ void GameScene::Update() {
 		viewProjection_.TransferMatrix();
 	} else {
 
+		viewProjection_.matView = cameraController_->GetViewProjection().matView;
+		viewProjection_.matProjection = cameraController_->GetViewProjection().matProjection;
 		viewProjection_.UpdateMatrix();
 	}
 
