@@ -1,6 +1,5 @@
 #include <Model.h>
 #include <WorldTransform.h>
-#include "MathUtilityForText.h"
 
 enum class LRDirection {
 
@@ -25,12 +24,15 @@ public:
 	// ジャンプ初速(上方向)
 	static inline const float kJumpAcceleration = 1.5f;
 
-	float turnFirstRotationY_ = 0.0f;
+	float turnFirstRotesionY_ = 0.0f;
 	float turnTimer_ = 0.0f;
 
-	Vector3 velocity_ = {};
-
 	const WorldTransform& GetWorldTransform() const { return worldTransform_; }
+
+	const Vector3& GetVelocity() const { return velocity_; }
+	const Vector3& GetPlayerPosition() const { return worldTransform_.translation_; }
+
+	Vector3 velocity_ = {};
 
 	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);
 
