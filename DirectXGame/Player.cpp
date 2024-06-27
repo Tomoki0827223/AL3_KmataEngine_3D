@@ -10,7 +10,7 @@ void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vect
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 
-	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
+	worldTransform_.rotation_.x = std::numbers::pi_v<float> / 2.0f;
 
 	// 引数をメンバ変数に保存
 	model_ = model;
@@ -49,7 +49,7 @@ void Player::Update() {
 				}
 				acceleration.x -= kAcceleration;
 			}
-			velocity_.x += acceleration.x;
+			velocity_ += acceleration;
 			velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
 		} else {
 
@@ -97,8 +97,7 @@ void Player::Update() {
 	}
 
 	// 位置の更新
-	worldTransform_.translation_.x += velocity_.x;
-	worldTransform_.translation_.y += velocity_.y;
+	worldTransform_.translation_ += velocity_;
 	worldTransform_.UpdateMatrix();
 }
 

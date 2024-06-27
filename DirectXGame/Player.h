@@ -1,7 +1,6 @@
-#pragma once
-
 #include <Model.h>
 #include <WorldTransform.h>
+#include "MathUtilityForText.h"
 
 enum class LRDirection {
 
@@ -30,6 +29,8 @@ public:
 	float turnTimer_ = 0.0f;
 
 	Vector3 velocity_ = {};
+
+	const WorldTransform& GetWorldTransform() const { return worldTransform_; }
 
 	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);
 
