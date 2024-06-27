@@ -12,20 +12,11 @@ class CameraController {
 
 public:
 
-	struct Rect {
-		float left = 0.0f;
-		float Rihgth = 1.0f;
-		float bottom = 0.0f;
-		float top = 1.0f;
-
-	};
-
 	void Initialize();
 	void Update();
 	void Reset();
 
 	void setTarget(Player* target) { target_ = target; }
-	void SetMovebleArea(Rect area) { movebleArea_ = area; }
 
 	const ViewProjection& GetViewProjection() const { return viewProjection_; }
 
