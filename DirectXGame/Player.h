@@ -32,6 +32,9 @@ public:
 
 	const WorldTransform& GetWorldTransform() const { return worldTransform_; }
 
+	const Vector3& GetVelocity() const { return velocity_; }
+	const Vector3& GetPlayerPosition() const { return worldTransform_.translation_; }
+
 	Vector3 velocity_ = {};
 
 	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);

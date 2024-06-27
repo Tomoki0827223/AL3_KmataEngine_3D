@@ -12,13 +12,6 @@ Vector3& operator+=(Vector3& lhv, const Vector3& rhv) {
 	return lhv;
 }
 
-const Vector3 operator+(const Vector3& v1, const Vector3& v2) { 
-	
-	Vector3 temp(v1);
-	
-	return temp += v2;
-}
-
 float easeInOutSine(float x1, float x2, float t) { 
 	
 	float easeT = -(std::cosf(std::numbers::pi_v<float> * t) -1.0f) / 2.0f;
