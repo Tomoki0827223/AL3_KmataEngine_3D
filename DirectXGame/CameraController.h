@@ -9,7 +9,7 @@ class CameraController {
 public:
 
 
-	void Initialize(ViewProjection* viewProjection, Player* target);
+	void Initialize();
 	void Update();
 	void Reset();
 

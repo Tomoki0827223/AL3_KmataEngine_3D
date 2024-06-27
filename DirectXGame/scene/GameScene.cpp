@@ -52,14 +52,13 @@ void GameScene::Initialize() {
 
 	GenerateBlocks();
 
-	cameraController_ = new CameraController;
-	cameraController_->Initialize(&viewProjection_, player_);
-
-	// 追尾対象のリセット
+	cameraController_ = new CameraController();
+	cameraController_->Initialize();
+	cameraController_->Reset();
 	cameraController_->setTarget(player_);
 
-	// カメラのリセット（瞬間合わせ）
-	cameraController_->Reset();
+	CameraController::Reset cameraArea = {11.0f, -12.0f, 6.0f, 6.0f};
+	cameraController_.set
 }
 
 void GameScene::GenerateBlocks() {

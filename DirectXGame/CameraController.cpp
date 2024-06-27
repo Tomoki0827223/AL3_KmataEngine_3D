@@ -1,9 +1,6 @@
 #include "CameraController.h"
 
-void CameraController::Initialize(ViewProjection* viewProjection, Player* target) {
-	viewProjection_ = viewProjection;
-	target_ = target;
-}
+void CameraController::Initialize() { viewProjection_->Initialize(); }
 
 void CameraController::Update() {
 
