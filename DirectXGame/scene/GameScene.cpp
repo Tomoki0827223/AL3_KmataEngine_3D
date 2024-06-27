@@ -1,11 +1,10 @@
 #include "GameScene.h"
-#include "TextureManager.h"
-#include <cassert>
-#include "affine.h"
 #include "AxisIndicator.h"
+#include "TextureManager.h"
+#include "affine.h"
+#include <cassert>
 
 GameScene::GameScene() {
-
 	delete model_;
 	delete playerResorces_;
 	delete debugCamera_;
@@ -15,10 +14,8 @@ GameScene::GameScene() {
 }
 
 GameScene::~GameScene() {
-
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
-
 			delete worldTransformBlock;
 		}
 	}
@@ -26,10 +23,6 @@ GameScene::~GameScene() {
 }
 
 void GameScene::Initialize() {
-
-	//AxisIndicator::GetInstance()->SetVisible(true);
-	//AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
-
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
@@ -43,10 +36,7 @@ void GameScene::Initialize() {
 	debugCamera_ = new DebugCamera(1280, 720);
 
 	mapChipField_ = new MapChipField;
-
-	//mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 	mapChipField_->LoadMapChipCsv("Resources/map.csv");
-
 
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(15, 15);
 
@@ -58,12 +48,12 @@ void GameScene::Initialize() {
 	cameraController_ = new CameraController();
 	cameraController_->Initialize();
 	cameraController_->setTarget(player_);
+	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
+	cameraController_->SetMovableArea(cameraArea);
 	cameraController_->Reset();
-
 }
 
 void GameScene::GenerateBlocks() {
-
 	uint32_t numBlockVisitacal = mapChipField_->GetNumBlockVirtical();
 	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
 
@@ -75,8 +65,7 @@ void GameScene::GenerateBlocks() {
 
 	for (uint32_t i = 0; i < numBlockVisitacal; i++) {
 		for (uint32_t j = 0; j < numBlockHorizontal; j++) {
-		
-			if (mapChipField_->GetMapChipTypeByIndex(j,i) == MapChipType::kBlock) {
+			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
 				WorldTransform* worldTransform = new WorldTransform();
 				worldTransform->Initialize();
 				worldTransformBlocks_[i][j] = worldTransform;
@@ -84,114 +73,69 @@ void GameScene::GenerateBlocks() {
 			}
 		}
 	}
-
 }
 
 void GameScene::Update() {
-
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			if (!worldTransformBlock) {
-
 				continue;
 			}
 
-			worldTransformBlock->scale_;
-			worldTransformBlock->rotation_;
-			worldTransformBlock->translation_;
-
 			worldTransformBlock->matWorld_ = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
-
 			worldTransformBlock->UpdateMatrix();
 		}
 	}
 
 #ifdef _DEBUG
-
 	if (input_->TriggerKey(DIK_SPACE)) {
-
-		if (isDebugCameraActive_ == 1) {
-			isDebugCameraActive_ = 0;
-		} else {
-			isDebugCameraActive_ = 1;
-		}
+		isDebugCameraActive_ = !isDebugCameraActive_;
 	}
-
 #endif // _DEBUG
 
 	if (isDebugCameraActive_) {
-
 		debugCamera_->Update();
 		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-
-		viewProjection_.TransferMatrix();
 	} else {
-
 		viewProjection_.matView = cameraController_->GetViewProjection().matView;
 		viewProjection_.matProjection = cameraController_->GetViewProjection().matProjection;
-
-		viewProjection_.TransferMatrix();
 	}
+
+	viewProjection_.TransferMatrix();
 
 	player_->Update();
 	cameraController_->Update();
 }
 
 void GameScene::Draw() {
-
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
 
-#pragma region 背景スプライト描画
 	// 背景スプライト描画前処理
 	Sprite::PreDraw(commandList);
-
-	/// <summary>
-	/// ここに背景スプライトの描画処理を追加できる
-	/// </summary>
-
-	// スプライト描画後処理
+	// ここに背景スプライトの描画処理を追加
 	Sprite::PostDraw();
 	// 深度バッファクリア
 	dxCommon_->ClearDepthBuffer();
-#pragma endregion
 
-#pragma region 3Dオブジェクト描画
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
-
 	player_->Draw();
 
-	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
-		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
-			if (!worldTransformBlock) {
-
-				continue;
+	for (const auto& worldTransformBlockLine : worldTransformBlocks_) {
+		for (const auto& worldTransformBlock : worldTransformBlockLine) {
+			if (worldTransformBlock) {
+				model_->Draw(*worldTransformBlock, viewProjection_);
 			}
-
-			model_->Draw(*worldTransformBlock, debugCamera_->GetViewProjection());
 		}
 	}
 
-	/// <summary>
-	/// ここに3Dオブジェクトの描画処理を追加できる
-	/// </summary>
-
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
-#pragma endregion
 
-#pragma region 前景スプライト描画
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(commandList);
-
-	/// <summary>
-	/// ここに前景スプライトの描画処理を追加できる
-	/// </summary>
-
-	// スプライト描画後処理
+	// ここに前景スプライトの描画処理を追加
 	Sprite::PostDraw();
-
-#pragma endregion
 }

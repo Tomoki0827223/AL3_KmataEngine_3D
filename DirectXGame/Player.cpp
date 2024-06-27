@@ -24,24 +24,24 @@ void Player::Update() {
 
 			Vector3 acceleration = {};
 			if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
-				
+
 				if (velocity_.x < 0.0f) {
 					velocity_.x *= (1.0f - kAttenuation);
 				}
-				
+
 				if (lrDirection_ != LRDirection::kRight) {
 					lrDirection_ = LRDirection::kRight;
 					turnFirstRotesionY_ = worldTransform_.rotation_.y;
 					turnTimer_ = kTimeTurn;
 				}
-				
+
 				acceleration.x += kAcceleration;
 			} else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
-				
+
 				if (velocity_.x > 0.0f) {
 					velocity_.x *= (1.0f - kAttenuation);
 				}
-				
+
 				if (lrDirection_ != LRDirection::kLeft) {
 					lrDirection_ = LRDirection::kLeft;
 					turnFirstRotesionY_ = worldTransform_.rotation_.y;
@@ -52,7 +52,6 @@ void Player::Update() {
 			velocity_.x += acceleration.x;
 			velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
 		} else {
-
 			velocity_.x *= (1.0f - kAttenuation);
 		}
 
@@ -101,6 +100,5 @@ void Player::Update() {
 	worldTransform_.translation_.y += velocity_.y;
 	worldTransform_.UpdateMatrix();
 }
-
 
 void Player::Draw() { model_->Draw(worldTransform_, *viewProjection_, textureHandle_); }

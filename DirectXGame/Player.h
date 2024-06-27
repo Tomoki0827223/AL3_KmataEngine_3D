@@ -19,6 +19,7 @@ public:
 	static inline const float kLimitRunSpeed = 1.0f;
 	static inline const float kAttenuation = 0.1f;
 	static inline const float kTimeTurn = 0.3f;
+	static inline const float kVelocityBias = 1.0f;
 
 	// 重力加速度(下方向)
 	static inline const float kGravityAcceleration = 0.5f;
@@ -35,6 +36,7 @@ public:
 	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);
 
 	const WorldTransform& GetWorldTransform() const { return worldTransform_; }
+	const Vector3& GetVelocity() const { return velocity_; }
 
 	void Update();
 
