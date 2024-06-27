@@ -1,16 +1,15 @@
 #include "MathUtilityForText.h"
 #include "Vector3.h"
 #include "ViewProjection.h"
-#include "MathUtilityForText.h"
 
 class Player;
 
 class CameraController {
 
-	static inline const float kInterpolatiomrate = 0.3f;
-	static inline const float kVelocityBitz = 10.0f;
-
 public:
+
+	Player* target_ = nullptr;
+
 	void Initialize();
 	void Update();
 	void Reset();
@@ -21,8 +20,6 @@ public:
 
 private:
 	ViewProjection viewProjection_;
-	Vector3 arriLevel_point_;
-	Player* target_ = nullptr;
 	Vector3 targetOffset_ = {0, 0, -15.0f};
 
 };

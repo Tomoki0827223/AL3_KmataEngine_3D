@@ -48,7 +48,7 @@ void GameScene::Initialize() {
 	mapChipField_->LoadMapChipCsv("Resources/map.csv");
 
 
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(18, 17);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(15, 15);
 
 	player_ = new Player();
 	player_->Initialize(playerResorces_, &viewProjection_, playerPosition);
@@ -57,6 +57,8 @@ void GameScene::Initialize() {
 
 	cameraController_ = new CameraController();
 	cameraController_->Initialize();
+	cameraController_->setTarget(player_);
+	cameraController_->Reset();
 
 }
 
@@ -86,8 +88,6 @@ void GameScene::GenerateBlocks() {
 }
 
 void GameScene::Update() {
-
-	player_->Update();
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -128,10 +128,14 @@ void GameScene::Update() {
 		viewProjection_.TransferMatrix();
 	} else {
 
-		viewProjection_.UpdateMatrix();
+		viewProjection_.matView = cameraController_->GetViewProjection().matView;
+		viewProjection_.matProjection = cameraController_->GetViewProjection().matProjection;
+
+		viewProjection_.TransferMatrix();
 	}
 
-	// debugCamera_->Update();
+	player_->Update();
+	cameraController_->Update();
 }
 
 void GameScene::Draw() {
