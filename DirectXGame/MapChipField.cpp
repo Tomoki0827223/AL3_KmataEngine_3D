@@ -8,7 +8,6 @@
 namespace {
 
 std::map<std::string, MapChipType> mapChipTable = {
-
     {"0", MapChipType::kBlank},
     {"1", MapChipType::kBlock},
 };
@@ -20,7 +19,6 @@ uint32_t MapChipField::GetNumBlockVirtical() { return kNumBlockVirtical; }
 uint32_t MapChipField::GetNumBlockHorizontal() { return kNumBlockHorizontal; }
 
 void MapChipField::ResetMapChipData() {
-
 	// マップチップデータをリセット
 	mapChipData_.data.clear();
 
@@ -32,7 +30,6 @@ void MapChipField::ResetMapChipData() {
 }
 
 void MapChipField::LoadMapChipCsv(const std::string& filePath) {
-
 	// マップチップデータをリセット
 	ResetMapChipData();
 
@@ -57,7 +54,6 @@ void MapChipField::LoadMapChipCsv(const std::string& filePath) {
 		std::istringstream line_stream(line);
 
 		for (uint32_t j = 0; j < kNumBlockHorizontal; ++j) {
-
 			std::string word;
 			getline(line_stream, word, ',');
 
@@ -68,8 +64,20 @@ void MapChipField::LoadMapChipCsv(const std::string& filePath) {
 	}
 }
 
-MapChipType MapChipField::GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex) {
+MapChipField::IndexSet MapChipField::GetMapChipIndexSetByPosition(const Vector3& position) {
 
+	IndexSet indexSet = {};
+	indexSet.xIndex = static_cast<uint32_t>(position.x / kBlockWidth);
+	indexSet.yIndex = kNumBlockVirtical - 1 - static_cast<uint32_t>(position.y / kBlockHeight);
+
+	// インデックスが範囲外の場合はクリップ
+	indexSet.xIndex = std::clamp(indexSet.xIndex, 0u, kNumBlockHorizontal - 1);
+	indexSet.yIndex = std::clamp(indexSet.yIndex, 0u, kNumBlockVirtical - 1);
+
+	return indexSet;
+}
+
+MapChipType MapChipField::GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex) {
 	if (xIndex < 0 || kNumBlockHorizontal - 1 < xIndex) {
 		return MapChipType::kBlank;
 	}
@@ -81,4 +89,16 @@ MapChipType MapChipField::GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex
 	return mapChipData_.data[yIndex][xIndex];
 }
 
-Vector3 MapChipField::GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex) { return Vector3(kBlockWidth * xIndex, kBlockHeight * (kNumBlockVirtical - 1 - yIndex), 0); }
+MapChipField::Rect MapChipField::GetRectByIndex(uint32_t xIndex, uint32_t yIndex) {
+	// ブロックの中心座標を取得
+	Vector3 center = GetMapChipPositionByIndex(xIndex, yIndex);
+
+	// Rect構造体にブロックの左、右、下、上の座標を設定
+	Rect rect;
+	rect.left = center.x - kBlockWidth / 2.0f;
+	rect.right = center.x + kBlockWidth / 2.0f;
+	rect.bottom = center.y - kBlockHeight / 2.0f;
+	rect.top = center.y + kBlockHeight / 2.0f;
+
+	return rect;
+}
