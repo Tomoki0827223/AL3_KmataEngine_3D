@@ -17,46 +17,61 @@ void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vect
 }
 
 void Player::Update() {
+
 	CollisionMapInfo collisionMapInfo;
 	collisionMapInfo.movement = velocity_;
 	CheckMapCollision(collisionMapInfo);
 	ApplyCollisionResultAndMove(collisionMapInfo);
 
-	// 接地状態の処理と重力の影響を考慮
 	if (onGround_) {
-		Vector3 acceleration = {};
-		if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
-			// 右に加速
-			if (velocity_.x < 0.0f) {
-				velocity_.x *= (1.0f - kAttenuation);
+		// 左右の移動処理
+		if (Input::GetInstance()->PushKey(DIK_RIGHT) || Input::GetInstance()->PushKey(DIK_LEFT)) {
+
+			Vector3 acceleration = {};
+			if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
+
+				if (velocity_.x < 0.0f) {
+					velocity_.x *= (1.0f - kAttenuation);
+				}
+
+				if (lrDirection_ != LRDirection::kRight) {
+					lrDirection_ = LRDirection::kRight;
+					turnFirstRotationY_ = worldTransform_.rotation_.y;
+					turnTimer_ = kTimeTurn;
+				}
+
+				acceleration.x += kAcceleration;
+			} else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
+
+				if (velocity_.x > 0.0f) {
+					velocity_.x *= (1.0f - kAttenuation);
+				}
+
+				if (lrDirection_ != LRDirection::kLeft) {
+					lrDirection_ = LRDirection::kLeft;
+					turnFirstRotationY_ = worldTransform_.rotation_.y;
+					turnTimer_ = kTimeTurn;
+				}
+				acceleration.x -= kAcceleration;
 			}
-			if (lrDirection_ != LRDirection::kRight) {
-				lrDirection_ = LRDirection::kRight;
-				turnFirstRotationY_ = worldTransform_.rotation_.y;
-				turnTimer_ = kTimeTurn;
-			}
-			acceleration.x += kAcceleration;
-		} else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
-			// 左に加速
-			if (velocity_.x > 0.0f) {
-				velocity_.x *= (1.0f - kAttenuation);
-			}
-			if (lrDirection_ != LRDirection::kLeft) {
-				lrDirection_ = LRDirection::kLeft;
-				turnFirstRotationY_ = worldTransform_.rotation_.y;
-				turnTimer_ = kTimeTurn;
-			}
-			acceleration.x -= kAcceleration;
+			velocity_.x += acceleration.x;
+			velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
+		} else {
+			velocity_.x *= (1.0f - kAttenuation);
 		}
-		velocity_.x += acceleration.x;
-		velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
+
+		// ジャンプの処理
+		if (Input::GetInstance()->PushKey(DIK_UP)) {
+			velocity_.y = kJumpAcceleration;
+			onGround_ = false;
+		}
 	} else {
-		// 空中にいる場合、重力が働く
+		// 空中での処理
 		velocity_ += Vector3(0, -kGravityAcceleration, 0);
 		velocity_.y = (std::max)(velocity_.y, -kLimitFallSpeed);
 	}
 
-	// 着地判定と位置の更新
+	// 着地の判定
 	bool landing = false;
 	if (velocity_.y < 0) {
 		if (worldTransform_.translation_.y <= 1.0f) {
@@ -77,7 +92,7 @@ void Player::Update() {
 		}
 	}
 
-	// プレイヤーの向き変更の処理
+	// 回転処理
 	if (turnTimer_ > 0.0f) {
 		turnTimer_ -= 1.0f / 60.0f;
 		float destinationRotationYTable[] = {std::numbers::pi_v<float> / 2.0f, -std::numbers::pi_v<float> / 2.0f};
@@ -85,6 +100,7 @@ void Player::Update() {
 		worldTransform_.rotation_.y = easeInOutSine(turnFirstRotationY_, destinationRotationY, (kTimeTurn - turnTimer_) / kTimeTurn);
 	}
 
+	// 位置の更新
 	worldTransform_.translation_.x += velocity_.x;
 	worldTransform_.translation_.y += velocity_.y;
 	worldTransform_.UpdateMatrix();
