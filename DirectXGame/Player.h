@@ -1,16 +1,17 @@
 #pragma once
 
-#include <Model.h>
-#include <WorldTransform.h>
+#include "Model.h"
+#include "WorldTransform.h" // 実際のヘッダーファイル名に修正する必要があります
+#include <algorithm>
+#include <array>
 
 enum class LRDirection {
 	kRight,
 	kLeft,
 };
 
-class MapChipField;
+class MapChipField; // MapChipField クラスの宣言が必要です
 
-// マップとの当たり判定情報
 struct CollisionMapInfo {
 	bool hitCeilingFlag = false;
 	bool landingFlag = false;
@@ -18,14 +19,10 @@ struct CollisionMapInfo {
 	Vector3 movement;
 };
 
-// 角
 enum Corner { kRightBottom, kLeftBottom, kRightTop, kLeftTop, kNumCorner };
 
 class Player {
 public:
-
-	Vector3 CornerPosition(const Vector3& center, Corner corner);
-
 	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);
 	void Update();
 	void Draw();
@@ -36,16 +33,16 @@ public:
 private:
 	void HandleCeilingCollision(const CollisionMapInfo& info);
 	void HandleWallCollision(const CollisionMapInfo& info); // 追加
-	
-	void ApplyCollisionResultAndMove(const CollisionMapInfo& info);
-	
-	void CheckMapCollision(CollisionMapInfo& info);
 
+	void ApplyCollisionResultAndMove(const CollisionMapInfo& info);
+	void CheckMapCollision(CollisionMapInfo& info);
 
 	void CheckMapCollisionUp(CollisionMapInfo& info);
 	void CheckMapCollisionDown(CollisionMapInfo& info);
 	void CheckMapCollisionRight(CollisionMapInfo& info);
 	void CheckMapCollisionLeft(CollisionMapInfo& info);
+
+	Vector3 CornerPosition(const Vector3& center, Corner corner);
 
 	WorldTransform worldTransform_;
 	ViewProjection* viewProjection_ = nullptr;
@@ -55,7 +52,7 @@ private:
 
 	bool onGround_ = true;
 	LRDirection lrDirection_ = LRDirection::kRight;
-	float turnFirstRotesionY_ = 0.0f;
+	float turnFirstRotationY_ = 0.0f;
 	float turnTimer_ = 0.0f;
 	Vector3 velocity_ = {};
 

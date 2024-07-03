@@ -89,7 +89,23 @@ MapChipType MapChipField::GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex
 	return mapChipData_.data[yIndex][xIndex];
 }
 
+Vector3 MapChipField::GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex) {
+	// マップチップのサイズ（幅と高さ）
+	const float mapChipWidth = 1.0f;  // 例：1.0ユニット
+	const float mapChipHeight = 1.0f; // 例：1.0ユニット
+
+	// マップチップの中心位置を計算
+	float x = xIndex * mapChipWidth + mapChipWidth / 2.0f;
+	float y = yIndex * mapChipHeight + mapChipHeight / 2.0f;
+
+	// z座標は0と仮定
+	float z = 0.0f;
+
+	return Vector3(x, y, z);
+}
+
 MapChipField::Rect MapChipField::GetRectByIndex(uint32_t xIndex, uint32_t yIndex) {
+
 	// ブロックの中心座標を取得
 	Vector3 center = GetMapChipPositionByIndex(xIndex, yIndex);
 
