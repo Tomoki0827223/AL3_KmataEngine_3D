@@ -90,35 +90,59 @@ void Player::Update() {
 	worldTransform_.UpdateMatrix();
 }
 
-void Player::Draw() {}
+void Player::Draw() {
+	if (!model_ || !viewProjection_) {
+		// モデルまたはビュープロジェクションが設定されていない場合は描画しない
+		return;
+	}
+
+	// プレイヤーのモデルの描画に必要な行列を計算する
+	worldMatrix = worldTransform_.GetConstBuffer();
+	viewProjectionMatrix = viewProjection_->GetViewProjectionMatrix();
+
+	// モデルの描画を実行する
+	model_->Draw();
+}
+
 
 
 void Player::HandleCeilingCollision(const CollisionMapInfo& info) {
-	// 天井との衝突処理を行う
 	if (info.hitCeilingFlag) {
-		// 何かしらの処理を行う
-		// 例えば、天井に触れた時の挙動を定義する
-		// info.movement などの情報を使用して適切な処理を行う
+		// 天井に触れた時の挙動を定義する
+		// 例えば、天井に触れた際の反射や停止の処理などを実装する
+		// info.movement を使って必要な操作を行う
+		// ここでは例として反射する場合のサンプルコードを示す
+		if (info.movement.y > 0.0f) {
+			// 天井の上にいる場合、下方向に反射する
+			worldTransform_.translation_.y -= info.movement.y;
+			velocity_.y = -velocity_.y * 0.5f; // 反射後の速度を調整する
+		}
 	}
 }
 
 void Player::HandleWallCollision(const CollisionMapInfo& info) {
-	// 壁との衝突処理を行う
 	if (info.wallContactFlag) {
-		// 何かしらの処理を行う
-		// 例えば、壁に触れた時の挙動を定義する
-		// info.movement などの情報を使用して適切な処理を行う
+		// 壁に触れた時の挙動を定義する
+		// 例えば、壁に触れた際の反射や停止の処理などを実装する
+		// info.movement を使って必要な操作を行う
+		// ここでは例として反射する場合のサンプルコードを示す
+		if (info.movement.x != 0.0f) {
+			// 壁と左右方向に接触した場合、反射する
+			worldTransform_.translation_.x -= info.movement.x;
+			velocity_.x = -velocity_.x * 0.5f; // 反射後の速度を調整する
+		}
 	}
 }
 
 void Player::ApplyCollisionResultAndMove(const CollisionMapInfo& info) {
 	// 衝突情報を適用してプレイヤーの移動を行う
-	// ここで、info.movement に基づいて実際に移動を行うロジックを記述する
 	worldTransform_.translation_ += info.movement;
 }
 
 
+
 void Player::CheckMapCollision(CollisionMapInfo& info) {
+
 	CheckMapCollisionUp(info);
 	CheckMapCollisionDown(info);
 	CheckMapCollisionRight(info);
