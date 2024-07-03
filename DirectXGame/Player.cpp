@@ -90,20 +90,7 @@ void Player::Update() {
 	worldTransform_.UpdateMatrix();
 }
 
-void Player::Draw() {
-	if (!model_ || !viewProjection_) {
-		// モデルまたはビュープロジェクションが設定されていない場合は描画しない
-		return;
-	}
-
-	// プレイヤーのモデルの描画に必要な行列を計算する
-	worldMatrix = worldTransform_.GetConstBuffer();
-	viewProjectionMatrix = viewProjection_->GetViewProjectionMatrix();
-
-	// モデルの描画を実行する
-	model_->Draw();
-}
-
+void Player::Draw() { model_->Draw(worldTransform_, *viewProjection_, textureHandle_); }
 
 
 void Player::HandleCeilingCollision(const CollisionMapInfo& info) {
