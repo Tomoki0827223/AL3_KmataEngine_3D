@@ -34,11 +34,13 @@ public:
 
 	void ResetMapChipData();
 	void LoadMapChipCsv(const std::string& filePath);
+
 	IndexSet GetMapChipIndexSetByPosition(const Vector3& position);
 
 	Rect GetRectByIndex(uint32_t xIndex, uint32_t yIndex);
 
 	MapChipType GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex);
+
 	Vector3 GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex);
 	uint32_t GetNumBlockVirtical();
 	uint32_t GetNumBlockHorizontal();
