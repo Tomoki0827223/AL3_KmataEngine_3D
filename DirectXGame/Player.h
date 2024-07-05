@@ -2,6 +2,7 @@
 
 #include "Model.h"
 #include "WorldTransform.h" // 実際のヘッダーファイル名に修正する必要があります
+#include "TurnController.h"
 #include <algorithm>
 #include <array>
 
@@ -55,6 +56,8 @@ private:
 	float turnFirstRotationY_ = 0.0f;
 	float turnTimer_ = 0.0f;
 	Vector3 velocity_ = {};
+
+	TurnController turnController_;
 
 	static inline const float kAcceleration = 0.1f;
 	static inline const float kLimitRunSpeed = 1.0f;

@@ -76,12 +76,10 @@ MapChipType MapChipField::GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex
 }
 
 Vector3 MapChipField::GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex) {
-	const float mapChipWidth = 1.0f;  // マップチップの幅
-	const float mapChipHeight = 1.0f; // マップチップの高さ
 
 	// Y座標を反転させる
-	float x = xIndex * mapChipWidth + mapChipWidth / 2.0f;
-	float y = (kNumBlockVirtical - 1 - yIndex) * mapChipHeight + mapChipHeight / 2.0f;
+	float x = xIndex * kBlockHeight + kBlockWidth / 2.0f;
+	float y = (kNumBlockVirtical - 1 - yIndex) * kBlockHeight + kBlockHeight / 2.0f;
 	float z = 0.0f;
 
 	return Vector3(x, y, z);
