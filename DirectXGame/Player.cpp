@@ -268,7 +268,7 @@ void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
 
 	if (hit) {
 		onGround_ = true;                                  // 着地したらonGround_フラグを立てる
-		velocity_.y = 0.0f;                                // y方向の速度を0にする
+		velocity_.y = -5.0f;                                // y方向の速度を0にする
 		worldTransform_.translation_.y += info.movement.y; // 位置の更新を追加
 		info.movement.y = 0.0f;
 	} else {

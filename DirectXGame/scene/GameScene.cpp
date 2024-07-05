@@ -54,7 +54,7 @@ void GameScene::Initialize() {
 	mapChipField_->LoadMapChipCsv("Resources/map.csv");
 
 	// プレイヤーの初期位置の取得
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(18, 18);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 14);
 
 	// プレイヤーの生成と初期化
 	player_ = new Player();
