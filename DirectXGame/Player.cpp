@@ -18,6 +18,11 @@ void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vect
 
 void Player::Update() {
 
+	CollisionMapInfo collisionMapInfo;
+	collisionMapInfo.movement = velocity_;
+	CheckMapCollision(collisionMapInfo);
+	ApplyCollisionResultAndMove(collisionMapInfo);
+
 	// 移動入力
 	if (onGround_) {
 		// 左右移動操作
@@ -79,11 +84,6 @@ void Player::Update() {
 		velocity_.y = (std::max)(velocity_.y, -kLimitFallSpeed);
 	}
 
-	CollisionMapInfo collisionMapInfo;
-	collisionMapInfo.movement = velocity_;
-	CheckMapCollision(collisionMapInfo);
-	ApplyCollisionResultAndMove(collisionMapInfo);
-
 	// 旋回の更新
 	turnController_.UpdateTurn(3.0f / 60.0f); // 60FPSのフレームタイム
 
@@ -134,12 +134,12 @@ void Player::HandleCeilingCollision(const CollisionMapInfo& info) {
 	if (info.hitCeilingFlag) {
 		// 天井に触れた時の挙動を定義する
 		if (info.movement.y > 0.0f) {
-			// 天井の上にいる場合、下方向に落下する
-			worldTransform_.translation_.y -= info.movement.y;
-			velocity_.y = 0.0f; // 落下中は速度を0にすることで停止
+			// 天井の上にいる場合、速度を0にして落下させる
+			velocity_.y = 0.0f;
 		}
 	}
 }
+
 
 
 
