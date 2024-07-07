@@ -176,60 +176,60 @@ void Player::CheckMapCollision(CollisionMapInfo& info) {
 	CheckMapCollisionRight(info);
 	CheckMapCollisionLeft(info);
 
-	// 地面と天井の判定
-	if (worldTransform_.translation_.y + info.movement.y <= 0.0f) {
-		info.landingFlag = true;
-		info.movement.y = 0.0f;
-	}
+	//// 地面と天井の判定
+	//if (worldTransform_.translation_.y + info.movement.y <= 0.0f) {
+	//	info.landingFlag = true;
+	//	info.movement.y = 0.0f;
+	//}
 
-	if (worldTransform_.translation_.y + info.movement.y >= 10.0f) {
-		info.hitCeilingFlag = true;
-		info.movement.y = 0.0f;
-	}
+	//if (worldTransform_.translation_.y + info.movement.y >= 10.0f) {
+	//	info.hitCeilingFlag = true;
+	//	info.movement.y = 0.0f;
+	//}
 
-	// 壁との衝突判定
-	if (worldTransform_.translation_.x + info.movement.x <= -5.0f || worldTransform_.translation_.x + info.movement.x >= 5.0f) {
-		info.wallContactFlag = true;
-		info.movement.x = 0.0f;
-	}
+	//// 壁との衝突判定
+	//if (worldTransform_.translation_.x + info.movement.x <= -5.0f || worldTransform_.translation_.x + info.movement.x >= 5.0f) {
+	//	info.wallContactFlag = true;
+	//	info.movement.x = 0.0f;
+	//}
 }
 
 void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
-	// 上方向に移動していない場合は処理しない
-	if (info.movement.y <= 0.0f) {
+	// 上昇アリ？
+	if (info.movement.y <= 0) {
 		return;
 	}
+	// 移動後４つの角の座標
+	std::array<Vector3, kNumCorner> positionsNew;
 
-	std::array<Vector3, 4> positionsNew;
 	for (uint32_t i = 0; i < positionsNew.size(); ++i) {
-		positionsNew[i] = CornerPosition(worldTransform_.translation_ + info.movement, static_cast<Corner>(i));
+		positionsNew[i] = CornerPosition(worldTransform_.translation_ + Vector3(0, info.movement.y, 0), static_cast<Corner>(i));
 	}
-
+	MapChipType mapChipType;
+	// 真上の当たり判定を行う
 	bool hit = false;
-
-	// 上方向の各角の位置を基に衝突判定を行う
-	MapChipField::IndexSet indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftTop]);
-	MapChipType mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	if (mapChipType == MapChipType::kBlock) {
+	// 左上点の判定
+	MapChipField::IndexSet indexSet;
+	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftTop]);
+	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+	if (mapChipType == MapChipType::kBlank) {
 		hit = true;
-		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
-		info.movement.y = (std::max)(0.0f, rect.bottom - worldTransform_.translation_.y - kHeight / 2.0f);
-		info.hitCeilingFlag = true;
 	}
-
+	// 右上点の判定
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightTop]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	if (mapChipType == MapChipType::kBlock) {
+	if (mapChipType == MapChipType::kBlank) {
 		hit = true;
-		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
-		info.movement.y = (std::max)(0.0f, rect.bottom - worldTransform_.translation_.y - kHeight / 2.0f);
-		info.hitCeilingFlag = true;
 	}
-
+	// ブロックにヒット？
 	if (hit) {
-		velocity_.y =  -velocity_.y * 0.5f;                 // 反射後の速度を調整する
-		worldTransform_.translation_.y += info.movement.y; // 位置の更新を追加
-		info.movement.y = 0.0f;
+		// めり込みを排除する方向に移動量を設定する
+		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(0, info.movement.y + 0.1f, 0) + Vector3(0, kHeight / 2.0f, 0));
+		// めり込み先ブロックの範囲矩形
+		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
+		info.movement.y = (std::max)(0.0f, (rect.bottom - worldTransform_.translation_.y) - ((kHeight / 2.0f) + kBlank));
+		// 天井に当たったことを記録する
+		info.hitCeilingFlag = true;
 	}
 }
 
