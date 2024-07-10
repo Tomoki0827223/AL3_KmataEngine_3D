@@ -119,10 +119,6 @@ void Player::MovePlayer() {
 		worldTransform_.rotation_.y = easeInOutSine(turnFirstRotationY_, destinationRotationY, (kTimeTurn - turnTimer_) / kTimeTurn);
 	}
 
-	//// 位置の更新
-	//worldTransform_.translation_.x += velocity_.x;
-	//worldTransform_.translation_.y += velocity_.y;
-	//worldTransform_.UpdateMatrix();
 }
 
 //void Player::MovePlayer() {
