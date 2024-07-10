@@ -43,7 +43,7 @@ public:
 
 	static inline const float kAcceleration = 0.1f;
 	static inline const float kAttenuation = 0.05f;
-	static inline const float kJumpAcceleration = 8.0f;
+	static inline const float kJumpAcceleration = 5.0f;
 	static inline const float kGravityAcceleration = 0.98f;
 	static inline const float kAttenuationWall = 0.2f; 
 	static inline const float kAttenuationLanding = 0.0f;
@@ -72,7 +72,7 @@ public:
 	TurnController turnController_;
 
 
-	void ApplyCollisionResultAndMove(const CollisionMapInfo& info);
+	void CheckMapMove(const CollisionMapInfo& info);
 
 	void CheckMapCollision(CollisionMapInfo& info);
 
