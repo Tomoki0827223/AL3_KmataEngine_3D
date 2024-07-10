@@ -26,9 +26,9 @@ void Player::Update() {
 
 	// 行列を定数バッファに転送
 	worldTransform_.TransferMatrix();
-	MoveInput();
+	MovePlayer();
 	CollisionMapInfo collisionMapInfo;
-	collisionMapInfo.movement_ = velocity_;
+	collisionMapInfo.movement = velocity_;
 	CheckMapCollision(collisionMapInfo);
 	JudgmentMove(collisionMapInfo);
 	CeilingContact(collisionMapInfo);
