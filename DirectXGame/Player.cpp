@@ -9,11 +9,13 @@
 #include <numbers>
 
 void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) {
+
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
 	model_ = model;
 	viewProjection_ = viewProjection;
+
 }
 
 void Player::Update() {
@@ -68,13 +70,13 @@ void Player::Update() {
 
 		if (Input::GetInstance()->PushKey(DIK_UP)) {
 			// ジャンプ初速
-			//velocity_.y += kJumpAcceleration;
+			velocity_.y += kJumpAcceleration;
 			onGround_ = false; // ジャンプしたので地面にいないことを設定
 		}
 
 	} else {
 		// 落下速度
-		velocity_.y += -kAcceleration;
+		velocity_.y += -kGravityAcceleration;
 		// 落下速度制限
 		velocity_.y = (std::max)(velocity_.y, -kLimitFallSpeed);
 	}

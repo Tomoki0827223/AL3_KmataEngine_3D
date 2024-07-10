@@ -6,45 +6,51 @@
 #include <algorithm>
 #include <array>
 
-enum class LRDirection {
-	kRight,
-	kLeft,
-};
-
 class MapChipField; // MapChipField クラスの宣言が必要です
-
-struct CollisionMapInfo {
-	bool hitCeilingFlag = false;
-	bool landingFlag = false;
-	bool wallContactFlag = false;
-	Vector3 movement;
-};
-
-enum Corner { kRightBottom, kLeftBottom, kRightTop, kLeftTop, kNumCorner };
 
 class Player {
 public:
 
+	// 左右
+	enum class LRDirection {
+		kRight,
+		kLeft,
+	};
+
+	// 角
+	struct CollisionMapInfo {
+		bool hitCeilingFlag = false;
+		bool landingFlag = false;
+		bool wallContactFlag = false;
+		Vector3 movement;
+	};
+
 	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);
+
+	enum Corner { kRightBottom, kLeftBottom, kRightTop, kLeftTop, kNumCorner };
+
 	void Update();
 	void Draw();
+
+	//seteer
 	void SetMapChipField(MapChipField* mapchipField) { mapChipField_ = mapchipField; }
-	
+	//geter
 	const WorldTransform& GetWorldTransform() const { return worldTransform_; }
 	const Vector3& GetVelocity() const { return velocity_; }
 
-private:
-
-	void HandleCeilingCollision(const CollisionMapInfo& info);
-	void HandleWallCollision(const CollisionMapInfo& info); // 追加
-
-	void ApplyCollisionResultAndMove(const CollisionMapInfo& info);
-	void CheckMapCollision(CollisionMapInfo& info);
-
-	void CheckMapCollisionUp(CollisionMapInfo& info);
-	void CheckMapCollisionDown(CollisionMapInfo& info);
-	void CheckMapCollisionRight(CollisionMapInfo& info);
-	void CheckMapCollisionLeft(CollisionMapInfo& info);
+	static inline const float kAcceleration = 0.1f;
+	static inline const float kAttenuation = 0.05f;
+	static inline const float kJumpAcceleration = 20.0f;
+	static inline const float kGravityAcceleration = 0.98f;
+	static inline const float kAttenuationWall = 0.2f; 
+	static inline const float kAttenuationLanding = 0.0f;
+	static inline const float kLimitFallSpeed = 0.5f;
+	static inline const float kLimitRunSpeed = 0.5f;
+	static inline const float kTimeTurn = 0.3f;
+	static inline const float kWidth = 0.8f;
+	static inline const float kHeight = 0.8f;
+	static inline const float kBlank = 0.04f; // 適切な値に修正する
+	static inline const float kGroundSearchHeight = 0.06f;
 
 	Vector3 CornerPosition(const Vector3& center, Corner corner);
 
@@ -62,12 +68,15 @@ private:
 
 	TurnController turnController_;
 
-	static inline const float kAcceleration = 0.01f;
-	static inline const float kLimitRunSpeed = 1.0f;
-	static inline const float kAttenuation = 0.1f;
-	static inline const float kLimitFallSpeed = -2.0f;
-	static inline const float kJumpAcceleration = 0.01f;
-	static inline const float kWidth = 1.0f;
-	static inline const float kHeight = 1.0f;
-	static inline const float kBlank = 0.1f; // 適切な値に修正する
+
+	void HandleCeilingCollision(const CollisionMapInfo& info);
+	void HandleWallCollision(const CollisionMapInfo& info); // 追加
+
+	void ApplyCollisionResultAndMove(const CollisionMapInfo& info);
+	void CheckMapCollision(CollisionMapInfo& info);
+
+	void CheckMapCollisionUp(CollisionMapInfo& info);
+	void CheckMapCollisionDown(CollisionMapInfo& info);
+	void CheckMapCollisionRight(CollisionMapInfo& info);
+	void CheckMapCollisionLeft(CollisionMapInfo& info);
 };
