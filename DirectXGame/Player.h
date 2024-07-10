@@ -30,6 +30,9 @@ public:
 	enum Corner { kRightBottom, kLeftBottom, kRightTop, kLeftTop, kNumCorner };
 
 	void Update();
+
+	void MovePlayer();
+	
 	void Draw();
 
 	//seteer
@@ -69,14 +72,19 @@ public:
 	TurnController turnController_;
 
 
-	void HandleCeilingCollision(const CollisionMapInfo& info);
-	void HandleWallCollision(const CollisionMapInfo& info); // 追加
-
 	void ApplyCollisionResultAndMove(const CollisionMapInfo& info);
+
 	void CheckMapCollision(CollisionMapInfo& info);
 
 	void CheckMapCollisionUp(CollisionMapInfo& info);
 	void CheckMapCollisionDown(CollisionMapInfo& info);
 	void CheckMapCollisionRight(CollisionMapInfo& info);
 	void CheckMapCollisionLeft(CollisionMapInfo& info);
+
+	void TurnControll();
+
+	void CeilingContact(const CollisionMapInfo& info);
+
+
+	void JumpTranformMove(const CollisionMapInfo& info);
 };
