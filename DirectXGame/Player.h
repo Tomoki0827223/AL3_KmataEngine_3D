@@ -68,11 +68,12 @@ public:
 
 	TurnController turnController_;
 
-	//void HandleCeilingCollision(const CollisionMapInfo& info);
-	//void HandleWallCollision(const CollisionMapInfo& info); // 追加
-
-	//void ApplyCollisionResultAndMove(const CollisionMapInfo& info);
 	void CheckMapCollision(CollisionMapInfo& info);
+
+	void CeilingContact(const CollisionMapInfo& info);
+	void JumpTranformMove(const CollisionMapInfo& info);
+
+	void TurnControll();
 
 	void CheckMapCollisionUp(CollisionMapInfo& info);
 	void CheckMapCollisionDown(CollisionMapInfo& info);
