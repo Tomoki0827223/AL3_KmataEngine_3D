@@ -170,8 +170,10 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 		positionsNew[i] = CornerPosition(worldTransform_.translation_ + Vector3(0, info.movement.y, 0), static_cast<Corner>(i));
 	}
 	MapChipType mapChipType;
+
 	// 真上の当たり判定を行う
 	bool hit = false;
+
 	// 左上点の判定
 	MapChipField::IndexSet indexSet;
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftTop]);
@@ -179,11 +181,13 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 	if (mapChipType == MapChipType::kBlank) {
 		hit = true;
 	}
+
 	// 右上点の判定
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightTop]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
 	if (mapChipType == MapChipType::kBlank) {
 		hit = true;
+
 	}
 	// ブロックにヒット？
 	if (hit) {
@@ -214,7 +218,9 @@ void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
 
 	// 下方向の各角の位置を基に衝突判定を行う
 	MapChipField::IndexSet indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftBottom]);
+
 	MapChipType mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+
 	if (mapChipType == MapChipType::kBlock) {
 		hit = true;
 		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
@@ -223,7 +229,9 @@ void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
 	}
 
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightBottom]);
+
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+
 	if (mapChipType == MapChipType::kBlock) {
 		hit = true;
 		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);

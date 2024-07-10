@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Model.h"
-#include "WorldTransform.h" // 実際のヘッダーファイル名に修正する必要があります
+#include "WorldTransform.h"
 #include "TurnController.h"
 #include <algorithm>
 #include <array>
