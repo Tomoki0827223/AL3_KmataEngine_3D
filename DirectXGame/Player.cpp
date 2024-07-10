@@ -26,33 +26,12 @@ void Player::Update() {
 
 	// 行列を定数バッファに転送
 	worldTransform_.TransferMatrix();
-
-	//*--------- 1,移動入力------------*/
 	MoveInput();
-
-	//*----------2,移動量を加味して衝突判定する------------*
-	// 衝突情報を初期化
 	CollisionMapInfo collisionMapInfo;
-	// 移動量に速度の値をコピー
 	collisionMapInfo.movement_ = velocity_;
-	// マップ衝突チェック
 	CheckMapCollision(collisionMapInfo);
-
-	//*----------3,判定結果を反映して移動させる------------*
 	JudgmentMove(collisionMapInfo);
-
-	//*----------4,天井に接触している場合の処理------------*
 	CeilingContact(collisionMapInfo);
-
-	//*----------5,壁に接触している場合の処理-----------*
-
-	//*----------6,接地状態の切り替え-----------*
-
-	//*----------7,旋回制御-----------*
-	TurnControll();
-
-	//-----------8,行列計算----------*
-	// 行列計算
 	worldTransform_.UpdateMatrix();
 }
 
