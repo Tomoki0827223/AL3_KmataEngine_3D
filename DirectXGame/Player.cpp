@@ -20,9 +20,6 @@ void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vect
 
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
-	worldTransform_.scale_.x = 0.5f;
-	worldTransform_.scale_.y = 0.5f;
-	worldTransform_.scale_.z = 0.5f;
 	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
 
 	viewProjection_ = viewProjection;
@@ -177,6 +174,7 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 	MapChipField::IndexSet indexSet;
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftTop]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+
 	if (mapChipType == MapChipType::kBlock) {
 		hit = true;
 	}
@@ -185,8 +183,11 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 	MapChipField::IndexSet indexSet2;
 	indexSet2 = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightTop]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet2.xIndex, indexSet2.yIndex);
+
 	if (mapChipType == MapChipType::kBlock) {
+	
 		hit = true;
+	
 	}
 
 	// ブロックにヒット
@@ -199,7 +200,7 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 		info.movement.y = std::max(0.0f, rect.bottom - worldTransform_.translation_.y - (kHeight / 2.0f + kBlank));
 
 		// 衝突判定
-		info.hitCeilingFlag = true;
+		info.hitCeilingFlag = false;
 	}
 
 	// 衝突
