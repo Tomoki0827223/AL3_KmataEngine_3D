@@ -24,14 +24,17 @@ enum Corner { kRightBottom, kLeftBottom, kRightTop, kLeftTop, kNumCorner };
 
 class Player {
 public:
+
 	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);
 	void Update();
 	void Draw();
 	void SetMapChipField(MapChipField* mapchipField) { mapChipField_ = mapchipField; }
+	
 	const WorldTransform& GetWorldTransform() const { return worldTransform_; }
 	const Vector3& GetVelocity() const { return velocity_; }
 
 private:
+
 	void HandleCeilingCollision(const CollisionMapInfo& info);
 	void HandleWallCollision(const CollisionMapInfo& info); // 追加
 
@@ -59,14 +62,11 @@ private:
 
 	TurnController turnController_;
 
-	static inline const float kAcceleration = 0.1f;
+	static inline const float kAcceleration = 0.01f;
 	static inline const float kLimitRunSpeed = 1.0f;
 	static inline const float kAttenuation = 0.1f;
-	static inline const float kTimeTurn = 1.0f;
-	static inline const float kVelocityBias = 0.1f;
-	static inline const float kGravityAcceleration = 0.2f;
 	static inline const float kLimitFallSpeed = -2.0f;
-	static inline const float kJumpAcceleration = 1.0f;
+	static inline const float kJumpAcceleration = 0.01f;
 	static inline const float kWidth = 1.0f;
 	static inline const float kHeight = 1.0f;
 	static inline const float kBlank = 0.1f; // 適切な値に修正する

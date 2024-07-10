@@ -68,13 +68,13 @@ void Player::Update() {
 
 		if (Input::GetInstance()->PushKey(DIK_UP)) {
 			// ジャンプ初速
-			velocity_.y += kJumpAcceleration;
+			//velocity_.y += kJumpAcceleration;
 			onGround_ = false; // ジャンプしたので地面にいないことを設定
 		}
 
 	} else {
 		// 落下速度
-		velocity_.y += -kGravityAcceleration;
+		velocity_.y += -kAcceleration;
 		// 落下速度制限
 		velocity_.y = (std::max)(velocity_.y, -kLimitFallSpeed);
 	}
@@ -100,19 +100,6 @@ void Player::Update() {
 		}
 	}
 
-	if (onGround_) {
-		if (velocity_.y > 0.0f) {
-			onGround_ = false;
-		}
-	} else {
-		if (landing) {
-			worldTransform_.translation_.y = 2.0f;
-			velocity_.x *= (1.0f - kAttenuation);
-			velocity_.y = 0.0f;
-			onGround_ = true;
-		}
-	}
-
 	// 移動
 	worldTransform_.translation_.x += velocity_.x;
 	worldTransform_.translation_.y += velocity_.y;
@@ -123,9 +110,6 @@ void Player::Update() {
 	// 行列を定数バッファに転送
 	worldTransform_.TransferMatrix();
 }
-
-
-
 
 void Player::Draw() { model_->Draw(worldTransform_, *viewProjection_, textureHandle_); }
 
@@ -162,10 +146,6 @@ void Player::ApplyCollisionResultAndMove(const CollisionMapInfo& info) {
 	// 衝突情報を適用してプレイヤーの移動を行う
 	worldTransform_.translation_ += info.movement;
 
-	if (info.landingFlag) {
-		onGround_ = true;   // 着地フラグが立っていたら地面にいる状態にする
-		velocity_.y = 0.0f; // 着地したのでY方向の速度を0にする
-	}
 }
 
 
@@ -175,26 +155,10 @@ void Player::CheckMapCollision(CollisionMapInfo& info) {
 	CheckMapCollisionDown(info);
 	CheckMapCollisionRight(info);
 	CheckMapCollisionLeft(info);
-
-	//// 地面と天井の判定
-	//if (worldTransform_.translation_.y + info.movement.y <= 0.0f) {
-	//	info.landingFlag = true;
-	//	info.movement.y = 0.0f;
-	//}
-
-	//if (worldTransform_.translation_.y + info.movement.y >= 10.0f) {
-	//	info.hitCeilingFlag = true;
-	//	info.movement.y = 0.0f;
-	//}
-
-	//// 壁との衝突判定
-	//if (worldTransform_.translation_.x + info.movement.x <= -5.0f || worldTransform_.translation_.x + info.movement.x >= 5.0f) {
-	//	info.wallContactFlag = true;
-	//	info.movement.x = 0.0f;
-	//}
 }
 
 void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
+
 	// 上昇アリ？
 	if (info.movement.y <= 0) {
 		return;
@@ -235,6 +199,7 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 
 
 void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
+
 	// 下方向に移動していない場合は処理しない
 	if (info.movement.y >= 0.0f) {
 		return;
@@ -266,18 +231,12 @@ void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
 		info.landingFlag = true;
 	}
 
-	if (hit) {
-		onGround_ = true;                                  // 着地したらonGround_フラグを立てる
-		velocity_.y = -5.0f;                                // y方向の速度を0にする
-		worldTransform_.translation_.y += info.movement.y; // 位置の更新を追加
-		info.movement.y = 0.0f;
-	} else {
-		onGround_ = false; // 地面に接触していない場合
-	}
+
 }
 
 
 void Player::CheckMapCollisionRight(CollisionMapInfo& info) {
+
 	// 右方向に移動していない場合は処理しない
 	if (info.movement.x <= 0.0f) {
 		return;
@@ -316,6 +275,7 @@ void Player::CheckMapCollisionRight(CollisionMapInfo& info) {
 
 
 void Player::CheckMapCollisionLeft(CollisionMapInfo& info) {
+
 	// 左方向に移動していない場合は処理しない
 	if (info.movement.x >= 0.0f) {
 		return;
@@ -353,6 +313,7 @@ void Player::CheckMapCollisionLeft(CollisionMapInfo& info) {
 }
 
 Vector3 Player::CornerPosition(const Vector3& center, Corner corner) {
+
 	Vector3 position;
 	switch (corner) {
 	case kRightBottom:
