@@ -66,7 +66,7 @@ void Player::Update() {
 		// 着地
 		if (landing) {
 			// めり込み排斥
-			worldTransform_.translation_.y = 1.0f;
+			worldTransform_.translation_.y = 3.0f;
 			// 摩擦で横方向速度が減衰する
 			velocity_.x *= (1.0f - kAttenuation);
 			// 下方向速度でリセット
@@ -187,8 +187,8 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 	if (mapChipType == MapChipType::kBlock) {
 	
 		hit = true;
-	
 	}
+
 
 	// ブロックにヒット
 	if (hit) {
@@ -200,7 +200,7 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 		info.movement.y = std::max(0.0f, rect.bottom - worldTransform_.translation_.y - (kHeight / 2.0f + kBlank));
 
 		// 衝突判定
-		info.hitCeilingFlag = false;
+		info.hitCeilingFlag = true;
 	}
 
 	// 衝突
@@ -246,10 +246,10 @@ void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
 	// ブロックにヒット？
 	if (hit) {
 		// めり込みを排除する方向に移動量を設定する
-		indexSet3 = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(0, -kHeight / 2.0f, 0));
+		indexSet3 = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(0, -kHeight / 3.0f, 0));
 		// めり込み先ブロックの範囲矩形
 		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet3.xIndex, indexSet3.yIndex);
-		info.movement.y = std::min(0.0f, rect.bottom - worldTransform_.translation_.y - (kHeight / 2.0f + kBlank));
+		info.movement.y = std::min(0.0f, rect.bottom - worldTransform_.translation_.y - (kHeight / 3.0f + kBlank));
 		info.landingFlag = true;
 	} else {
 		info.landingFlag = false;
