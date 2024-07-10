@@ -55,7 +55,7 @@ void Player::MovePlayer() {
 
 				if (lrDirection_ != LRDirection::kRight) {
 					lrDirection_ = LRDirection::kRight;
-					turnFirstRotesionY_ = worldTransform_.rotation_.y;
+					turnFirstRotationY_ = worldTransform_.rotation_.y;
 					turnTimer_ = kTimeTurn;
 				}
 
@@ -68,7 +68,7 @@ void Player::MovePlayer() {
 
 				if (lrDirection_ != LRDirection::kLeft) {
 					lrDirection_ = LRDirection::kLeft;
-					turnFirstRotesionY_ = worldTransform_.rotation_.y;
+					turnFirstRotationY_ = worldTransform_.rotation_.y;
 					turnTimer_ = kTimeTurn;
 				}
 				acceleration.x -= kAcceleration;
@@ -116,13 +116,13 @@ void Player::MovePlayer() {
 		turnTimer_ -= 1.0f / 60.0f;
 		float destinationRotationYTable[] = {std::numbers::pi_v<float> / 2.0f, -std::numbers::pi_v<float> / 2.0f};
 		float destinationRotationY = destinationRotationYTable[static_cast<uint32_t>(lrDirection_)];
-		worldTransform_.rotation_.y = easeInOutSine(turnFirstRotesionY_, destinationRotationY, (kTimeTurn - turnTimer_) / kTimeTurn);
+		worldTransform_.rotation_.y = easeInOutSine(turnFirstRotationY_, destinationRotationY, (kTimeTurn - turnTimer_) / kTimeTurn);
 	}
 
-	// 位置の更新
-	worldTransform_.translation_.x += velocity_.x;
-	worldTransform_.translation_.y += velocity_.y;
-	worldTransform_.UpdateMatrix();
+	//// 位置の更新
+	//worldTransform_.translation_.x += velocity_.x;
+	//worldTransform_.translation_.y += velocity_.y;
+	//worldTransform_.UpdateMatrix();
 }
 
 //void Player::MovePlayer() {
