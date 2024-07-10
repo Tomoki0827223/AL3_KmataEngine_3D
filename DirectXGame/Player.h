@@ -27,15 +27,14 @@ public:
 	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);
 	void Update();
 	void Draw();
+	void KeyMove();
+	void turnController_();
 	void SetMapChipField(MapChipField* mapchipField) { mapChipField_ = mapchipField; }
 	const WorldTransform& GetWorldTransform() const { return worldTransform_; }
 	const Vector3& GetVelocity() const { return velocity_; }
 
 private:
-	void HandleCeilingCollision(const CollisionMapInfo& info);
-	void HandleWallCollision(const CollisionMapInfo& info); // 追加
 
-	void ApplyCollisionResultAndMove(const CollisionMapInfo& info);
 	void CheckMapCollision(CollisionMapInfo& info);
 
 	void CheckMapCollisionUp(CollisionMapInfo& info);
@@ -44,6 +43,14 @@ private:
 	void CheckMapCollisionLeft(CollisionMapInfo& info);
 
 	Vector3 CornerPosition(const Vector3& center, Corner corner);
+
+	void ReflectionResult(const CollisionMapInfo& info);
+
+	void CeilingContact(const CollisionMapInfo& info);
+
+	void GroundSwitch(const CollisionMapInfo& info);
+
+	void HittingWall(const CollisionMapInfo& info);
 
 	WorldTransform worldTransform_;
 	ViewProjection* viewProjection_ = nullptr;
@@ -55,9 +62,10 @@ private:
 	LRDirection lrDirection_ = LRDirection::kRight;
 	float turnFirstRotationY_ = 0.0f;
 	float turnTimer_ = 0.0f;
-	Vector3 velocity_ = {};
 
-	TurnController turnController_;
+	float kAttenWall = 0.0f;
+
+	Vector3 velocity_ = {};
 
 	static inline const float kAcceleration = 0.1f;
 	static inline const float kLimitRunSpeed = 1.0f;
