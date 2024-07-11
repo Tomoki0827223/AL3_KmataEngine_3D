@@ -86,54 +86,67 @@ void Player::Draw() {
 }
 
 void Player::MovePlayer() {
+
+			// 移動入力
+	// 接地状態
 	if (onGround_) {
-		// 左右の移動処理
+		// 左右移動操作
 		if (Input::GetInstance()->PushKey(DIK_RIGHT) || Input::GetInstance()->PushKey(DIK_LEFT)) {
 
+			// 左右加速
 			Vector3 acceleration = {};
 			if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
 
+				// 左移動中の右入力
 				if (velocity_.x < 0.0f) {
+
+					// 速度と逆方向に入力中は急ブレーキ
 					velocity_.x *= (1.0f - kAttenuation);
 				}
-
+				acceleration.x += kAcceleration;
 				if (lrDirection_ != LRDirection::kRight) {
 					lrDirection_ = LRDirection::kRight;
 					turnFirstRotationY_ = worldTransform_.rotation_.y;
-					turnTimer_ = kTimeTurn;
+					turnTimer_ = kLimitRunSpeed;
 				}
-
-				acceleration.x += kAcceleration / 24.0f;
 			} else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
 
+				// 右移動中の左入力
 				if (velocity_.x > 0.0f) {
+
+					// 速度と逆方向に入力中は急ブレーキ
 					velocity_.x *= (1.0f - kAttenuation);
 				}
-
+				acceleration.x -= kAcceleration;
 				if (lrDirection_ != LRDirection::kLeft) {
 					lrDirection_ = LRDirection::kLeft;
 					turnFirstRotationY_ = worldTransform_.rotation_.y;
-					turnTimer_ = kTimeTurn;
+					turnTimer_ = kLimitRunSpeed;
 				}
-				acceleration.x -= kAcceleration / 24.0f;
-
 			}
+			// 加速/減速
 			velocity_.x += acceleration.x;
+
+			// 最大速度制限
 			velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
 		} else {
+
 			velocity_.x *= (1.0f - kAttenuation);
 		}
-
-		// ジャンプの処理
 		if (Input::GetInstance()->PushKey(DIK_UP)) {
-			velocity_.y = kJumpAcceleration;
-			onGround_ = false;
+			// ジャンプ初速
+			velocity_.x += 0;
+			velocity_.y += kJumpAcceleration;
+			velocity_.z += 0;
+			// 空中
 		}
 	} else {
-		// 空中での処理
+		// 落下速度
 		velocity_ += Vector3(0, -kGravityAcceleration, 0);
+		// 落下速度制限
 		velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
 	}
+
 }
 
 //void Player::MovePlayer() {
