@@ -108,10 +108,9 @@ void Player::MovePlayer() {
 			velocity_.x *= (1.0f - kAttenuation);
 		}
 		if (Input::GetInstance()->PushKey(DIK_UP)) {
+			
 			// ジャンプ初速
-			velocity_.x += 0;
 			velocity_.y += kJumpAcceleration;
-			velocity_.z += 0;
 			// 空中
 		}
 	} else {
