@@ -40,40 +40,7 @@ void Player::Update() {
 
 	JumpTranformMove(collisionMapInfo);
 
-	// 着地フラグ
-	bool landing = false;
-
-	// 地面とのあたり判定
-	if (velocity_.y < 0) {
-
-		if (worldTransform_.translation_.y <= 1.0f) {
-			landing = true;
-		}
-	}
-
-	// 接地判定
-	if (onGround_) {
-
-		// ジャンプ開始
-		if (velocity_.y > 0.0f) {
-			// 空中状態の移行
-			onGround_ = false;
-		}
-
-	} else {
-
-		// 着地
-		if (landing) {
-			// めり込み排斥
-			worldTransform_.translation_.y = 3.0f;
-			// 摩擦で横方向速度が減衰する
-			velocity_.x *= (1.0f - kAttenuation);
-			// 下方向速度でリセット
-			velocity_.y = 0.0f;
-			// 接地状態に移行
-			onGround_ = true;
-		}
-	}
+	GroundState(collisionMapInfo);
 
 	TurnControll();
 	worldTransform_.UpdateMatrix();
@@ -86,113 +53,120 @@ void Player::Draw() {
 }
 
 void Player::MovePlayer() {
+	//if (onGround_) {
+	//	// 左右の移動処理
+	//	if (Input::GetInstance()->PushKey(DIK_RIGHT) || Input::GetInstance()->PushKey(DIK_LEFT)) {
+
+	//		Vector3 acceleration = {};
+	//		if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
+
+	//			if (velocity_.x < 0.0f) {
+	//				velocity_.x *= (1.0f - kAttenuation);
+	//			}
+
+	//			if (lrDirection_ != LRDirection::kRight) {
+	//				lrDirection_ = LRDirection::kRight;
+	//				turnFirstRotationY_ = worldTransform_.rotation_.y;
+	//				turnTimer_ = kTimeTurn;
+	//			}
+
+	//			acceleration.x += kAcceleration / 24.0f;
+	//		} else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
+
+	//			if (velocity_.x > 0.0f) {
+	//				velocity_.x *= (1.0f - kAttenuation);
+	//			}
+
+	//			if (lrDirection_ != LRDirection::kLeft) {
+	//				lrDirection_ = LRDirection::kLeft;
+	//				turnFirstRotationY_ = worldTransform_.rotation_.y;
+	//				turnTimer_ = kTimeTurn;
+	//			}
+	//			acceleration.x -= kAcceleration / 24.0f;
+
+	//		}
+	//		velocity_.x += acceleration.x;
+	//		velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
+	//	} else {
+	//		velocity_.x *= (1.0f - kAttenuation);
+	//	}
+
+	//	// ジャンプの処理
+	//	if (Input::GetInstance()->PushKey(DIK_UP)) {
+	//		velocity_.y = kJumpAcceleration;
+	//		onGround_ = false;
+	//	}
+	//} else {
+	//	// 空中での処理
+	//	velocity_ += Vector3(0, -kGravityAcceleration, 0);
+	//	velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
+	//}
+
+		// 移動入力
+	// 接地状態
 	if (onGround_) {
-		// 左右の移動処理
+		// 左右移動操作
 		if (Input::GetInstance()->PushKey(DIK_RIGHT) || Input::GetInstance()->PushKey(DIK_LEFT)) {
 
+			// 左右加速
 			Vector3 acceleration = {};
 			if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
 
+				// 左移動中の右入力
 				if (velocity_.x < 0.0f) {
+
+					// 速度と逆方向に入力中は急ブレーキ
 					velocity_.x *= (1.0f - kAttenuation);
 				}
-
+				acceleration.x += kAcceleration;
 				if (lrDirection_ != LRDirection::kRight) {
 					lrDirection_ = LRDirection::kRight;
 					turnFirstRotationY_ = worldTransform_.rotation_.y;
-					turnTimer_ = kTimeTurn;
+					turnTimer_ = kLimitRunSpeed;
 				}
-
-				acceleration.x += kAcceleration / 24.0f;
 			} else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
 
+				// 右移動中の左入力
 				if (velocity_.x > 0.0f) {
+
+					// 速度と逆方向に入力中は急ブレーキ
 					velocity_.x *= (1.0f - kAttenuation);
 				}
-
+				acceleration.x -= kAcceleration;
 				if (lrDirection_ != LRDirection::kLeft) {
 					lrDirection_ = LRDirection::kLeft;
 					turnFirstRotationY_ = worldTransform_.rotation_.y;
-					turnTimer_ = kTimeTurn;
+					turnTimer_ = kLimitRunSpeed;
 				}
-				acceleration.x -= kAcceleration / 24.0f;
-
 			}
+			// 加速/減速
 			velocity_.x += acceleration.x;
+			velocity_.y += acceleration.y;
+			velocity_.z += acceleration.z;
+
+			// 最大速度制限
 			velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
 		} else {
 			velocity_.x *= (1.0f - kAttenuation);
+			velocity_.y *= (1.0f - kAttenuation);
+			velocity_.z *= (1.0f - kAttenuation);
 		}
-
-		// ジャンプの処理
 		if (Input::GetInstance()->PushKey(DIK_UP)) {
-			velocity_.y = kJumpAcceleration;
-			onGround_ = false;
+			// ジャンプ初速
+			velocity_.x += 0;
+			velocity_.y += kJumpAcceleration;
+			velocity_.z += 0;
+			// 空中
 		}
 	} else {
-		// 空中での処理
-		velocity_ += Vector3(0, -kGravityAcceleration, 0);
+		// 落下速度
+		velocity_.x += 0;
+		velocity_.y += -kGravityAcceleration;
+		velocity_.z += 0;
+		// 落下速度制限
 		velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
 	}
 }
-
-//void Player::MovePlayer() {
-//	if (onGround_) {
-//		// 左右の移動処理
-//		if (Input::GetInstance()->PushKey(DIK_RIGHT) || Input::GetInstance()->PushKey(DIK_LEFT)) {
-//
-//			Vector3 acceleration = {};
-//			if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
-//
-//				if (velocity_.x < 0.0f) {
-//					velocity_.x *= (1.0f - kAttenuation);
-//				}
-//
-//				acceleration.x = kAcceleration / 30.0f;
-//
-//				if (lrDirection_ != LRDirection::kRight) {
-//					lrDirection_ = LRDirection::kRight;
-//					turnFirstRotationY_ = worldTransform_.rotation_.y;
-//					turnTimer_ = kTimeTurn;
-//				}
-//
-//			} else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
-//
-//				if (velocity_.x > 0.0f) {
-//					velocity_.x *= (1.0f - kAttenuation);
-//				}
-//
-//				acceleration.x = -kAcceleration / 30.0f;
-//
-//				if (lrDirection_ != LRDirection::kLeft) {
-//					lrDirection_ = LRDirection::kLeft;
-//					turnFirstRotationY_ = worldTransform_.rotation_.y;
-//					turnTimer_ = kTimeTurn;
-//				}
-//
-//			}
-//			velocity_.x += acceleration.x;
-//			velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
-//		} else {
-//			velocity_.x *= (1.0f - kAttenuation);
-//		}
-//		
-//		if (std::abs(velocity_.x) <= 0.0001f) {
-//			velocity_.x = 0.0f;
-//		}
-//
-//		// ジャンプの処理
-//		if (Input::GetInstance()->PushKey(DIK_UP)) {
-//			velocity_.y = kJumpAcceleration;
-//			onGround_ = false;
-//		}
-//	} else {
-//		// 空中での処理
-//		velocity_ += Vector3(0, -kGravityAcceleration, 0);
-//		velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
-//	}
-//
-//}
 
 void Player::CheckMapMove(const CollisionMapInfo& info) {
 	// 衝突情報を適用してプレイヤーの移動を行う
@@ -411,6 +385,57 @@ void Player::CeilingContact(const CollisionMapInfo& info) {
 	if (info.hitCeilingFlag) {
 		DebugText::GetInstance()->ConsolePrintf("hit ceiling\n");
 		velocity_.y = 0;
+	}
+}
+
+void Player::GroundState(const CollisionMapInfo& info) {
+	// 接地状態の切り替え処理
+	if (onGround_) {
+		// ジャンプ開始
+		if (velocity_.y > 0.0f) {
+			// 空中状態の移行
+			onGround_ = false;
+		} else {
+			std::array<Vector3, kNumCorner> positonsNew;
+
+			for (uint32_t i = 0; i < positonsNew.size(); ++i) {
+				positonsNew[i] = CornerPosition(worldTransform_.translation_ + info.movement, static_cast<Corner>(i));
+			}
+
+			MapChipType mapChipType;
+			bool hit = false;
+
+			// 左下点の判定
+			MapChipField::IndexSet indexSet;
+			indexSet = mapChipField_->GetMapChipIndexSetByPosition(positonsNew[kLeftBottom] + Vector3(0, -0.1f, 0));
+			mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+			if (mapChipType == MapChipType::kBlock) {
+				hit = true;
+			}
+
+			// 右下点の判定
+			indexSet = mapChipField_->GetMapChipIndexSetByPosition(positonsNew[kRightBottom] + Vector3(0, -0.1f, 0));
+			mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+			if (mapChipType == MapChipType::kBlock) {
+				hit = true;
+			}
+
+			// 落下開始
+			if (!hit) {
+				// 空中状態に切り替える
+				onGround_ = false;
+			}
+		}
+	} else {
+		// 着地
+		if (info.landingFlag) {
+			// 摩擦で横方向速度が減衰する
+			velocity_.x *= (1.0f - kAttenuationLanding);
+			// 下方向速度をリセット
+			velocity_.y = 0.0f;
+			// 着地状態に切り替える
+			onGround_ = true;
+		}
 	}
 }
 

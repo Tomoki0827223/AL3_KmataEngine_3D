@@ -96,5 +96,7 @@ public:
 
 	void CeilingContact(const CollisionMapInfo& info);
 
+	void GroundState(const CollisionMapInfo& info);
+
 	void JumpTranformMove(const CollisionMapInfo& info);
 };
