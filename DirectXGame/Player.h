@@ -45,9 +45,9 @@ public:
 	// プレイヤーが停止する際の減速率
 	static inline const float kAttenuation = 0.05f;
 	// ジャンプ時の加速度
-	static inline const float kJumpAcceleration = 1.0f;
+	static inline const float kJumpAcceleration = 1.5f;
 	// 重力による加速度
-	static inline const float kGravityAcceleration = 0.98f;
+	static inline const float kGravityAcceleration = 1.0f;
 	// 壁に衝突した際の減速率
 	static inline const float kAttenuationWall = 0.2f;
 	// 着地時の減速率
@@ -63,7 +63,7 @@ public:
 	// プレイヤーの高さ
 	static inline const float kHeight = 0.8f;
 	// 隙間の幅（適切な値に修正する必要あり）
-	static inline const float kBlank = 0.04f;
+	static inline const float kBlank = 0.035f;
 	// 地面を探す際の高さ
 	static inline const float kGroundSearchHeight = 0.06f;
 

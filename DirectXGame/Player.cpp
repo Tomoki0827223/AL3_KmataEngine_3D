@@ -440,7 +440,7 @@ void Player::TurnControll() {
 }
 
 Vector3 Player::CornerPosition(const Vector3& center, Corner corner) {
-	　
+
 	Vector3 offsetTable[kNumCorner] = {
 	    {+kWidth / 2.0f, -kHeight / 2.0f, 0}, // kRightBottom
 	    {-kWidth / 2.0f, -kHeight / 2.0f, 0}, // kLeftBottom
