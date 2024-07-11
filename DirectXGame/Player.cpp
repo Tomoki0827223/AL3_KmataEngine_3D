@@ -269,28 +269,25 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 
 void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
 
-		// 上昇あり？
+	// 下降アリ？
 	if (info.movement.y >= 0) {
 		return;
 	}
-
-	// 移動後の4つの角の座標
+	// 移動後４つの角の座標
 	std::array<Vector3, kNumCorner> positionsNew;
 
 	for (uint32_t i = 0; i < positionsNew.size(); ++i) {
-		positionsNew[i] = CornerPosition(worldTransform_.translation_ + info.movement, static_cast<Corner>(i));
+		positionsNew[i] = CornerPosition(worldTransform_.translation_ + Vector3(0, info.movement.y, 0), static_cast<Corner>(i));
 	}
 
 	MapChipType mapChipType;
 	MapChipType mapChipTypeNext;
-
-	// 真下の当たり判定を行う
+	// 真上の当たり判定を行う
 	bool hit = false;
 
 	// 左下点の判定
 	MapChipField::IndexSet indexSet;
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftBottom]);
-
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
 	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex - 1);
 
@@ -304,29 +301,22 @@ void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
 	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex - 1);
 
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
-
 		hit = true;
 	}
 
-	// ブロックにヒット
+	// ブロックにヒット？
 	if (hit) {
-
 		MapChipField::IndexSet indexSetNow;
-
-		// めり込みを排除する方向に移動量を設定する
 		indexSetNow = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(0, -kHeight / 2.0f, 0));
-
 		if (indexSetNow.yIndex != indexSet.yIndex) {
-
+			// めり込みを排除する方向に移動量を設定する
 			indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + info.movement + Vector3(0, -kHeight / 2.0f, 0));
-
 			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
-			info.movement.y = std::max(0.0f, rect.bottom - worldTransform_.translation_.y - (kHeight / 3.0f + kBlank));
-			info.hitCeilingFlag = true;
+			info.movement.y = std::min(0.0f, (rect.top - worldTransform_.translation_.y) + ((kHeight / 2.0f) + kBlank));
+			// 地面に当たったことを記録する
+			info.landingFlag = true;
 		}
 	}
-
-	CeilingContact(info);
 }
 
 void Player::CheckMapCollisionRight(CollisionMapInfo& info) {
