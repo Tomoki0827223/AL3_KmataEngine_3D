@@ -130,57 +130,6 @@ void Player::CeilingContact(const CollisionMapInfo& info) {
 	}
 }
 
-void Player::GraundSetting(const CollisionMapInfo& info) {
-	// 接地状態の切り替え処理
-	if (onGround_) {
-		// ジャンプ開始
-		if (velocity_.y > 0.0f) {
-			// 空中状態の移行
-			onGround_ = false;
-		} else {
-			std::array<Vector3, kNumCorner> positonsNew;
-
-			for (uint32_t i = 0; i < positonsNew.size(); ++i) {
-				positonsNew[i] = CornerPosition(worldTransform_.translation_ + info.movement, static_cast<Corner>(i));
-			}
-
-			MapChipType mapChipType;
-			bool hit = false;
-
-			// 左下点の判定
-			MapChipField::IndexSet indexSet;
-			indexSet = mapChipField_->GetMapChipIndexSetByPosition(positonsNew[kLeftBottom] + Vector3(0, -0.1f, 0));
-			mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-			if (mapChipType == MapChipType::kBlock) {
-				hit = true;
-			}
-
-			// 右下点の判定
-			indexSet = mapChipField_->GetMapChipIndexSetByPosition(positonsNew[kRightBottom] + Vector3(0, -0.1f, 0));
-			mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-			if (mapChipType == MapChipType::kBlock) {
-				hit = true;
-			}
-
-			// 落下開始
-			if (!hit) {
-				// 空中状態に切り替える
-				onGround_ = false;
-			}
-		}
-	} else {
-		// 着地
-		if (info.landingFlag) {
-			// 摩擦で横方向速度が減衰する
-			velocity_.x *= (1.0f - kAttenuationLanding);
-			// 下方向速度をリセット
-			velocity_.y = 0.0f;
-			// 着地状態に切り替える
-			onGround_ = true;
-		}
-	}
-}
-
 void Player::CheckMapCollision(CollisionMapInfo& info) {
 
 	CheckMapCollisionUp(info);
@@ -363,6 +312,57 @@ void Player::CheckMapCollisionLeft(CollisionMapInfo& info) {
 	if (hit) {
 		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
 		info.movement.x = std::min(0.0f, (rect.left - worldTransform_.translation_.x) + (kWidth / 2.0f + kBlank));
+	}
+}
+
+void Player::GraundSetting(const CollisionMapInfo& info) {
+	// 接地状態の切り替え処理
+	if (onGround_) {
+		// ジャンプ開始
+		if (velocity_.y > 0.0f) {
+			// 空中状態の移行
+			onGround_ = false;
+		} else {
+			std::array<Vector3, kNumCorner> positonsNew;
+
+			for (uint32_t i = 0; i < positonsNew.size(); ++i) {
+				positonsNew[i] = CornerPosition(worldTransform_.translation_ + info.movement, static_cast<Corner>(i));
+			}
+
+			MapChipType mapChipType;
+			bool hit = false;
+
+			// 左下点の判定
+			MapChipField::IndexSet indexSet;
+			indexSet = mapChipField_->GetMapChipIndexSetByPosition(positonsNew[kLeftBottom] + Vector3(0, 0, 0));
+			mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+			if (mapChipType == MapChipType::kBlock) {
+				hit = true;
+			}
+
+			// 右下点の判定
+			indexSet = mapChipField_->GetMapChipIndexSetByPosition(positonsNew[kRightBottom] + Vector3(0, 0, 0));
+			mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+			if (mapChipType == MapChipType::kBlock) {
+				hit = true;
+			}
+
+			// 落下開始
+			if (!hit) {
+				// 空中状態に切り替える
+				onGround_ = false;
+			}
+		}
+	} else {
+		// 着地
+		if (info.landingFlag) {
+			// 摩擦で横方向速度が減衰する
+			velocity_.x *= (1.0f - kAttenuationLanding);
+			// 下方向速度をリセット
+			velocity_.y = 0.0f;
+			// 着地状態に切り替える
+			onGround_ = true;
+		}
 	}
 }
 

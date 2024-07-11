@@ -39,9 +39,8 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	// モデルの作成
-	
-	//model_ = Model::CreateFromOBJ("block");
-	model_ = Model::Create();
+	model_ = Model::CreateFromOBJ("block");
+	//model_ = Model::Create();
 	playerResorces_ = Model::CreateFromOBJ("player");
 
 	// ワールドトランスフォームとビュー・プロジェクションの初期化

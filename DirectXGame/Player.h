@@ -5,53 +5,48 @@
 #include "WorldTransform.h"
 #include "DebugText.h"
 
-/// <summary>
-/// 自キャラ
-/// </summary>
-
-class MapChipField;
+class MapChipField; // MapChipField クラスの宣言が必要です
 
 class Player {
 public:
-	/// <summary>
-	/// 初期化
-	/// </summary>
-	void Initialize(Model* model,ViewProjection* viewProjection,const Vector3& position);
 
-	/// <summary>
-	/// 更新
-	/// </summary>
-	void Update();
-
-	/// <summary>
-	/// 描画
-	/// </summary>
-	void Draw();
-
-	float x, y, z;
-
-	// += 演算子のオーバーロード
-	Vector3& operator+=(const Vector3& other) {
-		this->x += other.x;
-		this->y += other.y;
-		this->z += other.z;
-	}
-
-	const WorldTransform& GetWorldTransform() { return worldTransform_; }
-
-	Vector3& GetVelocity() {return velocity_; }
-
-	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
-
-	void MovePlayer();
+		// 左右
+	enum class LRDirection {
+		kRight,
+		kLeft,
+	};
 
 	// 角
+	enum Corner {
+		kRightBottom, // 右下
+		kLeftBottom,  // 左下
+		kRightTop,    // 右上
+		kLeftTop,     // 左上
+
+		kNumCorner // 要素数
+	};
+
+		// 角
 	struct CollisionMapInfo {
 		bool hitCeilingFlag = false;
 		bool landingFlag = false;
 		bool wallContactFlag = false;
 		Vector3 movement;
 	};
+
+	void Initialize(Model* model,ViewProjection* viewProjection,const Vector3& position);
+
+	void Update();
+
+	void Draw();
+
+	// seteer
+	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
+	//getter
+	const WorldTransform& GetWorldTransform() { return worldTransform_; }
+	Vector3& GetVelocity() {return velocity_; }
+
+	void MovePlayer();
 
 	void CheckMapCollision(CollisionMapInfo& info);
 	void CheckMapCollisionUp(CollisionMapInfo& info);
@@ -66,22 +61,6 @@ public:
 	void GraundSetting(const CollisionMapInfo& info);
 
 	void TurnControll();
-
-	// 左右
-	enum class LRDirection {
-		kRight,
-		kLeft,
-	};
-
-	// 角
-	enum Corner{
-		kRightBottom,    // 右下
-		kLeftBottom,     // 左下
-		kRightTop,       // 右上
-		kLeftTop,        // 左上
-
-		kNumCorner       // 要素数
-	};
 
 	Vector3 CornerPosition(const Vector3& center, Corner corner);
 
