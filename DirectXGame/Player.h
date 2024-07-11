@@ -45,7 +45,7 @@ public:
 	// プレイヤーが停止する際の減速率
 	static inline const float kAttenuation = 0.05f;
 	// ジャンプ時の加速度
-	static inline const float kJumpAcceleration = 2.0f;
+	static inline const float kJumpAcceleration = 1.0f;
 	// 重力による加速度
 	static inline const float kGravityAcceleration = 0.98f;
 	// 壁に衝突した際の減速率
