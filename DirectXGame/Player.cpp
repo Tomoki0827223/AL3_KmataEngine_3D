@@ -116,6 +116,7 @@ void Player::MovePlayer() {
 					turnTimer_ = kTimeTurn;
 				}
 				acceleration.x -= kAcceleration / 24.0f;
+
 			}
 			velocity_.x += acceleration.x;
 			velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
