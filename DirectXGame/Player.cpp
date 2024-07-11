@@ -3,12 +3,12 @@
 #include "Input.h"
 #include "MapChipField.h"
 #include "MathUtilityForText.h"
+#include <DebugText.h>
 #include <algorithm>
 #include <array>
 #include <cassert>
 #include <iostream>
 #include <numbers>
-#include <DebugText.h>
 
 void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) {
 
@@ -23,7 +23,6 @@ void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vect
 	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
 
 	viewProjection_ = viewProjection;
-
 }
 
 void Player::Update() {
@@ -34,28 +33,28 @@ void Player::Update() {
 	collisionMapInfo.movement = velocity_;
 
 	CheckMapCollision(collisionMapInfo);
-	
+
 	CheckMapMove(collisionMapInfo);
-	
+
 	CeilingContact(collisionMapInfo);
 
 	JumpTranformMove(collisionMapInfo);
 
 	// 着地フラグ
 	bool landing = false;
-	
+
 	// 地面とのあたり判定
 	if (velocity_.y < 0) {
-		
+
 		if (worldTransform_.translation_.y <= 1.0f) {
 			landing = true;
 		}
 	}
-	
+
 	// 接地判定
 	if (onGround_) {
 
-			// ジャンプ開始
+		// ジャンプ開始
 		if (velocity_.y > 0.0f) {
 			// 空中状態の移行
 			onGround_ = false;
@@ -136,13 +135,10 @@ void Player::MovePlayer() {
 	}
 }
 
-
 void Player::CheckMapMove(const CollisionMapInfo& info) {
 	// 衝突情報を適用してプレイヤーの移動を行う
 	worldTransform_.translation_ += info.movement;
-
 }
-
 
 void Player::CheckMapCollision(CollisionMapInfo& info) {
 
@@ -185,10 +181,9 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet2.xIndex, indexSet2.yIndex);
 
 	if (mapChipType == MapChipType::kBlock) {
-	
+
 		hit = true;
 	}
-
 
 	// ブロックにヒット
 	if (hit) {
@@ -205,7 +200,6 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 
 	// 衝突
 	CeilingContact(info);
-
 }
 
 void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
@@ -256,9 +250,7 @@ void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
 	}
 
 	CeilingContact(info);
-
 }
-
 
 void Player::CheckMapCollisionRight(CollisionMapInfo& info) {
 
@@ -297,7 +289,6 @@ void Player::CheckMapCollisionRight(CollisionMapInfo& info) {
 		info.movement.x = 0.0f;
 	}
 }
-
 
 void Player::CheckMapCollisionLeft(CollisionMapInfo& info) {
 

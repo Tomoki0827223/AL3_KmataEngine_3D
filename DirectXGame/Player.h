@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Model.h"
-#include "WorldTransform.h"
 #include "TurnController.h"
+#include "WorldTransform.h"
 #include <algorithm>
 #include <array>
 
@@ -10,7 +10,6 @@ class MapChipField; // MapChipField クラスの宣言が必要です
 
 class Player {
 public:
-
 	// 左右
 	enum class LRDirection {
 		kRight,
@@ -32,12 +31,12 @@ public:
 	void Update();
 
 	void MovePlayer();
-	
+
 	void Draw();
 
-	//seteer
+	// seteer
 	void SetMapChipField(MapChipField* mapchipField) { mapChipField_ = mapchipField; }
-	//geter
+	// geter
 	const WorldTransform& GetWorldTransform() const { return worldTransform_; }
 	const Vector3& GetVelocity() const { return velocity_; }
 
@@ -68,7 +67,6 @@ public:
 	// 地面を探す際の高さ
 	static inline const float kGroundSearchHeight = 0.06f;
 
-
 	Vector3 CornerPosition(const Vector3& center, Corner corner);
 
 	WorldTransform worldTransform_;
@@ -85,7 +83,6 @@ public:
 
 	TurnController turnController_;
 
-
 	void CheckMapMove(const CollisionMapInfo& info);
 
 	void CheckMapCollision(CollisionMapInfo& info);
@@ -98,7 +95,6 @@ public:
 	void TurnControll();
 
 	void CeilingContact(const CollisionMapInfo& info);
-
 
 	void JumpTranformMove(const CollisionMapInfo& info);
 };
