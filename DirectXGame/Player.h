@@ -1,15 +1,77 @@
 #pragma once
 
 #include "Model.h"
-#include "TurnController.h"
+#include "ViewProjection.h"
 #include "WorldTransform.h"
-#include <algorithm>
-#include <array>
+#include "DebugText.h"
 
-class MapChipField; // MapChipField クラスの宣言が必要です
+/// <summary>
+/// 自キャラ
+/// </summary>
+
+class MapChipField;
 
 class Player {
 public:
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void Initialize(Model* model,ViewProjection* viewProjection,const Vector3& position);
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	void Update();
+
+	/// <summary>
+	/// 描画
+	/// </summary>
+	void Draw();
+
+	float x, y, z;
+
+	// += 演算子のオーバーロード
+	Vector3& operator+=(const Vector3& other) {
+		this->x += other.x;
+		this->y += other.y;
+		this->z += other.z;
+	}
+
+	const WorldTransform& GetWorldTransform() { return worldTransform_; }
+
+	Vector3& GetVelocity() {return velocity_; }
+
+	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
+
+	void MoveInput();
+
+	// マップとのあたり判定情報
+	struct CollisionMapInfo
+	{
+		bool CeilingCollisionFlag = false;
+		bool LandingFlag = false;
+		bool WallConstactFlag = false;
+		Vector3 movement_;
+	};
+
+	void MapCollision(CollisionMapInfo& info);
+
+	void MapCollisionUp(CollisionMapInfo& info);
+
+	void MapCollisionDown(CollisionMapInfo& info);
+
+	void MapCollisionLeft(CollisionMapInfo& info);
+
+	void MapCollisionRight(CollisionMapInfo& info);
+
+	void JudgmentMove(const CollisionMapInfo& info);
+
+	void CeilingContact(const CollisionMapInfo& info);
+
+	void TurnControll();
+
+	void SwitchGrandState(const CollisionMapInfo& info);
+
 	// 左右
 	enum class LRDirection {
 		kRight,
@@ -17,84 +79,57 @@ public:
 	};
 
 	// 角
-	struct CollisionMapInfo {
-		bool hitCeilingFlag = false;
-		bool landingFlag = false;
-		bool wallContactFlag = false;
-		Vector3 movement;
+	enum Corner{
+		kRightBottom,    // 右下
+		kLeftBottom,     // 左下
+		kRightTop,       // 右上
+		kLeftTop,        // 左上
+
+		kNumCorner       // 要素数
 	};
-
-	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);
-
-	enum Corner { kRightBottom, kLeftBottom, kRightTop, kLeftTop, kNumCorner };
-
-	void Update();
-
-	void MovePlayer();
-
-	void Draw();
-
-	// seteer
-	void SetMapChipField(MapChipField* mapchipField) { mapChipField_ = mapchipField; }
-	// geter
-	const WorldTransform& GetWorldTransform() const { return worldTransform_; }
-	const Vector3& GetVelocity() const { return velocity_; }
-
-	// プレイヤーの移動加速度
-	static inline const float kAcceleration = 0.1f;
-	// プレイヤーが停止する際の減速率
-	static inline const float kAttenuation = 0.05f;
-	// ジャンプ時の加速度
-	static inline const float kJumpAcceleration = 1.5f;
-	// 重力による加速度
-	static inline const float kGravityAcceleration = 1.0f;
-	// 壁に衝突した際の減速率
-	static inline const float kAttenuationWall = 0.2f;
-	// 着地時の減速率
-	static inline const float kAttenuationLanding = 0.0f;
-	// 落下速度の制限値
-	static inline const float kLimitFallSpeed = 0.5f;
-	// 走行速度の制限値
-	static inline const float kLimitRunSpeed = 0.5f;
-	// ターンするのにかかる時間
-	static inline const float kTimeTurn = 0.3f;
-	// プレイヤーの幅
-	static inline const float kWidth = 0.8f;
-	// プレイヤーの高さ
-	static inline const float kHeight = 0.8f;
-	// 隙間の幅（適切な値に修正する必要あり）
-	static inline const float kBlank = 0.035f;
-	// 地面を探す際の高さ
-	static inline const float kGroundSearchHeight = 0.06f;
 
 	Vector3 CornerPosition(const Vector3& center, Corner corner);
 
+
+private:
+
+	// ワールド変換データ
 	WorldTransform worldTransform_;
-	ViewProjection* viewProjection_ = nullptr;
+	// モデル
 	Model* model_ = nullptr;
-	uint32_t textureHandle_ = 0u;
-	MapChipField* mapChipField_ = nullptr;
+	ViewProjection* viewProjection_ = nullptr;
 
-	bool onGround_ = true;
-	LRDirection lrDirection_ = LRDirection::kRight;
-	float turnFirstRotationY_ = 0.0f;
-	float turnTimer_ = 0.0f;
 	Vector3 velocity_ = {};
+	static inline const float kAcceleration = 0.01f;
+	static inline const float kAttenuation = 0.2f;
+	static inline const float kLimitRunSpeed = 1.0f;
 
-	TurnController turnController_;
+	LRDirection lrDirection_ = LRDirection::kRight;
+	// 旋回開始時の角度
+	float turnFirstRotationY_ = 0.0f;
+	// 旋回タイマー
+	float turnTimer_ = 0.0f;
+	// 旋回時間<秒>
+	static inline const float kTimeTurn = 0.5f;
 
-	void CheckMapMove(const CollisionMapInfo& info);
+	// 接地状態フラグ
+	bool onGround_ = true;
+	// 重力加速度
+	static inline const float kGravityAcceleration = 0.05f;
+	// 最大落下速度
+	static inline const float kLimitFallSpeed = 1.0f;
+	// ジャンプ初速
+	static inline const float kJumpAcceleration = 0.7f;
 
-	void CheckMapCollision(CollisionMapInfo& info);
+	static inline const float kAttenuationLanding = 0.7f;
 
-	void CheckMapCollisionUp(CollisionMapInfo& info);
-	void CheckMapCollisionDown(CollisionMapInfo& info);
-	void CheckMapCollisionRight(CollisionMapInfo& info);
-	void CheckMapCollisionLeft(CollisionMapInfo& info);
 
-	void TurnControll();
+	MapChipField* mapChipField_ = nullptr;
+	// キャラクターのあたり判定サイズ
+	static inline const float kWidth = 0.8f;
 
-	void CeilingContact(const CollisionMapInfo& info);
+	static inline const float kHeight = 0.8f;
 
-	void JumpTranformMove(const CollisionMapInfo& info);
+	static inline const float kBlank = 18.0f;
 };
+
