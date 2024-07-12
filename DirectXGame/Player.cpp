@@ -10,6 +10,7 @@
 #include <iostream>
 #include <numbers>
 
+
 void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) {
 
 	// NULLチェック
