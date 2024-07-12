@@ -5,13 +5,7 @@
 #include <cassert>
 
 GameScene::GameScene() {
-	// メンバ変数の初期化
-	model_ = nullptr;
-	playerResorces_ = nullptr;
-	debugCamera_ = nullptr;
-	mapChipField_ = nullptr;
-	player_ = nullptr;
-	cameraController_ = nullptr;
+
 }
 
 GameScene::~GameScene() {
@@ -22,6 +16,7 @@ GameScene::~GameScene() {
 	delete mapChipField_;
 	delete player_;
 	delete cameraController_;
+	delete enemy_;
 
 	// ブロックのメモリ解放
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -42,6 +37,7 @@ void GameScene::Initialize() {
 	model_ = Model::CreateFromOBJ("block");
 	//model_ = Model::Create();
 	playerResorces_ = Model::CreateFromOBJ("player");
+	modelEnemy_ = Model::CreateFromOBJ("enemy");
 
 	// ワールドトランスフォームとビュー・プロジェクションの初期化
 	worldTransform_.Initialize();
@@ -56,11 +52,15 @@ void GameScene::Initialize() {
 
 	// プレイヤーの初期位置の取得
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(5, 18);
+	Vector3 enmyPosition = mapChipField_->GetMapChipPositionByIndex(18, 18);
 
 	// プレイヤーの生成と初期化
 	player_ = new Player();
 	player_->SetMapChipField(mapChipField_);
 	player_->Initialize(playerResorces_, &viewProjection_, playerPosition);
+
+	enemy_ = new Enemy();
+	enemy_->Initialize(modelEnemy_, &viewProjection_, enmyPosition);
 
 	// ブロックの生成
 	GenerateBlocks();
@@ -132,6 +132,7 @@ void GameScene::Update() {
 
 	viewProjection_.TransferMatrix();
 	player_->Update();
+	enemy_->Update();
 }
 
 void GameScene::Draw() {
@@ -151,6 +152,8 @@ void GameScene::Draw() {
 
 	// プレイヤーの描画
 	player_->Draw();
+
+	enemy_->Draw();
 
 	// ブロックの描画
 	for (const auto& worldTransformBlockLine : worldTransformBlocks_) {

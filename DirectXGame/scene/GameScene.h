@@ -11,6 +11,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "CameraController.h"
+#include "Enemy.h"
 
 /// <summary>
 /// ゲームシーン
@@ -36,6 +37,10 @@ public: // メンバ関数
 	CameraController* cameraController_;
 
 	Player* player_ = nullptr;
+
+	Model* modelEnemy_ = nullptr;
+
+	Enemy* enemy_ = nullptr;
 
 	void GenerateBlocks();
 
