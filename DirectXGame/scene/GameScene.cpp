@@ -4,9 +4,7 @@
 #include "affine.h"
 #include <cassert>
 
-GameScene::GameScene() {
-
-}
+GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 	// メモリの解放
@@ -16,7 +14,10 @@ GameScene::~GameScene() {
 	delete mapChipField_;
 	delete player_;
 	delete cameraController_;
-	delete enemy_;
+
+	for (Enemy* enemy : enemies_) {
+		delete enemy;
+	}
 
 	// ブロックのメモリ解放
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -35,7 +36,7 @@ void GameScene::Initialize() {
 
 	// モデルの作成
 	model_ = Model::CreateFromOBJ("block");
-	//model_ = Model::Create();
+	// model_ = Model::Create();
 	playerResorces_ = Model::CreateFromOBJ("player");
 	modelEnemy_ = Model::CreateFromOBJ("enemy");
 
@@ -52,15 +53,28 @@ void GameScene::Initialize() {
 
 	// プレイヤーの初期位置の取得
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(5, 17);
-	Vector3 enmyPosition = mapChipField_->GetMapChipPositionByIndex(18, 18);
+	// Vector3 enmyPosition = mapChipField_->GetMapChipPositionByIndex(18, 18);
 
 	// プレイヤーの生成と初期化
 	player_ = new Player();
 	player_->SetMapChipField(mapChipField_);
 	player_->Initialize(playerResorces_, &viewProjection_, playerPosition);
 
-	enemy_ = new Enemy();
-	enemy_->Initialize(modelEnemy_, &viewProjection_, enmyPosition);
+	for (int32_t i = 0; i < 3; i++) {
+		Enemy* newEnemy = new Enemy();
+		Enemy* newEnemy1 = new Enemy();
+		Enemy* newEnemy2 = new Enemy();
+		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(18, 18);
+		Vector3 enemyPosition1 = mapChipField_->GetMapChipPositionByIndex(18, 17);
+		Vector3 enemyPosition2 = mapChipField_->GetMapChipPositionByIndex(18, 16);
+		newEnemy->Initialize(modelEnemy_, &viewProjection_, enemyPosition);
+		newEnemy1->Initialize(modelEnemy_, &viewProjection_, enemyPosition1);
+		newEnemy2->Initialize(modelEnemy_, &viewProjection_, enemyPosition2);
+
+		enemies_.push_back(newEnemy);
+		enemies_.push_back(newEnemy1);
+		enemies_.push_back(newEnemy2);
+	}
 
 	// ブロックの生成
 	GenerateBlocks();
@@ -132,7 +146,27 @@ void GameScene::Update() {
 
 	viewProjection_.TransferMatrix();
 	player_->Update();
-	enemy_->Update();
+
+	for (Enemy* enemy : enemies_) {
+		enemy->Update();
+	}
+
+	CheckAllCollisions();
+}
+
+void GameScene::CheckAllCollisions() {
+#pragma region Player-Enemy Collisions
+	AABB playerAABB = player_->GetAABB();
+	for (Enemy* enemy : enemies_) {
+		AABB enemyAABB = enemy->GetAABB();
+		if (playerAABB.min.x <= enemyAABB.max.x && playerAABB.max.x >= enemyAABB.min.x && playerAABB.min.y <= enemyAABB.max.y && playerAABB.max.y >= enemyAABB.min.y &&
+		    playerAABB.min.z <= enemyAABB.max.z && playerAABB.max.z >= enemyAABB.min.z) {
+			// 衝突している場合の処理
+			player_->OnCollision(enemy);
+			enemy->OnCollision(player_);
+		}
+	}
+#pragma endregion
 }
 
 void GameScene::Draw() {
@@ -153,7 +187,9 @@ void GameScene::Draw() {
 	// プレイヤーの描画
 	player_->Draw();
 
-	enemy_->Draw();
+	for (Enemy* enemy : enemies_) {
+		enemy->Draw();
+	}
 
 	// ブロックの描画
 	for (const auto& worldTransformBlockLine : worldTransformBlocks_) {

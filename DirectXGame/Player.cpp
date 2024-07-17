@@ -9,6 +9,7 @@
 #include <cassert>
 #include <iostream>
 #include <numbers>
+#include <AABB.h>
 
 void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) {
 
@@ -57,6 +58,29 @@ void Player::Draw() {
 
 	// 3Dモデルを描画
 	model_->Draw(worldTransform_, *viewProjection_);
+}
+
+Vector3 Player::GetWorldPosition() const {
+    Vector3 worldPos;
+    // ワールド行列から平行移動成分を取り出す
+    worldPos.x = worldTransform_.matWorld_.m[3][0];
+    worldPos.y = worldTransform_.matWorld_.m[3][1];
+    worldPos.z = worldTransform_.matWorld_.m[3][2];
+    return worldPos;
+}
+
+AABB Player::GetAABB() const {
+	Vector3 worldPos = GetWorldPosition();
+	AABB aabb;
+	aabb.min = {worldPos.x - radius_, worldPos.y - radius_, worldPos.z - radius_};
+	aabb.max = {worldPos.x + radius_, worldPos.y + radius_, worldPos.z + radius_};
+	return aabb;
+}
+
+void Player::OnCollision(const Enemy* enemy) {
+	(void)enemy; // 現在は使用しない
+	// 仮処理としてジャンプを開始
+	velocity_ += Vector3(0.0f, 1.0f, 0.0f); // 初速を適当に設定
 }
 
 void Player::MovePlayer() {

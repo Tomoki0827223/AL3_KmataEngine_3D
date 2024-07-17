@@ -1,8 +1,11 @@
 #pragma once
 
 #include "Model.h"
+#include "AABB.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+
+class Player;
 
 class Enemy {
 
@@ -14,7 +17,17 @@ public:
 
 	void Draw();
 
+	// ワールド座標を取得する関数
+	Vector3 GetWorldPosition() const;
+	// AABBを取得する関数
+	AABB GetAABB() const;
+	// 衝突応答
+	void OnCollision(const Player* player);
+
 private:
+
+	Vector3 worldPos_;
+	float radius_;
 
 	static inline const float kWalkSpeed = 0.02f;
 	static inline const float kWalkMotionAngleStart = 0.0f;

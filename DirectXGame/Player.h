@@ -4,8 +4,10 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "DebugText.h"
+#include "AABB.h"
 
 class MapChipField; // MapChipField クラスの宣言が必要です
+class Enemy;
 
 class Player {
 public:
@@ -46,6 +48,14 @@ public:
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 	Vector3& GetVelocity() {return velocity_; }
 
+	//2-10
+	//  ワールド座標を取得する関数
+	Vector3 GetWorldPosition() const;
+	// AABBを取得する関数
+	AABB GetAABB() const;
+	// 衝突応答
+	void OnCollision(const Enemy* enemy);
+
 	void MovePlayer();
 
 	void CheckMapCollision(CollisionMapInfo& info);
@@ -67,6 +77,9 @@ public:
 
 private:
 
+	Vector3 worldPos_;
+	float radius_;
+	
 	bool onGround_ = true;
 
 	// ワールド変換データ

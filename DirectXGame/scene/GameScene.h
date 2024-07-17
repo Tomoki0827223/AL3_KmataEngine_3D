@@ -40,9 +40,11 @@ public: // メンバ関数
 
 	Model* modelEnemy_ = nullptr;
 
-	Enemy* enemy_ = nullptr;
+	std::list<Enemy*> enemies_;
 
 	void GenerateBlocks();
+
+	void CheckAllCollisions();
 
 	// 縦横ブロック配列
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
