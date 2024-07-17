@@ -50,9 +50,9 @@ public:
 
 	//2-10
 	//  ワールド座標を取得する関数
-	Vector3 GetWorldPosition() const;
+	Vector3 GetWorldPosition();
 	// AABBを取得する関数
-	AABB GetAABB() const;
+	AABB GetAABB();
 	// 衝突応答
 	void OnCollision(const Enemy* enemy);
 

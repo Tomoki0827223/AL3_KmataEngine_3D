@@ -4,3 +4,8 @@ void AABB::CalculateAABB(const Vector3& center, float radius, Vector3& outMin, V
 	outMin = {center.x - radius, center.y - radius, center.z - radius};
 	outMax = {center.x + radius, center.y + radius, center.z + radius};
 }
+
+//void AABB::Iscollision(const float aabb1, const float aabb2) 
+//{
+//
+//}

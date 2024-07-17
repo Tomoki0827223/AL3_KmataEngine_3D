@@ -4,6 +4,7 @@
 #include "AABB.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "Player.h"
 
 class Player;
 
@@ -17,10 +18,9 @@ public:
 
 	void Draw();
 
-	// ワールド座標を取得する関数
-	Vector3 GetWorldPosition() const;
+
 	// AABBを取得する関数
-	AABB GetAABB() const;
+	AABB GetAABB();
 	// 衝突応答
 	void OnCollision(const Player* player);
 

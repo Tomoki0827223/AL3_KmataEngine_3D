@@ -39,23 +39,12 @@ void Enemy::Draw()
 
 }
 
-Vector3 Enemy::GetWorldPosition() const {
-	Vector3 worldPos;
-	// ワールド行列から平行移動成分を取り出す
-	worldPos.x = worldTranform_.matWorld_.m[3][0];
-	worldPos.y = worldTranform_.matWorld_.m[3][1];
-	worldPos.z = worldTranform_.matWorld_.m[3][2];
-	return worldPos;
-}
-
-AABB Enemy::GetAABB() const {
-	Vector3 worldPos = GetWorldPosition();
+AABB Enemy::GetAABB(){
+	Vector3 worldPos{};
 	AABB aabb;
 	aabb.min = {worldPos.x - radius_, worldPos.y - radius_, worldPos.z - radius_};
 	aabb.max = {worldPos.x + radius_, worldPos.y + radius_, worldPos.z + radius_};
 	return aabb;
 }
 
-void Enemy::OnCollision(const Player* player) {
-	(void)player; // 現在は使用しない
-}
+void Enemy::OnCollision(const Player* player) { (void)player; }

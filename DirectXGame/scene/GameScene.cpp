@@ -62,18 +62,18 @@ void GameScene::Initialize() {
 
 	for (int32_t i = 0; i < 3; i++) {
 		Enemy* newEnemy = new Enemy();
-		Enemy* newEnemy1 = new Enemy();
-		Enemy* newEnemy2 = new Enemy();
+		//Enemy* newEnemy1 = new Enemy();
+		//Enemy* newEnemy2 = new Enemy();
 		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(18, 18);
-		Vector3 enemyPosition1 = mapChipField_->GetMapChipPositionByIndex(18, 17);
-		Vector3 enemyPosition2 = mapChipField_->GetMapChipPositionByIndex(18, 16);
+		//Vector3 enemyPosition1 = mapChipField_->GetMapChipPositionByIndex(18, 17);
+		//Vector3 enemyPosition2 = mapChipField_->GetMapChipPositionByIndex(18, 16);
 		newEnemy->Initialize(modelEnemy_, &viewProjection_, enemyPosition);
-		newEnemy1->Initialize(modelEnemy_, &viewProjection_, enemyPosition1);
-		newEnemy2->Initialize(modelEnemy_, &viewProjection_, enemyPosition2);
+		//newEnemy1->Initialize(modelEnemy_, &viewProjection_, enemyPosition1);
+		//newEnemy2->Initialize(modelEnemy_, &viewProjection_, enemyPosition2);
 
 		enemies_.push_back(newEnemy);
-		enemies_.push_back(newEnemy1);
-		enemies_.push_back(newEnemy2);
+		//enemies_.push_back(newEnemy1);
+		//enemies_.push_back(newEnemy2);
 	}
 
 	// ブロックの生成
@@ -156,16 +156,19 @@ void GameScene::Update() {
 
 void GameScene::CheckAllCollisions() {
 #pragma region Player-Enemy Collisions
-	AABB playerAABB = player_->GetAABB();
+
+	AABB aabb1, aabb2;
+
+	aabb1 = player_->GetAABB();
+
 	for (Enemy* enemy : enemies_) {
-		AABB enemyAABB = enemy->GetAABB();
-		if (playerAABB.min.x <= enemyAABB.max.x && playerAABB.max.x >= enemyAABB.min.x && playerAABB.min.y <= enemyAABB.max.y && playerAABB.max.y >= enemyAABB.min.y &&
-		    playerAABB.min.z <= enemyAABB.max.z && playerAABB.max.z >= enemyAABB.min.z) {
-			// 衝突している場合の処理
-			player_->OnCollision(enemy);
-			enemy->OnCollision(player_);
-		}
+
+		
+		aabb2 = enemy->GetAABB();
+		player_->OnCollision(enemy);
+		enemy->OnCollision(player_);
 	}
+
 #pragma endregion
 }
 

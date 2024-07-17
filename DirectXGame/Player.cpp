@@ -60,7 +60,7 @@ void Player::Draw() {
 	model_->Draw(worldTransform_, *viewProjection_);
 }
 
-Vector3 Player::GetWorldPosition() const {
+Vector3 Player::GetWorldPosition(){
     Vector3 worldPos;
     // ワールド行列から平行移動成分を取り出す
     worldPos.x = worldTransform_.matWorld_.m[3][0];
@@ -69,18 +69,22 @@ Vector3 Player::GetWorldPosition() const {
     return worldPos;
 }
 
-AABB Player::GetAABB() const {
+AABB Player::GetAABB() 
+{ 
 	Vector3 worldPos = GetWorldPosition();
+
 	AABB aabb;
 	aabb.min = {worldPos.x - radius_, worldPos.y - radius_, worldPos.z - radius_};
 	aabb.max = {worldPos.x + radius_, worldPos.y + radius_, worldPos.z + radius_};
 	return aabb;
+
+	return aabb; 
 }
 
 void Player::OnCollision(const Enemy* enemy) {
 	(void)enemy; // 現在は使用しない
 	// 仮処理としてジャンプを開始
-	velocity_ += Vector3(0.0f, 1.0f, 0.0f); // 初速を適当に設定
+	velocity_ += Vector3(0.0f, 4.0f, 0.0f); // 初速を適当に設定
 }
 
 void Player::MovePlayer() {
