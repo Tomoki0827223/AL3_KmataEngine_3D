@@ -46,6 +46,9 @@ public: // メンバ関数
 
 	void CheckAllCollisions();
 
+	// 衝突判定関数
+	bool IsCollision(const AABB& aabb1, const AABB& aabb2);
+
 	// 縦横ブロック配列
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 
