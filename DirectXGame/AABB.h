@@ -1,11 +1,9 @@
 #pragma once
+#include <Vector3.h>
 
-#include "Vector3.h"
-
-class AABB {
-public:
-	Vector3 min;
-	Vector3 max;
-	void CalculateAABB(const Vector3& center, float radius, Vector3& outMin, Vector3& outMax);
-	//void Iscollision(const float aabb1, const float aabb2);
+struct AABB {
+	Vector3 min; // AABBの最小座標
+	Vector3 max; // AABBの最大座標
 };
+// 衝突判定関数
+bool IsCollisionAABB(const AABB& aabb1, const AABB& aabb2);

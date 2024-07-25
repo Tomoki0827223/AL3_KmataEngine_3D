@@ -18,6 +18,7 @@ GameScene::~GameScene() {
 	for (Enemy* enemy : enemies_) {
 		delete enemy;
 	}
+	enemies_.clear();
 
 	// ブロックのメモリ解放
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -53,7 +54,7 @@ void GameScene::Initialize() {
 
 	// プレイヤーの初期位置の取得
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(5, 17);
-	// Vector3 enmyPosition = mapChipField_->GetMapChipPositionByIndex(18, 18);
+	Vector3 enmyPosition = mapChipField_->GetMapChipPositionByIndex(18, 18);
 
 	// プレイヤーの生成と初期化
 	player_ = new Player();
@@ -62,18 +63,18 @@ void GameScene::Initialize() {
 
 	for (int32_t i = 0; i < 3; i++) {
 		Enemy* newEnemy = new Enemy();
-		//Enemy* newEnemy1 = new Enemy();
-		//Enemy* newEnemy2 = new Enemy();
+		Enemy* newEnemy1 = new Enemy();
+		Enemy* newEnemy2 = new Enemy();
 		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(18, 18);
-		//Vector3 enemyPosition1 = mapChipField_->GetMapChipPositionByIndex(18, 17);
-		//Vector3 enemyPosition2 = mapChipField_->GetMapChipPositionByIndex(18, 16);
+		Vector3 enemyPosition1 = mapChipField_->GetMapChipPositionByIndex(18, 17);
+		Vector3 enemyPosition2 = mapChipField_->GetMapChipPositionByIndex(18, 16);
 		newEnemy->Initialize(modelEnemy_, &viewProjection_, enemyPosition);
-		//newEnemy1->Initialize(modelEnemy_, &viewProjection_, enemyPosition1);
-		//newEnemy2->Initialize(modelEnemy_, &viewProjection_, enemyPosition2);
+		newEnemy1->Initialize(modelEnemy_, &viewProjection_, enemyPosition1);
+		newEnemy2->Initialize(modelEnemy_, &viewProjection_, enemyPosition2);
 
 		enemies_.push_back(newEnemy);
-		//enemies_.push_back(newEnemy1);
-		//enemies_.push_back(newEnemy2);
+		enemies_.push_back(newEnemy1);
+		enemies_.push_back(newEnemy2);
 	}
 
 	// ブロックの生成
@@ -153,35 +154,7 @@ void GameScene::Update() {
 
 	CheckAllCollisions();
 }
-
-void GameScene::CheckAllCollisions() {
-#pragma region Player-Enemy Collisions
-
-	AABB aabb1, aabb2;
-
-	aabb1 = player_->GetAABB();
-
-	for (Enemy* enemy : enemies_) {
-
-		
-		aabb2 = enemy->GetAABB();
-
-		if (Is) {
-		}
-		player_->OnCollision(enemy);
-		enemy->OnCollision(player_);
-	}
-
-#pragma endregion
-}
-
-bool GameScene::IsCollision(const AABB& aabb1, const AABB& aabb2) 
-{
-	return (aabb1.min.x <= aabb2.max.x && aabb1.max.x >= aabb2.min.x) 
-		&& (aabb1.min.y <= aabb2.max.y && aabb1.max.y >= aabb2.min.y) 
-		&& (aabb1.min.z <= aabb2.max.z && aabb1.max.z >= aabb2.min.z);
-}
-
+	
 void GameScene::Draw() {
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
@@ -220,4 +193,28 @@ void GameScene::Draw() {
 	Sprite::PreDraw(commandList);
 	// ここに前景スプライトの描画処理を追加
 	Sprite::PostDraw();
+}
+
+void GameScene::CheckAllCollisions() {
+
+#pragma region 自キャラと敵キャラの当たり判定
+
+	// 判定対象1と2の座標
+	AABB aabb1, aabb2;
+
+	// 自キャラの座標
+	aabb1 = player_->GetAABB();
+	for (Enemy* enemy : enemies_) {
+		// 敵弾の座標
+		aabb2 = enemy->GetAABB();
+
+		// AABB同士の交差判定(
+		if (IsCollisionAABB(aabb1, aabb2)) {
+			// 自キャラの衝突判定コールバックを呼び出す
+			player_->OnCollision(enemy);
+			// 敵弾の衝突判定コールバックを呼び出す
+			enemy->OnCollision(player_);
+		}
+	}
+#pragma endregion
 }

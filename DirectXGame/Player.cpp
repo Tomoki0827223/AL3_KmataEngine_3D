@@ -82,9 +82,9 @@ AABB Player::GetAABB()
 }
 
 void Player::OnCollision(const Enemy* enemy) {
-	(void)enemy; // 現在は使用しない
-	// 仮処理としてジャンプを開始
-	velocity_ += Vector3(0.0f, 4.0f, 0.0f); // 初速を適当に設定
+	(void)enemy;
+	// ジャンプ開始
+	velocity_ += Vector3(0, kJumpAcceleration / 4.0f, 0);
 }
 
 void Player::MovePlayer() {

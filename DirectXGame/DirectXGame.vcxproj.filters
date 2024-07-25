@@ -194,9 +194,6 @@
     <ClInclude Include="MapChipField.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Skydome.h">
       <Filter>ヘッダー ファイル\scene</Filter>
     </ClInclude>
@@ -214,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="AABB.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー ファイル\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
