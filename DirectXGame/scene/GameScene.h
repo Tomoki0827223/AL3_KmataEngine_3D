@@ -13,6 +13,7 @@
 #include "CameraController.h"
 #include "Enemy.h"
 #include "AABB.h"
+#include "DethParticles.h"
 
 /// <summary>
 /// ゲームシーン
@@ -26,8 +27,9 @@ public: // メンバ関数
 	GameScene();
 
 	Model* model_ = nullptr;
-
 	Model* playerResorces_ = nullptr;
+	Model* modelEnemy_ = nullptr;
+	Model* modelParticles_ = nullptr;
 
 	WorldTransform worldTransform_;
 
@@ -38,9 +40,7 @@ public: // メンバ関数
 	CameraController* cameraController_;
 
 	Player* player_ = nullptr;
-
-	Model* modelEnemy_ = nullptr;
-
+	DethParticles* dethParticles_ = nullptr;
 	std::list<Enemy*> enemies_;
 
 	void GenerateBlocks();

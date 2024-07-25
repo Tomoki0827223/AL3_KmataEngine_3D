@@ -10,6 +10,7 @@ GameScene::~GameScene() {
 	// メモリの解放
 	delete model_;
 	delete playerResorces_;
+	delete modelParticles_;
 	delete debugCamera_;
 	delete mapChipField_;
 	delete player_;
@@ -40,6 +41,7 @@ void GameScene::Initialize() {
 	// model_ = Model::Create();
 	playerResorces_ = Model::CreateFromOBJ("player");
 	modelEnemy_ = Model::CreateFromOBJ("enemy");
+	modelParticles_ = Model::CreateFromOBJ("dethParticles");
 
 	// ワールドトランスフォームとビュー・プロジェクションの初期化
 	worldTransform_.Initialize();
@@ -60,6 +62,10 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	player_->SetMapChipField(mapChipField_);
 	player_->Initialize(playerResorces_, &viewProjection_, playerPosition);
+
+	//パーティクル生成
+	dethParticles_ = new DethParticles;
+	dethParticles_->Initialize(modelParticles_, &viewProjection_, playerPosition);
 
 	for (int32_t i = 0; i < 3; i++) {
 		Enemy* newEnemy = new Enemy();
