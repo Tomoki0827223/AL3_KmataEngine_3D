@@ -3,7 +3,7 @@
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "DebugText.h"
+//#include "DebugText.h"
 #include "AABB.h"
 
 class MapChipField; // MapChipField クラスの宣言が必要です
@@ -74,6 +74,7 @@ public:
 
 	Vector3 CornerPosition(const Vector3& center, Corner corner);
 
+	bool IsDead() const { return isDead_; }
 
 private:
 
@@ -81,6 +82,8 @@ private:
 	float radius_;
 	
 	bool onGround_ = true;
+
+	bool isDead_ = false;
 
 	// ワールド変換データ
 	WorldTransform worldTransform_;
