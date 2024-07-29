@@ -40,7 +40,7 @@ public: // メンバ関数
 	CameraController* cameraController_;
 
 	Player* player_ = nullptr;
-	DethParticles* dethParticles_ = nullptr;
+
 	std::list<Enemy*> enemies_;
 
 	void GenerateBlocks();
@@ -52,6 +52,8 @@ public: // メンバ関数
 
 	int isDebugCameraActive_ = 0u;
 	DebugCamera* debugCamera_ = nullptr;
+
+	DeathParticles* dethParticles_ = nullptr;
 
 	/// <summary>
 	/// デストラクタ
