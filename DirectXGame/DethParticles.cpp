@@ -1,5 +1,4 @@
 #include "DethParticles.h"
-#include <algorithm>
 
 void DeathParticles::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) {
 	// モデルを初期化

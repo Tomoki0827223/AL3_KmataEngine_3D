@@ -5,6 +5,7 @@
 #include "WorldTransform.h"
 #include "affine.h"
 #include <array>
+#include <algorithm>
 
 
 class DeathParticles {

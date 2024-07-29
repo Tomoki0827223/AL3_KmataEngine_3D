@@ -14,6 +14,10 @@
 #include "Enemy.h"
 #include "AABB.h"
 #include "DethParticles.h"
+#include "AxisIndicator.h"
+#include "TextureManager.h"
+#include "affine.h"
+#include <cassert>
 
 /// <summary>
 /// ゲームシーン
