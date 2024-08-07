@@ -103,6 +103,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// ImGui受付終了
 		imguiManager->End();
 
+		DrawScene();
 		// 描画開始
 		dxCommon->PreDraw();
 		// ゲームシーンの描画
@@ -110,7 +111,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// タイトルシーンの描画
 		// titleScene->Draw();
 		// 現在シーンの描画
-		DrawScene();
+	
 		// 軸表示の描画
 		axisIndicator->Draw();
 		// プリミティブ描画のリセット
