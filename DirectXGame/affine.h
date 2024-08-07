@@ -1,9 +1,9 @@
 #pragma once
 #include "MathUtilityForText.h"
-#include "math.h"
+#include "Matrix4x4.h"
+#include "Vector3.h"
 #include <cmath>
 #include <numbers>
-#include "Matrix4x4.h"
 
 Matrix4x4 MatrixMultipry(const Matrix4x4& matrix1, const Matrix4x4& matrix2);
 
