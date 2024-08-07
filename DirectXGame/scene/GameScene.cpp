@@ -1,8 +1,4 @@
 #include "GameScene.h"
-#include "AxisIndicator.h"
-#include "TextureManager.h"
-#include "affine.h"
-#include <cassert>
 
 GameScene::GameScene() {}
 
@@ -10,9 +6,11 @@ GameScene::~GameScene() {
 	// メモリの解放
 	delete model_;
 	delete playerResorces_;
+	delete modelParticles_;
 	delete debugCamera_;
 	delete mapChipField_;
 	delete player_;
+	delete dethParticles_;
 	delete cameraController_;
 
 	for (Enemy* enemy : enemies_) {
@@ -40,6 +38,7 @@ void GameScene::Initialize() {
 	// model_ = Model::Create();
 	playerResorces_ = Model::CreateFromOBJ("player");
 	modelEnemy_ = Model::CreateFromOBJ("enemy");
+	modelParticles_ = Model::CreateFromOBJ("deathParticle", true);
 
 	// ワールドトランスフォームとビュー・プロジェクションの初期化
 	worldTransform_.Initialize();
@@ -53,13 +52,16 @@ void GameScene::Initialize() {
 	mapChipField_->LoadMapChipCsv("Resources/Stage/map.csv");
 
 	// プレイヤーの初期位置の取得
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(5, 17);
-	Vector3 enmyPosition = mapChipField_->GetMapChipPositionByIndex(18, 18);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(5, 18);
 
 	// プレイヤーの生成と初期化
 	player_ = new Player();
 	player_->SetMapChipField(mapChipField_);
 	player_->Initialize(playerResorces_, &viewProjection_, playerPosition);
+
+	// パーティクル生成
+	dethParticles_ = new DeathParticles;
+	dethParticles_->Initialize(modelParticles_, &viewProjection_, playerPosition);
 
 	for (int32_t i = 0; i < 3; i++) {
 		Enemy* newEnemy = new Enemy();
@@ -152,9 +154,13 @@ void GameScene::Update() {
 		enemy->Update();
 	}
 
+	if (dethParticles_) {
+		dethParticles_->Update();
+	}
+
 	CheckAllCollisions();
 }
-	
+
 void GameScene::Draw() {
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
@@ -175,6 +181,10 @@ void GameScene::Draw() {
 
 	for (Enemy* enemy : enemies_) {
 		enemy->Draw();
+	}
+
+	if (dethParticles_) {
+		dethParticles_->Draw();
 	}
 
 	// ブロックの描画

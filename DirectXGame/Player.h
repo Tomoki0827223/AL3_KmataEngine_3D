@@ -1,18 +1,17 @@
 #pragma once
 
+#include "AABB.h"
+#include "DebugText.h"
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "DebugText.h"
-#include "AABB.h"
 
 class MapChipField; // MapChipField クラスの宣言が必要です
 class Enemy;
 
 class Player {
 public:
-
-		// 左右
+	// 左右
 	enum class LRDirection {
 		kRight,
 		kLeft,
@@ -28,7 +27,7 @@ public:
 		kNumCorner // 要素数
 	};
 
-		// 角
+	// 角
 	struct CollisionMapInfo {
 		bool hitCeilingFlag = false;
 		bool landingFlag = false;
@@ -36,7 +35,7 @@ public:
 		Vector3 movement;
 	};
 
-	void Initialize(Model* model,ViewProjection* viewProjection,const Vector3& position);
+	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);
 
 	void Update();
 
@@ -44,12 +43,12 @@ public:
 
 	// seteer
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
-	//getter
+	// getter
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
-	Vector3& GetVelocity() {return velocity_; }
+	Vector3& GetVelocity() { return velocity_; }
 
-	//2-10
-	//  ワールド座標を取得する関数
+	// 2-10
+	//   ワールド座標を取得する関数
 	Vector3 GetWorldPosition();
 	// AABBを取得する関数
 	AABB GetAABB();
@@ -74,12 +73,10 @@ public:
 
 	Vector3 CornerPosition(const Vector3& center, Corner corner);
 
-
 private:
-
 	Vector3 worldPos_;
 	float radius_;
-	
+
 	bool onGround_ = true;
 
 	// ワールド変換データ
@@ -125,4 +122,3 @@ private:
 	// 地面を探す際の高さ
 	static inline const float kGroundSearchHeight = 0.06f;
 };
-

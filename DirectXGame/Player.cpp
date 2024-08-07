@@ -3,13 +3,13 @@
 #include "Input.h"
 #include "MapChipField.h"
 #include "MathUtilityForText.h"
+#include <AABB.h>
 #include <DebugText.h>
 #include <algorithm>
 #include <array>
 #include <cassert>
 #include <iostream>
 #include <numbers>
-#include <AABB.h>
 
 void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) {
 
@@ -60,17 +60,16 @@ void Player::Draw() {
 	model_->Draw(worldTransform_, *viewProjection_);
 }
 
-Vector3 Player::GetWorldPosition(){
-    Vector3 worldPos;
-    // ワールド行列から平行移動成分を取り出す
-    worldPos.x = worldTransform_.matWorld_.m[3][0];
-    worldPos.y = worldTransform_.matWorld_.m[3][1];
-    worldPos.z = worldTransform_.matWorld_.m[3][2];
-    return worldPos;
+Vector3 Player::GetWorldPosition() {
+	Vector3 worldPos;
+	// ワールド行列から平行移動成分を取り出す
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+	return worldPos;
 }
 
-AABB Player::GetAABB() 
-{ 
+AABB Player::GetAABB() {
 	Vector3 worldPos = GetWorldPosition();
 
 	AABB aabb;
@@ -78,7 +77,7 @@ AABB Player::GetAABB()
 	aabb.max = {worldPos.x + radius_, worldPos.y + radius_, worldPos.z + radius_};
 	return aabb;
 
-	return aabb; 
+	return aabb;
 }
 
 void Player::OnCollision(const Enemy* enemy) {
@@ -89,7 +88,7 @@ void Player::OnCollision(const Enemy* enemy) {
 
 void Player::MovePlayer() {
 
-		// 移動入力
+	// 移動入力
 	// 接地状態
 	if (onGround_) {
 		// 左右移動操作
@@ -136,7 +135,7 @@ void Player::MovePlayer() {
 			velocity_.x *= (1.0f - kAttenuation);
 		}
 		if (Input::GetInstance()->PushKey(DIK_UP)) {
-			
+
 			// ジャンプ初速
 			velocity_.y += kJumpAcceleration;
 			// 空中
@@ -147,7 +146,6 @@ void Player::MovePlayer() {
 		// 落下速度制限
 		velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
 	}
-
 }
 
 void Player::CeilingContact(const CollisionMapInfo& info) {
@@ -249,16 +247,16 @@ void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftBottom]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
 	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex - 1);
-	
+
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
-	
+
 	// 右下点の判定
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightBottom]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
 	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex - 1);
-	
+
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
@@ -276,7 +274,6 @@ void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
 			info.landingFlag = true;
 		}
 	}
-
 }
 
 void Player::CheckMapCollisionRight(CollisionMapInfo& info) {
@@ -397,7 +394,6 @@ void Player::GraundSetting(const CollisionMapInfo& info) {
 void Player::JudgmentMove(const CollisionMapInfo& info) {
 	// 移動
 	worldTransform_.translation_ += info.movement;
-
 }
 
 void Player::TurnControll() {

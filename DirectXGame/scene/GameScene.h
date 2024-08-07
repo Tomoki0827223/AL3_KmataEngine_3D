@@ -1,22 +1,28 @@
 #pragma once
 
+#include "AABB.h"
 #include "Audio.h"
+#include "AxisIndicator.h"
+#include "CameraController.h"
 #include "DebugCamera.h"
+#include "DethParticles.h"
 #include "DirectXCommon.h"
+#include "Enemy.h"
 #include "Input.h"
 #include "MapChipField.h"
 #include "Model.h"
 #include "Player.h"
 #include "Sprite.h"
+#include "TextureManager.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "CameraController.h"
-#include "Enemy.h"
-#include "AABB.h"
+#include "affine.h"
+#include <cassert>
 
 /// <summary>
 /// ゲームシーン
 /// </summary>
+
 class GameScene {
 
 public: // メンバ関数
@@ -26,8 +32,9 @@ public: // メンバ関数
 	GameScene();
 
 	Model* model_ = nullptr;
-
 	Model* playerResorces_ = nullptr;
+	Model* modelEnemy_ = nullptr;
+	Model* modelParticles_ = nullptr;
 
 	WorldTransform worldTransform_;
 
@@ -38,8 +45,6 @@ public: // メンバ関数
 	CameraController* cameraController_;
 
 	Player* player_ = nullptr;
-
-	Model* modelEnemy_ = nullptr;
 
 	std::list<Enemy*> enemies_;
 
@@ -52,6 +57,8 @@ public: // メンバ関数
 
 	int isDebugCameraActive_ = 0u;
 	DebugCamera* debugCamera_ = nullptr;
+
+	DeathParticles* dethParticles_ = nullptr;
 
 	/// <summary>
 	/// デストラクタ
