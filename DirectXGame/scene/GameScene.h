@@ -67,8 +67,6 @@ public: // メンバ関数
 
 	bool IsFinished() const { return finished_; }
 
-	DeathParticles* dethParticles_ = nullptr;
-
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
