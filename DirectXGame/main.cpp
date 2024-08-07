@@ -4,7 +4,7 @@
 #include "ImGuiManager.h"
 #include "PrimitiveDrawer.h"
 #include "TextureManager.h"
-#include "TitleSence.h"
+#include "TitleScene.h"
 #include "WinApp.h"
 
 GameScene* gameScene = nullptr;

@@ -45,7 +45,7 @@ void GameScene::Initialize() {
 	playerResorces_ = Model::CreateFromOBJ("player");
 	modelEnemy_ = Model::CreateFromOBJ("enemy");
 	modelParticles_ = Model::CreateFromOBJ("deathParticle");
-	modelSkydome_ = Model::CreateFromOBJ("skydome");
+	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
 	// ワールドトランスフォームとビュー・プロジェクションの初期化
 	worldTransform_.Initialize();
@@ -296,39 +296,41 @@ void GameScene::Draw() {
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
 
-	// プレイヤーの描画
-	player_->Draw();
-
-	for (Enemy* enemy : enemies_) {
-		enemy->Draw();
-	}
-
-	// ブロックの描画
-	for (const auto& worldTransformBlockLine : worldTransformBlocks_) {
-		for (const auto& worldTransformBlock : worldTransformBlockLine) {
-			if (worldTransformBlock) {
-				model_->Draw(*worldTransformBlock, viewProjection_);
-			}
-		}
-	}
-
-	if (!player_->IsDead()) {
-		player_->Draw();
-	}
-
-	if (deathParticles_) {
-		deathParticles_->Draw();
-	}
-
-	skydome_->Draw();
+	//// プレイヤーの描画
+	//player_->Draw();
 
 	switch (phace_) {
 	case GameScene::Phase::kPlay:
-;
+
+		skydome_->Draw();
+
 		// 自キャラの描画
 		player_->Draw();
+
+		for (Enemy* enemy : enemies_) {
+			enemy->Draw();
+		}
+
+		if (!player_->IsDead()) {
+			player_->Draw();
+		}
+
+
+		// ブロックの描画
+		for (const auto& worldTransformBlockLine : worldTransformBlocks_) {
+			for (const auto& worldTransformBlock : worldTransformBlockLine) {
+				if (worldTransformBlock) {
+					model_->Draw(*worldTransformBlock, viewProjection_);
+				}
+			}
+		}
+
 		break;
 	case GameScene::Phase::kDeath:
+
+		if (deathParticles_) {
+			deathParticles_->Draw();
+		}
 
 		break;
 	}
