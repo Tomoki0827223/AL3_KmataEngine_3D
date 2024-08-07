@@ -1,9 +1,5 @@
 #pragma once
 #include "GameScene.h"
-#include "AxisIndicator.h"
-#include "TextureManager.h"
-#include "affine.h"
-#include <cassert>
 
 GameScene::GameScene() {}
 
@@ -68,6 +64,10 @@ void GameScene::Initialize() {
 	// プレイヤーの生成と初期化
 	player_->SetMapChipField(mapChipField_);
 	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition);
+
+	// パーティクル生成
+	dethParticles_ = new DeathParticles;
+	dethParticles_->Initialize(modelParticles_, &viewProjection_, playerPosition);
 
 	for (int32_t i = 0; i < 3; i++) {
 		Enemy* newEnemy = new Enemy();

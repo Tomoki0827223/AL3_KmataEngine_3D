@@ -4,6 +4,7 @@
 #include "CameraController.h"
 #include "DethParticles.h"
 #include "DebugCamera.h"
+#include "DethParticles.h"
 #include "DirectXCommon.h"
 #include "Enemy.h"
 #include "Input.h"
@@ -12,6 +13,7 @@
 #include "Player.h"
 #include "Skydome.h"
 #include "Sprite.h"
+#include "TextureManager.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
@@ -64,6 +66,8 @@ public: // メンバ関数
 	bool finished_ = false;
 
 	bool IsFinished() const { return finished_; }
+
+	DeathParticles* dethParticles_ = nullptr;
 
 	/// <summary>
 	/// デストラクタ

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "AABB.h"
+#include "DebugText.h"
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
