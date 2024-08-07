@@ -120,7 +120,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="Skydome.cpp" />
-    <ClCompile Include="TitleSence.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="TurnController.cpp" />
     <ClCompile Include="WorldTransformEX.cpp" />
   </ItemGroup>
@@ -163,7 +163,7 @@
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="Skydome.h" />
     <ClInclude Include="MathUtilityForText.h" />
-    <ClInclude Include="TitleSence.h" />
+    <ClInclude Include="TitleScene.h" />
     <ClInclude Include="TurnController.h" />
   </ItemGroup>
   <ItemGroup>

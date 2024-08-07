@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "DirectXCommon.h"
@@ -11,6 +10,7 @@
 /// </summary>
 class TitleScene {
 public:
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
