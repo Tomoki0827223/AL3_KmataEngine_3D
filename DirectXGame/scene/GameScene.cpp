@@ -14,7 +14,7 @@ GameScene::~GameScene() {
 	delete mapChipField_;
 	delete player_;
 	delete cameraController_;
-	//delete dethParticles_;
+	delete deathParticles_;
 	delete modelParticles_;
 
 	for (Enemy* enemy : enemies_) {
@@ -45,7 +45,7 @@ void GameScene::Initialize() {
 	playerResorces_ = Model::CreateFromOBJ("player");
 	modelEnemy_ = Model::CreateFromOBJ("enemy");
 	modelParticles_ = Model::CreateFromOBJ("deathParticle");
-	modelSkydome_ = Model::CreateFromOBJ("Skydome");
+	modelSkydome_ = Model::CreateFromOBJ("skydome");
 
 	// ワールドトランスフォームとビュー・プロジェクションの初期化
 	worldTransform_.Initialize();
@@ -169,7 +169,7 @@ void GameScene::GenerateBlocks() {
 
 void GameScene::Update() {
 
-	//hangePhase();
+	ChangePhase();
 
 	switch (phace_) {
 	case Phase::kPlay:
@@ -242,20 +242,20 @@ void GameScene::Update() {
 			enemy->Update();
 		}
 
-		//// 縦横ブロック更新
-		//for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
-		//	for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-		//		if (!worldTransformBlockYoko)
-		//			continue;
+		// 縦横ブロック更新
+		for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
+			for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
+				if (!worldTransformBlockYoko)
+					continue;
 
-		//		// アフィン変換行列の作成
-		//		//(MakeAffineMatrix：自分で作った数学系関数)
-		//		worldTransformBlockYoko->matWorld_ = MakeAffineMatrix(worldTransformBlockYoko->scale_, worldTransformBlockYoko->rotation_, worldTransformBlockYoko->translation_);
+				// アフィン変換行列の作成
+				//(MakeAffineMatrix：自分で作った数学系関数)
+				worldTransformBlockYoko->matWorld_ = MakeAffineMatrix(worldTransformBlockYoko->scale_, worldTransformBlockYoko->rotation_, worldTransformBlockYoko->translation_);
 
-		//		// 定数バッファに転送
-		//		worldTransformBlockYoko->TransferMatrix();
-		//	}
-		//}
+				// 定数バッファに転送
+				worldTransformBlockYoko->TransferMatrix();
+			}
+		}
 
 		// カメラ処理
 		if (isDebugCameraActive_) {
@@ -276,6 +276,7 @@ void GameScene::Update() {
 		if (deathParticles_) {
 			deathParticles_->Update();
 		}
+
 		break;
 	}
 }
@@ -315,16 +316,20 @@ void GameScene::Draw() {
 		player_->Draw();
 	}
 
-	//if (deathParticles_) {
-	//	deathParticles_->Draw();
-	//}
+	if (deathParticles_) {
+		deathParticles_->Draw();
+	}
+
+	skydome_->Draw();
 
 	switch (phace_) {
 	case GameScene::Phase::kPlay:
+;
 		// 自キャラの描画
 		player_->Draw();
 		break;
 	case GameScene::Phase::kDeath:
+
 		break;
 	}
 

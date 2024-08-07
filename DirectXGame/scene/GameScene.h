@@ -15,13 +15,19 @@
 #include "AABB.h"
 #include "DethParticles.h"
 #include "Skydome.h"
+#include <vector>
 
 /// <summary>
 /// ゲームシーン
 /// </summary>
+
+class DethPertcles;
+
 class GameScene {
 
+
 public: // メンバ関数
+
 	/// <summary>
 	/// コンストクラタ
 	/// </summary>
@@ -52,8 +58,6 @@ public: // メンバ関数
 
 	std::list<Enemy*> enemies_;
 
-	DeathParticles* deathParticles_ = nullptr;
-
 	void GenerateBlocks();
 
 	void CheckAllCollisions();
@@ -75,6 +79,8 @@ public: // メンバ関数
 	Phase phace_;
 
 	bool finished_ = false;
+
+	bool IsFinished() const { return finished_; }
 
 	/// <summary>
 	/// デストラクタ
@@ -100,6 +106,9 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+
+
+	DeathParticles* deathParticles_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用

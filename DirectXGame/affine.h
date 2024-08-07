@@ -1,5 +1,9 @@
 #pragma once
-#include <GameScene.h>
+#include "MathUtilityForText.h"
+#include "math.h"
+#include <cmath>
+#include <numbers>
+#include "Matrix4x4.h"
 
 Matrix4x4 MatrixMultipry(const Matrix4x4& matrix1, const Matrix4x4& matrix2);
 

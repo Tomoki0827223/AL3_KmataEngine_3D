@@ -1,8 +1,4 @@
 #include "affine.h"
-#include "MathUtilityForText.h"
-#include "math.h"
-#include <cmath>
-#include <numbers>
 
 Matrix4x4 MatrixMultipry(const Matrix4x4& matrix1, const Matrix4x4& matrix2) {
 	Matrix4x4 result;
