@@ -161,8 +161,8 @@
     <ClInclude Include="math\Vector4.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="scene\GameScene.h" />
-    <ClInclude Include="Skydome.h" />
     <ClInclude Include="MathUtilityForText.h" />
+    <ClInclude Include="Skydome.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="TurnController.h" />
   </ItemGroup>

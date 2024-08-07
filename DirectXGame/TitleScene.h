@@ -1,5 +1,4 @@
 #pragma once
-
 #include "DirectXCommon.h"
 #include "Input.h"
 #include "Model.h"
@@ -8,8 +7,10 @@
 /// <summary>
 /// タイトルシーン
 /// </summary>
-class TitleScene {
+class TitleSence {
 public:
+	TitleSence();
+	~TitleSence();
 
 	/// <summary>
 	/// 初期化

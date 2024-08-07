@@ -1,21 +1,19 @@
 #pragma once
-
+#include "AABB.h"
 #include "Audio.h"
+#include "CameraController.h"
+#include "DethParticles.h"
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
+#include "Enemy.h"
 #include "Input.h"
 #include "MapChipField.h"
 #include "Model.h"
 #include "Player.h"
+#include "Skydome.h"
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "CameraController.h"
-#include "Enemy.h"
-#include "AABB.h"
-#include "DethParticles.h"
-#include "Skydome.h"
-#include <vector>
 
 /// <summary>
 /// ゲームシーン
@@ -23,60 +21,45 @@
 
 class DethPertcles;
 
+// ゲームのフェーズ(型)
+enum class Phase {
+	kPlay,  // ゲームプレイ
+	kDeath, // デス演出
+};
+
 class GameScene {
 
-
 public: // メンバ関数
-
 	/// <summary>
 	/// コンストクラタ
 	/// </summary>
 	GameScene();
 
-	Model* model_ = nullptr;
-
-	Model* playerResorces_ = nullptr;
-
-	Model* modelParticles_ = nullptr;
-
-	// 天球
-	Skydome* skydome_ = nullptr;
-	// 3Dモデル
-	Model* modelSkydome_ = nullptr;
-
-	WorldTransform worldTransform_;
-
-	ViewProjection viewProjection_;
-
-	MapChipField* mapChipField_;
-
-	CameraController* cameraController_;
-
 	Player* player_ = nullptr;
+	Skydome* skydome = nullptr;
+	MapChipField* mapChipField_ = nullptr;
+	DeathParticles* dethParticles_ = nullptr;
 
 	Model* modelEnemy_ = nullptr;
+	Model* modelPlayer_ = nullptr;
+	Model* modelBlock_ = nullptr;
+	Model* modelSkydome_ = nullptr;
+	Model* modelParticles_ = nullptr;
 
-	std::list<Enemy*> enemies_;
+	Vector3 playerPos = {};
 
-	void GenerateBlocks();
+	CameraController* cameraController_;
 
 	void CheckAllCollisions();
 
 	void ChangePhase();
 
-	// 縦横ブロック配列
+	std::list<Enemy*> enemies_;
+
+	// ワールドビュー
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
-
-	bool isDebugCameraActive_ = false;
-	DebugCamera* debugCamera_ = nullptr;
-
-	// ゲームのフェーズ(型)
-	enum class Phase {
-		kPlay,  // ゲームプレイ
-		kDeath, // デス演出
-	};
-
-	Phase phace_;
+	WorldTransform worldTransform_;
+	ViewProjection viewProjection_;
 
 	bool finished_ = false;
 
@@ -101,14 +84,22 @@ public: // メンバ関数
 	/// 描画
 	/// </summary>
 	void Draw();
+	/// <summary>
+	/// 表示ブロックの生成
+	/// </summary>
+	void GenerateBlocks();
 
 private: // メンバ変数
+	bool isDebugCameraActive_ = false;
+	DebugCamera* debugCamera_ = nullptr;
+
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 
-
 	DeathParticles* deathParticles_ = nullptr;
+
+	Phase phase_;
 
 	/// <summary>
 	/// ゲームシーン用

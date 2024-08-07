@@ -1,16 +1,14 @@
 #pragma once
-
+#include "MathUtilityForText.h"
 #include "Model.h"
+#include "affine.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include <algorithm>
 #include <array>
-#include "affine.h"
-
-/// <summary>
-/// デス演出用パーティクル
-/// </summary>
 
 class DeathParticles {
+
 public:
 	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);
 
@@ -21,10 +19,7 @@ public:
 	bool IsFinished() const { return isFinished_; }
 
 private:
-	// モデルのポインタ
 	Model* model_ = nullptr;
-
-	// ビュープロジェクションのポインタ
 	ViewProjection* viewProjection_ = nullptr;
 
 	// パーティクルの個数
@@ -32,20 +27,18 @@ private:
 
 	std::array<WorldTransform, kNumParticles> worldTransform_;
 
-	// 存続時間(消滅までの時間)<秒>
+	// 消えるまでの時間
 	static inline const float kDuration = 2.0f;
-	// 移動の速さ
+	// 移動
 	static inline const float kSpeed = 0.05f;
-	// 分割した1個分の角度
+	// 角度
 	static inline const float kAngleUint = 2.0f * 3.14f / kNumParticles;
 	// 終了フラグ
 	bool isFinished_ = false;
-	// 経過時間カウント
+	// カウント
 	float counter_ = 0.0f;
 	// 色変更オブジェクト
 	ObjectColor objectColor_;
-	// 色の数値
+	// 色
 	Vector4 color_;
-
-	//bool finished_ = false;
 };
