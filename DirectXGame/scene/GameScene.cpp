@@ -69,10 +69,21 @@ void GameScene::Initialize() {
 	player_->SetMapChipField(mapChipField_);
 	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition);
 
-	Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(18, 18);
-	Enemy* newEnemy = new Enemy();
-	newEnemy->Initialize(modelEnemy_, &viewProjection_, enemyPosition);
-	enemies_.push_back(newEnemy);
+	for (int32_t i = 0; i < 3; i++) {
+		Enemy* newEnemy = new Enemy();
+		Enemy* newEnemy1 = new Enemy();
+		Enemy* newEnemy2 = new Enemy();
+		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(18, 18);
+		Vector3 enemyPosition1 = mapChipField_->GetMapChipPositionByIndex(18, 17);
+		Vector3 enemyPosition2 = mapChipField_->GetMapChipPositionByIndex(18, 16);
+		newEnemy->Initialize(modelEnemy_, &viewProjection_, enemyPosition);
+		newEnemy1->Initialize(modelEnemy_, &viewProjection_, enemyPosition1);
+		newEnemy2->Initialize(modelEnemy_, &viewProjection_, enemyPosition2);
+
+		enemies_.push_back(newEnemy);
+		enemies_.push_back(newEnemy1);
+		enemies_.push_back(newEnemy2);
+	}
 
 	// パーティクル生成
 	dethParticles_ = new DeathParticles;
