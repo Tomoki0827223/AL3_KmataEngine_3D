@@ -13,7 +13,7 @@ void TitleSence::Initialize() {
 	Timer_ = 0.0f;
 
 	// タイトルを中央に寄せるために調整
-	titleWorldTransform_.translation_ = {-1.0f, -3.0f, -42.0f}; // x, y, zの値を調整
+	titleWorldTransform_.translation_ = {0.0f, 30.0f, -40.0f}; // x, y, zの値を調整
 }
 
 void TitleSence::Update() {

@@ -70,19 +70,36 @@ void GameScene::Initialize() {
 	dethParticles_->Initialize(modelParticles_, &viewProjection_, playerPosition);
 
 	for (int32_t i = 0; i < 3; i++) {
+
 		Enemy* newEnemy = new Enemy();
 		Enemy* newEnemy1 = new Enemy();
 		Enemy* newEnemy2 = new Enemy();
+		Enemy* newEnemy3 = new Enemy();
+		Enemy* newEnemy4 = new Enemy();
+		Enemy* newEnemy5 = new Enemy();
+		Enemy* newEnemy6 = new Enemy();
 		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(18, 18);
 		Vector3 enemyPosition1 = mapChipField_->GetMapChipPositionByIndex(18, 17);
 		Vector3 enemyPosition2 = mapChipField_->GetMapChipPositionByIndex(18, 16);
+		Vector3 enemyPosition3 = mapChipField_->GetMapChipPositionByIndex(18, 15);
+		Vector3 enemyPosition4 = mapChipField_->GetMapChipPositionByIndex(18, 14);
+		Vector3 enemyPosition5 = mapChipField_->GetMapChipPositionByIndex(18, 13);
+		Vector3 enemyPosition6 = mapChipField_->GetMapChipPositionByIndex(18, 12);
 		newEnemy->Initialize(modelEnemy_, &viewProjection_, enemyPosition);
 		newEnemy1->Initialize(modelEnemy_, &viewProjection_, enemyPosition1);
 		newEnemy2->Initialize(modelEnemy_, &viewProjection_, enemyPosition2);
+		newEnemy3->Initialize(modelEnemy_, &viewProjection_, enemyPosition3);
+		newEnemy4->Initialize(modelEnemy_, &viewProjection_, enemyPosition4);
+		newEnemy5->Initialize(modelEnemy_, &viewProjection_, enemyPosition5);
+		newEnemy6->Initialize(modelEnemy_, &viewProjection_, enemyPosition6);
 
 		enemies_.push_back(newEnemy);
 		enemies_.push_back(newEnemy1);
 		enemies_.push_back(newEnemy2);
+		enemies_.push_back(newEnemy3);
+		enemies_.push_back(newEnemy4);
+		enemies_.push_back(newEnemy5);
+		enemies_.push_back(newEnemy6);
 	}
 
 	// パーティクル生成
