@@ -78,6 +78,22 @@ void GameScene::Initialize() {
 		Enemy* newEnemy4 = new Enemy();
 		Enemy* newEnemy5 = new Enemy();
 		Enemy* newEnemy6 = new Enemy();
+
+		Enemy* newEnemy7 = new Enemy();
+		Enemy* newEnemy8 = new Enemy();
+		Enemy* newEnemy9 = new Enemy();
+
+		Enemy* newEnemy10 = new Enemy();
+		Enemy* newEnemy11 = new Enemy();
+		Enemy* newEnemy12 = new Enemy();
+		Enemy* newEnemy13 = new Enemy();
+		Enemy* newEnemy14 = new Enemy();
+		Enemy* newEnemy15 = new Enemy();
+		Enemy* newEnemy16 = new Enemy();
+		Enemy* newEnemy17 = new Enemy();
+		Enemy* newEnemy18 = new Enemy();
+		Enemy* newEnemy19 = new Enemy();
+
 		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(18, 18);
 		Vector3 enemyPosition1 = mapChipField_->GetMapChipPositionByIndex(18, 17);
 		Vector3 enemyPosition2 = mapChipField_->GetMapChipPositionByIndex(18, 16);
@@ -85,6 +101,22 @@ void GameScene::Initialize() {
 		Vector3 enemyPosition4 = mapChipField_->GetMapChipPositionByIndex(18, 14);
 		Vector3 enemyPosition5 = mapChipField_->GetMapChipPositionByIndex(18, 13);
 		Vector3 enemyPosition6 = mapChipField_->GetMapChipPositionByIndex(18, 12);
+
+		Vector3 enemyPosition7 = mapChipField_->GetMapChipPositionByIndex(25, 16);
+		Vector3 enemyPosition8 = mapChipField_->GetMapChipPositionByIndex(25, 17);
+		Vector3 enemyPosition9 = mapChipField_->GetMapChipPositionByIndex(25, 18);
+
+		Vector3 enemyPosition10 = mapChipField_->GetMapChipPositionByIndex(35, 21);
+		Vector3 enemyPosition11 = mapChipField_->GetMapChipPositionByIndex(35, 20);
+		Vector3 enemyPosition12 = mapChipField_->GetMapChipPositionByIndex(35, 19);
+		Vector3 enemyPosition13 = mapChipField_->GetMapChipPositionByIndex(35, 18);
+		Vector3 enemyPosition14 = mapChipField_->GetMapChipPositionByIndex(35, 17);
+		Vector3 enemyPosition15 = mapChipField_->GetMapChipPositionByIndex(35, 16);
+		Vector3 enemyPosition16 = mapChipField_->GetMapChipPositionByIndex(35, 15);
+		Vector3 enemyPosition17 = mapChipField_->GetMapChipPositionByIndex(35, 14);
+		Vector3 enemyPosition18 = mapChipField_->GetMapChipPositionByIndex(35, 13);
+		Vector3 enemyPosition19 = mapChipField_->GetMapChipPositionByIndex(35, 12);
+
 		newEnemy->Initialize(modelEnemy_, &viewProjection_, enemyPosition);
 		newEnemy1->Initialize(modelEnemy_, &viewProjection_, enemyPosition1);
 		newEnemy2->Initialize(modelEnemy_, &viewProjection_, enemyPosition2);
@@ -93,6 +125,21 @@ void GameScene::Initialize() {
 		newEnemy5->Initialize(modelEnemy_, &viewProjection_, enemyPosition5);
 		newEnemy6->Initialize(modelEnemy_, &viewProjection_, enemyPosition6);
 
+		newEnemy7->Initialize(modelEnemy_, &viewProjection_, enemyPosition7);
+		newEnemy8->Initialize(modelEnemy_, &viewProjection_, enemyPosition8);
+		newEnemy9->Initialize(modelEnemy_, &viewProjection_, enemyPosition9);
+
+		newEnemy10->Initialize(modelEnemy_, &viewProjection_, enemyPosition10);
+		newEnemy11->Initialize(modelEnemy_, &viewProjection_, enemyPosition11);
+		newEnemy12->Initialize(modelEnemy_, &viewProjection_, enemyPosition12);
+		newEnemy13->Initialize(modelEnemy_, &viewProjection_, enemyPosition13);
+		newEnemy14->Initialize(modelEnemy_, &viewProjection_, enemyPosition14);
+		newEnemy15->Initialize(modelEnemy_, &viewProjection_, enemyPosition15);
+		newEnemy16->Initialize(modelEnemy_, &viewProjection_, enemyPosition16);
+		newEnemy17->Initialize(modelEnemy_, &viewProjection_, enemyPosition17);
+		newEnemy18->Initialize(modelEnemy_, &viewProjection_, enemyPosition18);
+		newEnemy19->Initialize(modelEnemy_, &viewProjection_, enemyPosition19);
+
 		enemies_.push_back(newEnemy);
 		enemies_.push_back(newEnemy1);
 		enemies_.push_back(newEnemy2);
@@ -100,6 +147,21 @@ void GameScene::Initialize() {
 		enemies_.push_back(newEnemy4);
 		enemies_.push_back(newEnemy5);
 		enemies_.push_back(newEnemy6);
+
+		enemies_.push_back(newEnemy7);
+		enemies_.push_back(newEnemy8);
+		enemies_.push_back(newEnemy9);
+
+		enemies_.push_back(newEnemy10);
+		enemies_.push_back(newEnemy11);
+		enemies_.push_back(newEnemy12);
+		enemies_.push_back(newEnemy13);
+		enemies_.push_back(newEnemy14);
+		enemies_.push_back(newEnemy15);
+		enemies_.push_back(newEnemy16);
+		enemies_.push_back(newEnemy17);
+		enemies_.push_back(newEnemy18);
+		enemies_.push_back(newEnemy19);
 	}
 
 	// パーティクル生成
