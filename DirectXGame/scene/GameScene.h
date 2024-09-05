@@ -4,7 +4,10 @@
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
 #include "Input.h"
+
 #include "MapChipField.h"
+#include "MapChipField1.h"
+
 #include "Model.h"
 #include "Player.h"
 #include "Sprite.h"
@@ -33,6 +36,7 @@ public: // メンバ関数
 	ViewProjection viewProjection_;
 
 	MapChipField* mapChipField_;
+	MapChipField* mapChipField_1;
 
 	CameraController* cameraController_;
 
@@ -46,6 +50,7 @@ public: // メンバ関数
 
 	// 縦横ブロック配列
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
+	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_1;
 
 	int isDebugCameraActive_ = 0u;
 	DebugCamera* debugCamera_ = nullptr;

@@ -120,6 +120,7 @@
     <ClCompile Include="Skydome.cpp" />
     <ClCompile Include="TurnController.cpp" />
     <ClCompile Include="WorldTransformEX.cpp" />
+    <ClCompile Include="MapChipField1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\ImGuiManager.h" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Skydome.h" />
     <ClInclude Include="MathUtilityForText.h" />
     <ClInclude Include="TurnController.h" />
+    <ClInclude Include="MapChipField1.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">

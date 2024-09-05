@@ -13,7 +13,10 @@ GameScene::~GameScene() {
 	delete model_;
 	delete playerResorces_;
 	delete debugCamera_;
+	
 	delete mapChipField_;
+	delete mapChipField_1;
+
 	delete player_;
 	delete cameraController_;
 	delete enemy_;
@@ -25,6 +28,14 @@ GameScene::~GameScene() {
 		}
 	}
 	worldTransformBlocks_.clear();
+
+		// ブロックのメモリ解放
+	for (std::vector<WorldTransform*>& worldTransformBlockLine_1 : worldTransformBlocks_1) {
+		for (WorldTransform* worldTransformBlock_1 : worldTransformBlockLine_1) {
+			delete worldTransformBlock_1;
+		}
+	}
+	worldTransformBlocks_1.clear();
 }
 
 void GameScene::Initialize() {
@@ -49,6 +60,8 @@ void GameScene::Initialize() {
 	// マップチップフィールドの生成と初期化
 	mapChipField_ = new MapChipField;
 	mapChipField_->LoadMapChipCsv("Resources/Stage/map.csv");
+	mapChipField_1 = new MapChipField;
+	mapChipField_1->LoadMapChipCsv("Resources/Stage/map.csv");
 
 	// プレイヤーの初期位置の取得
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(5, 17);
@@ -81,11 +94,20 @@ void GameScene::GenerateBlocks() {
 	uint32_t numBlockVertical = mapChipField_->GetNumBlockVirtical();
 	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
 
+	uint32_t numBlockVertical_1 = mapChipField_1->GetNumBlockVirtical();
+	uint32_t numBlockHorizontal_1 = mapChipField_1->GetNumBlockHorizontal();
+
 	// ワールドトランスフォームブロックのリサイズ
 	worldTransformBlocks_.resize(numBlockVertical);
 
+	worldTransformBlocks_1.resize(numBlockVertical_1);
+
 	for (uint32_t i = 0; i < numBlockVertical; i++) {
 		worldTransformBlocks_[i].resize(numBlockHorizontal);
+	}
+
+	for (uint32_t i = 0; i < numBlockVertical_1; i++) {
+		worldTransformBlocks_[i].resize(numBlockHorizontal_1);
 	}
 
 	// マップチップフィールドの各セルに対してブロックを生成
@@ -96,6 +118,18 @@ void GameScene::GenerateBlocks() {
 				worldTransform->Initialize();
 				worldTransformBlocks_[i][j] = worldTransform;
 				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
+			}
+		}
+	}
+
+		// マップチップフィールドの各セルに対してブロックを生成
+	for (uint32_t i = 0; i < numBlockVertical_1; i++) {
+		for (uint32_t j = 0; j < numBlockHorizontal_1; j++) {
+			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
+				WorldTransform* worldTransform_1 = new WorldTransform();
+				worldTransform_1->Initialize();
+				worldTransformBlocks_1[i][j] = worldTransform_1;
+				worldTransformBlocks_1[i][j]->translation_ = mapChipField_1->GetMapChipPositionByIndex(j, i);
 			}
 		}
 	}
@@ -111,6 +145,17 @@ void GameScene::Update() {
 
 			worldTransformBlock->matWorld_ = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
 			worldTransformBlock->UpdateMatrix();
+		}
+	}
+
+	for (std::vector<WorldTransform*>& worldTransformBlockLine_1 : worldTransformBlocks_1) {
+		for (WorldTransform* worldTransformBlock_1 : worldTransformBlockLine_1) {
+			if (!worldTransformBlock_1) {
+				continue;
+			}
+
+			worldTransformBlock_1->matWorld_ = MakeAffineMatrix(worldTransformBlock_1->scale_, worldTransformBlock_1->rotation_, worldTransformBlock_1->translation_);
+			worldTransformBlock_1->UpdateMatrix();
 		}
 	}
 
@@ -160,6 +205,15 @@ void GameScene::Draw() {
 		for (const auto& worldTransformBlock : worldTransformBlockLine) {
 			if (worldTransformBlock) {
 				model_->Draw(*worldTransformBlock, viewProjection_);
+			}
+		}
+	}
+
+	// ブロックの描画
+	for (const auto& worldTransformBlockLine_1 : worldTransformBlocks_1) {
+		for (const auto& worldTransformBlock_1 : worldTransformBlockLine_1) {
+			if (worldTransformBlock_1) {
+				model_->Draw(*worldTransformBlock_1, viewProjection_);
 			}
 		}
 	}
