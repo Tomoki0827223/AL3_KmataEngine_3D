@@ -313,6 +313,7 @@ void GameScene::Update() {
 		}
 
 		ChangePhase();
+
 	}
 }
 
