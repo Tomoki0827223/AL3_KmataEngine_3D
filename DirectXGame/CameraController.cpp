@@ -1,9 +1,13 @@
 #include "CameraController.h"
-#include "Player.h"
-#include <algorithm>
-#include <iostream>
 
-void CameraController::Initialize() { viewProjection_.Initialize(); }
+
+void CameraController::Initialize(Model* model)
+{ 
+
+	model_ = model;
+	worldTransform_.Initialize();
+	viewProjection_.Initialize();
+}
 
 void CameraController::Update() {
 	if (!target_) {
@@ -36,8 +40,27 @@ void CameraController::Update() {
 	// 行列を更新する
 	viewProjection_.UpdateMatrix();
 
-	// デバッグ出力
-	std::cerr << "Camera Position: (" << viewProjection_.translation_.x << ", " << viewProjection_.translation_.y << ", " << viewProjection_.translation_.z << ")" << std::endl;
+
+	number1 = scoretotal;
+
+	number2[0] = number1 / 10000;
+	number1 %= 10000;
+	fontposX[0] = 20;
+
+	number2[1] = number1 / 1000;
+	number1 %= 1000;
+	fontposX[1] = fontposX[0] + 50;
+
+	number2[2] = number1 / 100;
+	number1 %= 100;
+	fontposX[2] = fontposX[1] + 50;
+
+	number2[3] = number1 / 10;
+	number1 %= 10;
+	fontposX[3] = fontposX[2] + 50;
+
+	number2[4] = number1;
+	fontposX[4] = fontposX[3] + 50;
 }
 
 void CameraController::Reset() {
@@ -53,3 +76,14 @@ void CameraController::Reset() {
 
 	viewProjection_.UpdateMatrix();
 }
+
+void CameraController::Draw() {
+	for (int i = 0; i < 5; ++i) {
+
+		// モデルの描画
+		model_->Draw(worldTransform_, viewProjection_);
+	}
+}
+
+void CameraController::SetPosition(const Vector3& position) 
+{ fontPosition_ = position; }

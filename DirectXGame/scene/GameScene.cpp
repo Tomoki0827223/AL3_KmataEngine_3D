@@ -1,8 +1,4 @@
 #include "GameScene.h"
-#include "AxisIndicator.h"
-#include "TextureManager.h"
-#include "affine.h"
-#include <cassert>
 
 GameScene::GameScene() {
 
@@ -28,6 +24,7 @@ GameScene::~GameScene() {
 }
 
 void GameScene::Initialize() {
+
 	// シングルトンインスタンスの取得
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
@@ -39,9 +36,26 @@ void GameScene::Initialize() {
 	playerResorces_ = Model::CreateFromOBJ("player");
 	modelEnemy_ = Model::CreateFromOBJ("enemy");
 
-	// ワールドトランスフォームとビュー・プロジェクションの初期化
+	bitMapFontTexture_ = Model::CreateFromOBJ("ZERO",true);
+	//bitMapFontTexture_1 = TextureManager::Load("cunt/1.png");
+	//bitMapFontTexture_2 = TextureManager::Load("cunt/2.png");
+	//bitMapFontTexture_3 = TextureManager::Load("cunt/3.png");
+	//bitMapFontTexture_4 = TextureManager::Load("cunt/4.png");
+	//bitMapFontTexture_5 = TextureManager::Load("cunt/5.png");
+	//bitMapFontTexture_6 = TextureManager::Load("cunt/6.png");
+	//bitMapFontTexture_7 = TextureManager::Load("cunt/7.png");
+	//bitMapFontTexture_8 = TextureManager::Load("cunt/8.png");
+	//bitMapFontTexture_9 = TextureManager::Load("cunt/9.png");
+
+	// ビュー・プロジェクションの初期化
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
+
+
+	//// ビットマップフォントの位置設定（右上の座標）
+	//Vector3 fontPosition = {1280 - 100, 720 - 50, 0}; // スクリーンサイズが1280x720の場合
+	//bitMapFont_->SetPosition(fontPosition);
+
 
 	// デバッグカメラの作成
 	debugCamera_ = new DebugCamera(1280, 720);
@@ -67,7 +81,7 @@ void GameScene::Initialize() {
 
 	// カメラコントローラの生成と初期化
 	cameraController_ = new CameraController();
-	cameraController_->Initialize();
+	cameraController_->Initialize(bitMapFontTexture_);
 	cameraController_->setTarget(player_);
 
 	// カメラの移動範囲を設定
@@ -133,6 +147,7 @@ void GameScene::Update() {
 	viewProjection_.TransferMatrix();
 	player_->Update();
 	enemy_->Update();
+
 }
 
 void GameScene::Draw() {
@@ -141,7 +156,7 @@ void GameScene::Draw() {
 
 	// 背景スプライト描画前処理
 	Sprite::PreDraw(commandList);
-	// ここに背景スプライトの描画処理を追加
+	// 背景スプライトの描画処理...
 	Sprite::PostDraw();
 
 	// 深度バッファクリア
@@ -153,6 +168,7 @@ void GameScene::Draw() {
 	// プレイヤーの描画
 	player_->Draw();
 
+	// 敵の描画
 	enemy_->Draw();
 
 	// ブロックの描画
@@ -164,11 +180,12 @@ void GameScene::Draw() {
 		}
 	}
 
+
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(commandList);
-	// ここに前景スプライトの描画処理を追加
+	// 前景スプライトの描画処理...
 	Sprite::PostDraw();
 }

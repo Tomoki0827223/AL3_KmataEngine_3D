@@ -12,6 +12,11 @@
 #include "WorldTransform.h"
 #include "CameraController.h"
 #include "Enemy.h"
+//#include "BitMapFont.h"
+#include "AxisIndicator.h"
+#include "TextureManager.h"
+#include "affine.h"
+#include <cassert>
 
 /// <summary>
 /// ゲームシーン
@@ -41,6 +46,19 @@ public: // メンバ関数
 	Model* modelEnemy_ = nullptr;
 
 	Enemy* enemy_ = nullptr;
+
+
+	Model* bitMapFontTexture_ = nullptr;
+	//Model* bitMapFontTexture_1 = nullptr;
+	//Model* bitMapFontTexture_2 = nullptr;
+	//Model* bitMapFontTexture_3 = nullptr;
+	//Model* bitMapFontTexture_4 = nullptr;
+	//Model* bitMapFontTexture_5 = nullptr;
+	//Model* bitMapFontTexture_6 = nullptr;
+	//Model* bitMapFontTexture_7 = nullptr;
+	//Model* bitMapFontTexture_8 = nullptr;
+	//Model* bitMapFontTexture_9 = nullptr;
+
 
 	void GenerateBlocks();
 
