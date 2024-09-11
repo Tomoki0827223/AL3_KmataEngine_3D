@@ -9,7 +9,10 @@ GameScene::GameScene() {}
 GameScene::~GameScene() {
 	// メモリの解放
 	delete model_;
+	
 	delete playerResorces_;
+	delete modelEnemy_;
+
 	delete debugCamera_;
 	delete mapChipField_;
 	delete player_;
