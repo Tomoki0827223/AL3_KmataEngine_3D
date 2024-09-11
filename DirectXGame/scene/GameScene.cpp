@@ -11,12 +11,16 @@ GameScene::GameScene() {
 GameScene::~GameScene() {
 	// メモリの解放
 	delete model_;
+	
 	delete playerResorces_;
+	delete modelEnemy_;
+
 	delete debugCamera_;
 	delete mapChipField_;
 	delete player_;
 	delete cameraController_;
 	delete enemy_;
+
 
 	// ブロックのメモリ解放
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
