@@ -180,7 +180,12 @@ void GameScene::Draw() {
 		}
 	}
 
+	for (int i = 0; i < 5; ++i) {
 
+		cameraController_->Draw();
+	
+	}
+	
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 
