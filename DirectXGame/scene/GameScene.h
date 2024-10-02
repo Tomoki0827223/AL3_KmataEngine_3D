@@ -49,7 +49,7 @@ public: // メンバ関数
 	Model* modelParticles_ = nullptr;
 
 	Vector3 playerPos = {};
-
+	]
 	CameraController* cameraController_;
 
 	void CheckAllCollisions();
@@ -102,6 +102,10 @@ private: // メンバ変数
 	DeathParticles* deathParticles_ = nullptr;
 
 	Phase phase_;
+
+	// 要素数
+	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
+	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
 
 	/// <summary>
 	/// ゲームシーン用

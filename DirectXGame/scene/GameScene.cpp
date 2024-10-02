@@ -6,17 +6,27 @@ GameScene::GameScene() {}
 GameScene::~GameScene() {
 
 	delete debugCamera_;
+
 	delete skydome;
 	delete mapChipField_;
 	delete modelPlayer_;
 	delete modelBlock_;
 	delete modelSkydome_;
 	delete cameraController_;
+
 	delete dethParticles_;
 	for (Enemy* enemy : enemies_) {
 		delete enemy;
 	}
+
+	delete player_;
 	delete modelEnemy_;
+
+
+	//for (int32_t i = 0; i < 3; i++) {
+	//	delete newEnemy;
+	//}
+
 	enemies_.clear();
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -25,6 +35,17 @@ GameScene::~GameScene() {
 		}
 	}
 	worldTransformBlocks_.clear();
+
+	// numBlockVirtical と numBlockHorizontal は、配列のサイズです。
+	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
+		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
+			// ポインタがnullptrでないことを確認してからdeleteする
+			if (worldTransformBlocks_[i][j] != nullptr) {
+				delete worldTransformBlocks_[i][j];    // メモリを解放する
+				worldTransformBlocks_[i][j] = nullptr; // ポインタをnullptrに設定して二重解放を防ぐ
+			}
+		}
+	}
 
 }
 
@@ -72,96 +93,96 @@ void GameScene::Initialize() {
 	for (int32_t i = 0; i < 3; i++) {
 
 		Enemy* newEnemy = new Enemy();
-		Enemy* newEnemy1 = new Enemy();
-		Enemy* newEnemy2 = new Enemy();
-		Enemy* newEnemy3 = new Enemy();
-		Enemy* newEnemy4 = new Enemy();
-		Enemy* newEnemy5 = new Enemy();
-		Enemy* newEnemy6 = new Enemy();
+		//Enemy* newEnemy1 = new Enemy();
+		//Enemy* newEnemy2 = new Enemy();
+		//Enemy* newEnemy3 = new Enemy();
+		//Enemy* newEnemy4 = new Enemy();
+		//Enemy* newEnemy5 = new Enemy();
+		//Enemy* newEnemy6 = new Enemy();
 
-		Enemy* newEnemy7 = new Enemy();
-		Enemy* newEnemy8 = new Enemy();
-		Enemy* newEnemy9 = new Enemy();
+		//Enemy* newEnemy7 = new Enemy();
+		//Enemy* newEnemy8 = new Enemy();
+		//Enemy* newEnemy9 = new Enemy();
 
-		Enemy* newEnemy10 = new Enemy();
-		Enemy* newEnemy11 = new Enemy();
-		Enemy* newEnemy12 = new Enemy();
-		Enemy* newEnemy13 = new Enemy();
-		Enemy* newEnemy14 = new Enemy();
-		Enemy* newEnemy15 = new Enemy();
-		Enemy* newEnemy16 = new Enemy();
-		Enemy* newEnemy17 = new Enemy();
-		Enemy* newEnemy18 = new Enemy();
-		Enemy* newEnemy19 = new Enemy();
+		//Enemy* newEnemy10 = new Enemy();
+		//Enemy* newEnemy11 = new Enemy();
+		//Enemy* newEnemy12 = new Enemy();
+		//Enemy* newEnemy13 = new Enemy();
+		//Enemy* newEnemy14 = new Enemy();
+		//Enemy* newEnemy15 = new Enemy();
+		//Enemy* newEnemy16 = new Enemy();
+		//Enemy* newEnemy17 = new Enemy();
+		//Enemy* newEnemy18 = new Enemy();
+		//Enemy* newEnemy19 = new Enemy();
 
 		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(18, 18);
-		Vector3 enemyPosition1 = mapChipField_->GetMapChipPositionByIndex(18, 17);
-		Vector3 enemyPosition2 = mapChipField_->GetMapChipPositionByIndex(18, 16);
-		Vector3 enemyPosition3 = mapChipField_->GetMapChipPositionByIndex(18, 15);
-		Vector3 enemyPosition4 = mapChipField_->GetMapChipPositionByIndex(18, 14);
-		Vector3 enemyPosition5 = mapChipField_->GetMapChipPositionByIndex(18, 13);
-		Vector3 enemyPosition6 = mapChipField_->GetMapChipPositionByIndex(18, 12);
+		//Vector3 enemyPosition1 = mapChipField_->GetMapChipPositionByIndex(18, 17);
+		//Vector3 enemyPosition2 = mapChipField_->GetMapChipPositionByIndex(18, 16);
+		//Vector3 enemyPosition3 = mapChipField_->GetMapChipPositionByIndex(18, 15);
+		//Vector3 enemyPosition4 = mapChipField_->GetMapChipPositionByIndex(18, 14);
+		//Vector3 enemyPosition5 = mapChipField_->GetMapChipPositionByIndex(18, 13);
+		//Vector3 enemyPosition6 = mapChipField_->GetMapChipPositionByIndex(18, 12);
 
-		Vector3 enemyPosition7 = mapChipField_->GetMapChipPositionByIndex(25, 16);
-		Vector3 enemyPosition8 = mapChipField_->GetMapChipPositionByIndex(25, 17);
-		Vector3 enemyPosition9 = mapChipField_->GetMapChipPositionByIndex(25, 18);
+		//Vector3 enemyPosition7 = mapChipField_->GetMapChipPositionByIndex(25, 16);
+		//Vector3 enemyPosition8 = mapChipField_->GetMapChipPositionByIndex(25, 17);
+		//Vector3 enemyPosition9 = mapChipField_->GetMapChipPositionByIndex(25, 18);
 
-		Vector3 enemyPosition10 = mapChipField_->GetMapChipPositionByIndex(35, 21);
-		Vector3 enemyPosition11 = mapChipField_->GetMapChipPositionByIndex(35, 20);
-		Vector3 enemyPosition12 = mapChipField_->GetMapChipPositionByIndex(35, 19);
-		Vector3 enemyPosition13 = mapChipField_->GetMapChipPositionByIndex(35, 18);
-		Vector3 enemyPosition14 = mapChipField_->GetMapChipPositionByIndex(35, 17);
-		Vector3 enemyPosition15 = mapChipField_->GetMapChipPositionByIndex(35, 16);
-		Vector3 enemyPosition16 = mapChipField_->GetMapChipPositionByIndex(35, 15);
-		Vector3 enemyPosition17 = mapChipField_->GetMapChipPositionByIndex(35, 14);
-		Vector3 enemyPosition18 = mapChipField_->GetMapChipPositionByIndex(35, 13);
-		Vector3 enemyPosition19 = mapChipField_->GetMapChipPositionByIndex(35, 12);
+		//Vector3 enemyPosition10 = mapChipField_->GetMapChipPositionByIndex(35, 21);
+		//Vector3 enemyPosition11 = mapChipField_->GetMapChipPositionByIndex(35, 20);
+		//Vector3 enemyPosition12 = mapChipField_->GetMapChipPositionByIndex(35, 19);
+		//Vector3 enemyPosition13 = mapChipField_->GetMapChipPositionByIndex(35, 18);
+		//Vector3 enemyPosition14 = mapChipField_->GetMapChipPositionByIndex(35, 17);
+		//Vector3 enemyPosition15 = mapChipField_->GetMapChipPositionByIndex(35, 16);
+		//Vector3 enemyPosition16 = mapChipField_->GetMapChipPositionByIndex(35, 15);
+		//Vector3 enemyPosition17 = mapChipField_->GetMapChipPositionByIndex(35, 14);
+		//Vector3 enemyPosition18 = mapChipField_->GetMapChipPositionByIndex(35, 13);
+		//Vector3 enemyPosition19 = mapChipField_->GetMapChipPositionByIndex(35, 12);
 
 		newEnemy->Initialize(modelEnemy_, &viewProjection_, enemyPosition);
-		newEnemy1->Initialize(modelEnemy_, &viewProjection_, enemyPosition1);
-		newEnemy2->Initialize(modelEnemy_, &viewProjection_, enemyPosition2);
-		newEnemy3->Initialize(modelEnemy_, &viewProjection_, enemyPosition3);
-		newEnemy4->Initialize(modelEnemy_, &viewProjection_, enemyPosition4);
-		newEnemy5->Initialize(modelEnemy_, &viewProjection_, enemyPosition5);
-		newEnemy6->Initialize(modelEnemy_, &viewProjection_, enemyPosition6);
+		//newEnemy1->Initialize(modelEnemy_, &viewProjection_, enemyPosition1);
+		//newEnemy2->Initialize(modelEnemy_, &viewProjection_, enemyPosition2);
+		//newEnemy3->Initialize(modelEnemy_, &viewProjection_, enemyPosition3);
+		//newEnemy4->Initialize(modelEnemy_, &viewProjection_, enemyPosition4);
+		//newEnemy5->Initialize(modelEnemy_, &viewProjection_, enemyPosition5);
+		//newEnemy6->Initialize(modelEnemy_, &viewProjection_, enemyPosition6);
 
-		newEnemy7->Initialize(modelEnemy_, &viewProjection_, enemyPosition7);
-		newEnemy8->Initialize(modelEnemy_, &viewProjection_, enemyPosition8);
-		newEnemy9->Initialize(modelEnemy_, &viewProjection_, enemyPosition9);
+		//newEnemy7->Initialize(modelEnemy_, &viewProjection_, enemyPosition7);
+		//newEnemy8->Initialize(modelEnemy_, &viewProjection_, enemyPosition8);
+		//newEnemy9->Initialize(modelEnemy_, &viewProjection_, enemyPosition9);
 
-		newEnemy10->Initialize(modelEnemy_, &viewProjection_, enemyPosition10);
-		newEnemy11->Initialize(modelEnemy_, &viewProjection_, enemyPosition11);
-		newEnemy12->Initialize(modelEnemy_, &viewProjection_, enemyPosition12);
-		newEnemy13->Initialize(modelEnemy_, &viewProjection_, enemyPosition13);
-		newEnemy14->Initialize(modelEnemy_, &viewProjection_, enemyPosition14);
-		newEnemy15->Initialize(modelEnemy_, &viewProjection_, enemyPosition15);
-		newEnemy16->Initialize(modelEnemy_, &viewProjection_, enemyPosition16);
-		newEnemy17->Initialize(modelEnemy_, &viewProjection_, enemyPosition17);
-		newEnemy18->Initialize(modelEnemy_, &viewProjection_, enemyPosition18);
-		newEnemy19->Initialize(modelEnemy_, &viewProjection_, enemyPosition19);
+		//newEnemy10->Initialize(modelEnemy_, &viewProjection_, enemyPosition10);
+		//newEnemy11->Initialize(modelEnemy_, &viewProjection_, enemyPosition11);
+		//newEnemy12->Initialize(modelEnemy_, &viewProjection_, enemyPosition12);
+		//newEnemy13->Initialize(modelEnemy_, &viewProjection_, enemyPosition13);
+		//newEnemy14->Initialize(modelEnemy_, &viewProjection_, enemyPosition14);
+		//newEnemy15->Initialize(modelEnemy_, &viewProjection_, enemyPosition15);
+		//newEnemy16->Initialize(modelEnemy_, &viewProjection_, enemyPosition16);
+		//newEnemy17->Initialize(modelEnemy_, &viewProjection_, enemyPosition17);
+		//newEnemy18->Initialize(modelEnemy_, &viewProjection_, enemyPosition18);
+		//newEnemy19->Initialize(modelEnemy_, &viewProjection_, enemyPosition19);
 
 		enemies_.push_back(newEnemy);
-		enemies_.push_back(newEnemy1);
-		enemies_.push_back(newEnemy2);
-		enemies_.push_back(newEnemy3);
-		enemies_.push_back(newEnemy4);
-		enemies_.push_back(newEnemy5);
-		enemies_.push_back(newEnemy6);
+		//enemies_.push_back(newEnemy1);
+		//enemies_.push_back(newEnemy2);
+		//enemies_.push_back(newEnemy3);
+		//enemies_.push_back(newEnemy4);
+		//enemies_.push_back(newEnemy5);
+		//enemies_.push_back(newEnemy6);
 
-		enemies_.push_back(newEnemy7);
-		enemies_.push_back(newEnemy8);
-		enemies_.push_back(newEnemy9);
+		//enemies_.push_back(newEnemy7);
+		//enemies_.push_back(newEnemy8);
+		//enemies_.push_back(newEnemy9);
 
-		enemies_.push_back(newEnemy10);
-		enemies_.push_back(newEnemy11);
-		enemies_.push_back(newEnemy12);
-		enemies_.push_back(newEnemy13);
-		enemies_.push_back(newEnemy14);
-		enemies_.push_back(newEnemy15);
-		enemies_.push_back(newEnemy16);
-		enemies_.push_back(newEnemy17);
-		enemies_.push_back(newEnemy18);
-		enemies_.push_back(newEnemy19);
+		//enemies_.push_back(newEnemy10);
+		//enemies_.push_back(newEnemy11);
+		//enemies_.push_back(newEnemy12);
+		//enemies_.push_back(newEnemy13);
+		//enemies_.push_back(newEnemy14);
+		//enemies_.push_back(newEnemy15);
+		//enemies_.push_back(newEnemy16);
+		//enemies_.push_back(newEnemy17);
+		//enemies_.push_back(newEnemy18);
+		//enemies_.push_back(newEnemy19);
 	}
 
 	// パーティクル生成
@@ -183,9 +204,9 @@ void GameScene::Initialize() {
 }
 
 void GameScene::GenerateBlocks() {
-	// 要素数
-	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
-	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
+	//// 要素数
+	//uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
+	//uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
 
 	// 要素数を変更する
 	// 列数を設定(縦方向のブロック数)
@@ -204,6 +225,7 @@ void GameScene::GenerateBlocks() {
 				worldTransform->Initialize();
 				worldTransformBlocks_[i][j] = worldTransform;
 				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
+			
 			}
 		}
 	}
@@ -443,6 +465,12 @@ void GameScene::ChangePhase() {
 		}
 
 		// 全てのあたり判定を行う
+
+
+
+
+
+
 		CheckAllCollisions();
 
 		break;

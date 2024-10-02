@@ -39,6 +39,9 @@ public:
 
 	MapChipData mapChipData_;
 
+	MapChipField();
+	~MapChipField();
+
 	void LoadMapChipCsv(const std::string& filePath);
 
 	MapChipType GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex);
