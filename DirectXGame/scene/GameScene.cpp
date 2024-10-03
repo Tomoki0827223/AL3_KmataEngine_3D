@@ -11,6 +11,7 @@ GameScene::GameScene() {
 
 GameScene::~GameScene() {}
 
+
 void GameScene::Initialize() {
 
 	dxCommon_ = DirectXCommon::GetInstance();
