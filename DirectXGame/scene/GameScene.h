@@ -49,7 +49,8 @@ public: // メンバ関数
 	Model* modelParticles_ = nullptr;
 
 	Vector3 playerPos = {};
-	]
+
+
 	CameraController* cameraController_;
 
 	void CheckAllCollisions();

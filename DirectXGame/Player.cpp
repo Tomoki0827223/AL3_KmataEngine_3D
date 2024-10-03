@@ -130,6 +130,7 @@ void Player::MovePlayer() {
 			// 加速/減速
 			velocity_.x += acceleration.x;
 
+
 			// 最大速度制限
 			velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
 		} else {
