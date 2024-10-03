@@ -5,6 +5,7 @@ GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 
+
 	delete debugCamera_;
 	delete skydome;
 	delete mapChipField_;
