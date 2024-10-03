@@ -13,6 +13,7 @@ GameScene::~GameScene() {
 	delete modelSkydome_;
 	delete cameraController_;
 	delete dethParticles_;
+	delete modelParticles_;
 	for (Enemy* enemy : enemies_) {
 		delete enemy;
 	}
