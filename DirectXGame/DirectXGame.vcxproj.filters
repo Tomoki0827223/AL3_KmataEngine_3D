@@ -40,9 +40,6 @@
     <Filter Include="ソース ファイル\input">
       <UniqueIdentifier>{337d978c-44b1-4af3-811b-c5f6f355f7de}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\input">
-      <UniqueIdentifier>{d461f61e-3cc4-4b11-b521-37a61c927ae5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\math">
       <UniqueIdentifier>{4c21a99e-f783-4367-bdcb-0ebd1d434719}</UniqueIdentifier>
     </Filter>
@@ -51,6 +48,9 @@
     </Filter>
     <Filter Include="ソース ファイル\2d">
       <UniqueIdentifier>{814a0f6d-f847-4c45-856d-4688fa4c9e6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\base\input">
+      <UniqueIdentifier>{d461f61e-3cc4-4b11-b521-37a61c927ae5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -102,7 +102,7 @@
     <ClCompile Include="DethParticles.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TitleSence.cpp">
+    <ClCompile Include="TitleScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -159,7 +159,7 @@
       <Filter>ヘッダー ファイル\scene</Filter>
     </ClInclude>
     <ClInclude Include="input\Input.h">
-      <Filter>ヘッダー ファイル\input</Filter>
+      <Filter>ヘッダー ファイル\base\input</Filter>
     </ClInclude>
     <ClInclude Include="math\Matrix4x4.h">
       <Filter>ヘッダー ファイル\math</Filter>
@@ -224,7 +224,10 @@
     <ClInclude Include="DethParticles.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TitleSence.h">
+    <ClInclude Include="TitleScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix3x3.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
